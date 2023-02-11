@@ -14,10 +14,8 @@ sz = 60;
 % Splitting coverage
 cov_split = 0.3;
 
-% Another change
 % Temperatures
 T = [450, 460, 470, 475, 480, 490];
-t = 2;
 % Which data points to include
 idx = 1:N-2;
 
