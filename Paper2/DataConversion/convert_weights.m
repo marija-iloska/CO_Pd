@@ -21,6 +21,16 @@ N = length(wv_splits);
 o_up = 2000;
 o_down=1700;
 
+% Weights
+%Der = Der./sum(Der);
+ratio = Der(2:end)./Der(1:end-1);
+
+Wf(3) = 0.7;
+Wf(2) = Wf(3)./ratio(2);
+Wf(1) = Wf(2)./ratio(1);
+Wf(4) = Wf(3)*ratio(3);
+
+
 
 % Weights of area
 Wa = 1 - Wf;
@@ -81,11 +91,11 @@ for nt = 1:Nt
 
     % Outliers
     out = find(cov_f < 0);
-    cov_f(out) = []; % cov_a(out);
-    time(out) = [];
-    area(out)=[]
-    cov_a(out) = [];
-    cov(out) = [];
+    cov_f(out) = 0; % cov_a(out);
+%     time(out) = [];
+%     area(out)=[];
+%     cov_a(out) = [];
+%     cov(out) = [];
     out = find(cov_f > max(cov_a));
     cov_f(out) = cov_a(out);
 
@@ -103,18 +113,33 @@ end
 
 
 % Choose a temperature
-nt = 1;
+nt = 2;
+dp = [92, 1, 138]/256;
 
 
 % Plot weighted mix
 figure(1)
-plot(time_all{nt}, cov_mix{nt}, 'k', 'linewidth', 2)
+plot(time_all{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
 hold on
 plot(time_all{nt}, cov_a_all{nt}, 'color', [0 0.4470 0.7410], 'linewidth', 1)
 hold on
 plot(time_all{nt}, cov_f_all{nt},'linewidth', 1)
 hold on
 legend('cov', 'area', 'freq' , 'FontSize', 20)
+xlabel('Time', 'FontSize',20)
+ylabel('Coverage', 'FontSize',20)
+title(temp_strings{nt}, 'FontSize', 20)
+grid on
+
+% Plot weighted mix
+figure(4)
+plot(time_all{nt}, cov_a_exp{nt}, 'r', 'linewidth', 1)
+hold on
+plot(time_all{nt}, cov_a_sat{nt}, 'color', [0 0.4470 0.7410], 'linewidth', 1)
+hold on
+plot(time_all{nt}, cov_f_all{nt}, 'color', dp, 'linewidth', 1.5)
+hold on
+legend('exp area', 'sat area', 'freq' , 'FontSize', 20)
 xlabel('Time', 'FontSize',20)
 ylabel('Coverage', 'FontSize',20)
 title(temp_strings{nt}, 'FontSize', 20)
