@@ -18,7 +18,7 @@ load ../exp_dft_data.mat
 % DFT________________________________
 
 % Get splitting coverage 
-cov_split_dft = 0.3;
+cov_split_dft = 0.27;
 
 % Choose wavenumber test range
 wv_test = 1805 : 2 : 1960;
@@ -53,7 +53,7 @@ grid on
 % % EXP________________________________
 
 % Get splitting coverage 
-cov_split_exp = 0.3;
+cov_split_exp = 0.28;
 
 % Choose wavenumber test range
 wv_test = 1820.5 : 1 : 1950;

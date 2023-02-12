@@ -2,15 +2,10 @@ clear all
 close all
 clc
 
-% This script converts WV to COV using the best polynomial fits for the
-% FULL RANGE for both EXP and DFT
+% This script computes MOLAR ABSORPTIVITIES for all temperatures and 
+% converts to coverage using HALF WV linear fit HALF Area
 
-% Load data for conversion (choose Temp)
-load Temps/490K.mat
-
-clear epsilon_dft epsilon_exp
-
-str_save = join(['Absorptivity/molar', str(1:3), 'k.mat']);
+% Both EXP or DFT reference data can be used
 
 
 % Load the FN of conversion
@@ -22,142 +17,166 @@ load ExpectedCov/expected_coverage.mat
 % Pressure on index
 tp_idx = 45;
 
-load(str_save)
-
-
 % Molar absorptivity at saturation
 range = 30;
-epsilon_sat = mean(area((tp_idx - range) : (tp_idx)))/cov_sat(i);
-
-
-
-
-%save(str_save, 'epsilon_sat', 'epsilon_exp', 'epsilon_dft')
-
-%-----------------------
-%           EXP 
-%-----------------------
-
-hidx = find(wv > 2000);
-wv(hidx) = [];
-time(hidx) = [];
-area(hidx) = [];
-tp_idx = tp_idx - sum(hidx < tp_idx);
-
-lidx = find(wv < 1700);
-wv(lidx) = [];
-time(lidx) = [];
-area(lidx) = [];
-tp_idx = tp_idx - sum(lidx < tp_idx);
-
-
-
-% Find indices for low and high regions
-idx0 = find(wv < wv_split_exp);
-idx1 = find(wv > wv_split_exp);
-
-
-% Convert half half
-covE(idx1) = polyval(E1, wv(idx1));
-covE(idx0) = zeros(1, length(idx0));
-
-% Outlier Limits
-high = cov_sat(i)+ 0.04;
-low = 0;
-
-
-% % Remove outliers
-[covE, timeE, areaE, wvE, tp_idxE, idx0, idx1] = outliers(covE, time, area, wv, wv_split_exp, high, low, tp_idx);
 
 % Get a window
-range1 = 10;
-
-mean_cov = mean(covE( idx1(end-range1 : end) ));
-mean_area = mean(areaE( idx1(end-range1 : end) ));
-
-epsilon_obt = mean_area / mean_cov;
-
-% Find rest
-eps_test = epsilon_obt;
-covE(idx0) = area(idx0)./eps_test;
+lim = 7;
 
 
-% Visualize range
-figure(1)
-plot(timeE, covE, '.', 'Color', 'k', 'MarkerSize', 7)
-hold on
-xline(timeE(tp_idxE-range))
-hold on
-xline(timeE(tp_idxE))
+% Temps
+temp_strings = {'450', '460', '470', '475', '480', '490'};
+N = length(temp_strings);
 
 
+
+%-------------------------
+%      EXP vs DFT
+%-------------------------
+
+% Choose method
+%method = 'dft';
+method = 'exp';
+
+
+% Outliers ranges
+o_up = 2000;
+o_down = 1700;
+
+% WV split
+wv_split = str2var( join(['wv_split_', method]) );
+
+% Polynomial Fitting
+P_exp = E1;
+P_dft = D1;
+P = str2var(join(['P_', method]));
+
+
+% Range through all temps
+for n = 1:N
+
+    % Reset vars
+    clear cov time wv area
+
+    % Load temp data__________________________________________
+    temp_data = join(['Temps/', temp_strings{n}, 'K.mat']);
+    load(temp_data)
+
+    % Outliers_______________________________________________
+    hidx = find(wv > o_up);
+    wv(hidx) = [];
+    time(hidx) = [];
+    area(hidx) = [];
+    tp_idx = tp_idx - sum(hidx < tp_idx);
+    
+    lidx = find(wv < o_down);
+    wv(lidx) = [];
+    time(lidx) = [];
+    area(lidx) = [];
+    tp_idx = tp_idx - sum(lidx < tp_idx);
+
+
+    % Find indices for low and high regions
+    idx0 = find(wv < wv_split);
+    idx1 = find(wv > wv_split);
+
+
+    % EPSILON SAT_______________________________________________
+    % Get mean area at saturation
+    mean_area_sat(n) = mean( area( (tp_idx - range) : (tp_idx) )); 
+
+    % Get epsilon saturation
+    epsilon_sat(n) = mean_area_sat(n)/cov_sat(n);
+
+
+    % COVERAGES_______________________________________________
+    % Convert half half
+    cov(idx1) = polyval(P, wv(idx1));
+    cov(idx0) = zeros(1, length(idx0));
+    
+    % Outlier Limits
+    high = cov_sat(n)+ 0.04;
+    low = 0;
+    
+    % Remove outliers
+    [cov, time, area, wv, tp_idx, idx0, idx1] = outliers(cov, time, area, wv, wv_split, high, low, tp_idx);
+
+    % Get mean area at split
+     range1 = idx1(end-lim-1 : end-1);
+    
+    % Get epsilon at split
+    mean_cov_split(n) = mean( cov(range1));
+    mean_area_split(n) = mean( area(range1) );
+    epsilon(n) = mean_area_split(n) / mean_cov_split(n);
+
+       
+    % Find rest
+    cov(idx0) = area(idx0)./epsilon(n);
+    
+    % Store vars
+    cov_all{n} = cov;
+    time_all{n} = time;
+    tp_idx_all{n} = tp_idx;
+    area_all{n} = area;
+    wv_all{n} = wv;
+    range_all{n} = range1;
+
+
+end
+
+% Create correct epsilon string/variable for saving
+epsilon_str = join(['epsilon_', method]);
+
+% Assign the computed value
+assignin('base', epsilon_str, epsilon);
+
+
+
+%save('Absorptivity/molar_abs.mat', 'epsilon_sat', 'epsilon_exp', 'epsilon_dft')
+%save('Absorptivity/mean_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split', 'cov_sat', epsilon_str)
+%save(join(['Converted/half_area_', method,'.mat']), 'cov_all', 'time_all', 'tp_idx_all', 'area_all', 'wv_all')
+
+
+lg = [18, 166, 119]/256;
+lb = [35, 124, 219]/256;
+lr = [209, 25, 99]/256;
+lwd = 2;
+sz = 10;
+
+% Choose temperature
+% 1:450  2:460  3:470   4:475  5:480  6:490
+n = 3;
+
+% WINDOWS plot
 figure(2)
-plot(timeE, covE, '.', 'Color', 'k', 'MarkerSize', 7)
+plot(time_all{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
 hold on
-xline(timeE(idx1(end-range1)))
+plot(time_all{n}, area_all{n}, '.', 'Color', lr, 'MarkerSize', sz)
 hold on
-xline(timeE(idx1(end-1)))
-
-
-
-
-
-
-
-
-
-
-
-%-----------------------
-%           DFT
-%-----------------------
-
-
-% Find indices for low and high regions
-% idx0 = find(wv < wv_split_dft);
-% idx1 = find(wv > wv_split_dft);
-% 
-% 
-% % Convert half half
-% covD(idx1) = polyval(D1, wv(idx1));
-% covD(idx0) = zeros(1, length(idx0));
-% 
-% % Outlier Limits
-% high = cov_sat(i)+ 0.05;
-% low = 0;
-% 
-% % Remove outliers
-% [covD, timeD, tp_idxD] = outliers(covD, time, high, low, tp_idx);
-% 
-% 
-% % Find rest
-% idx0 = find(covD == 0);
-% covD(idx0) = area(idx0)./epsilon_dft;
-
-
-
-
-% Check Plot
-figure(3)
-plot(timeE, covE, '.', 'Color', 'm', 'MarkerSize', 12)
+xline(time_all{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
+hold on
+xline(time_all{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
+hold on
+xline(time_all{n}(tp_idx-range), 'Color', lg, 'linewidth',lwd)
+hold on
+xline(time_all{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
+set(gca, 'FontSize', 15)
 xlabel('Time', 'FontSize',13)
-ylabel('Coverage', 'FontSize',13)
-title(join( [str, '  PolyHALF']) ,'FontSize',13)
-legend('EXP')
-set(gca, 'FontSize', 13)
+title(join( [temp_strings{n}, 'K', ' Windows']) ,'FontSize',16)
+legend('Coverage', 'Area', 'FontSize',13)
 grid on
 
-% Check Plot
+
+
+% COVERAGE vs TIME  Plots
 % figure(3)
-% plot(timeD, covD, '.', 'Color', 'b', 'MarkerSize', 12)
+% plot(time_all{n}, cov_all{n}, '.', 'Color', 'm', 'MarkerSize', 12)
 % xlabel('Time', 'FontSize',13)
 % ylabel('Coverage', 'FontSize',13)
-% title(join( [str, '  PolyHALF']) ,'FontSize',13)
-% legend('DFT')
+% title(join( [temp_strings{n}, 'K', ' PolyHALF']) ,'FontSize',13)
+% legend('EXP')
 % set(gca, 'FontSize', 13)
 % grid on
-
-
 
 
 

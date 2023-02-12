@@ -20,12 +20,7 @@ id0 = 1:8;
 id1 = 8:10;
 id2 = 9:14;
 id3 = 13:15;
-%:15;
 
-
-% id0 = 1:8;
-% id1 = 8:10;
-% id2 = 9:12;
 
 
 id = {id0, id1, id2, id3}; %, id4};
@@ -79,9 +74,7 @@ idx = {idx0, idx1, idx2, idx3}; %, idx4};
 %     wv_fit{n} = polyval(P(n,:), cov_test(idx{n}));
 % 
 % end
-% 
-% 
-% 
+
 save('weights.mat', 'Der', 'Wf', 'Ws', 'Pc');
 
 figure(1)

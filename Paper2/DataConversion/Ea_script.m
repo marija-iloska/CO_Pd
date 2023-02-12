@@ -22,10 +22,8 @@ idx = 1:N-2;
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
 
+% Ea with different initial coverages
 covs = 0.25 : 0.005 : 0.32;
-
-covs = 0.28;
-
 Nsplit = length(covs);
 
 for j = 1 : Nsplit
