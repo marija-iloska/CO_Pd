@@ -9,7 +9,7 @@ clc
 
 
 % Load the FN of conversion
-load PolyFIT/poly_half_range_both.mat
+%load PolyFIT/poly_half_range_both.mat
 
 % Load expected coverage (obtained from German paper)
 load ExpectedCov/expected_coverage.mat
@@ -29,27 +29,21 @@ temp_strings = {'450', '460', '470', '475', '480', '490'};
 N = length(temp_strings);
 
 
-
 %-------------------------
 %      EXP vs DFT
 %-------------------------
-
-% Choose method
-%method = 'dft';
-method = 'exp';
-
 
 % Outliers ranges
 o_up = 2000;
 o_down = 1700;
 
 % WV split
-wv_split = str2var( join(['wv_split_', method]) );
+wv_split = 1838;
 
 % Polynomial Fitting
-P_exp = E1;
-P_dft = D1;
-P = str2var(join(['P_', method]));
+load weights450.mat
+P = Pc(2,:);
+%P = str2var(join(['P_', method]));
 
 
 % Range through all temps
@@ -125,13 +119,13 @@ for n = 1:N
 end
 
 % Create correct epsilon string/variable for saving
-epsilon_str = join(['epsilon_', method]);
+%epsilon_str = join(['epsilon_', method]);
 
 % Assign the computed value
-assignin('base', epsilon_str, epsilon);
+%assignin('base', epsilon_str, epsilon);
 
 
-
+%save('Absorptivity/molar_new.mat', 'epsilon', 'epsilon_sat')
 %save('Absorptivity/molar_abs.mat', 'epsilon_sat', 'epsilon_exp', 'epsilon_dft')
 %save('Absorptivity/mean_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split', 'cov_sat', epsilon_str)
 %save(join(['Converted/half_area_', method,'.mat']), 'cov_all', 'time_all', 'tp_idx_all', 'area_all', 'wv_all')
@@ -145,7 +139,7 @@ sz = 10;
 
 % Choose temperature
 % 1:450  2:460  3:470   4:475  5:480  6:490
-n = 3;
+n = 4;
 
 % WINDOWS plot
 figure(2)

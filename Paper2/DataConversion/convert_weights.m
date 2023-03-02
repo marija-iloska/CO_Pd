@@ -4,11 +4,11 @@ clc
 
 
 % This script covnerts code using Weights (Area + Frequency)
-load weights.mat
-load Absorptivity/mean_area.mat
+load weights450.mat
+%load Absorptivity/mean_area.mat
 
 % Load molar absorptivities
-load Absorptivity/molar_abs.mat
+load Absorptivity/molar_new.mat
 
 % Create load string
 temp_strings = {'450', '460', '470', '475', '480', '490'};
@@ -18,27 +18,25 @@ Nt = length(temp_strings);
 
 % WV splits
 %wv_splits = [1824, 1826, 1835, 1907];
-wv_splits = [1828, 1835, 1900];
+%wv_splits = [1828, 1835, 1900];
+wv_splits = [1840]; %, 1880];
 N = length(wv_splits);
+k = 2;
 
 o_up = 2000;
 o_down=1700;
 
 % Weights
-Wf = Der./sum(Der);
-ratio = Der(2:end)./Der(1:end-1);
-
-% Wf(3) = 1;
-% Wf(2) = Wf(3)./ratio(2);
-% Wf(1) = Wf(2)./ratio(1);
-% Wf(4) = Wf(3)*ratio(3);
+% Wf = Der./sum(Der);
+% ratio = Der(2:end)./Der(1:end-1);
 
 
 
 % Weights of area
-Wa = 1 - Wf;
+% Wa = 1 - Wf;
 
 
+% Loop for all temperatures
 for nt = 1:Nt
 
     clear cov time cov_a cov_f area id
@@ -79,36 +77,32 @@ for nt = 1:Nt
         cov_f(id{n}) = polyval(Pc(n,:), wv(id{n}));
     end
 
-    % Get scaling
-    c(nt) = mean( cov_f(id{3}(tp_idx-10 : tp_idx)) )./ cov_sat(nt);
 
-    cov_a = area'./epsilon_exp(nt);
-    cov_a(id{3}) = area(id{3})./epsilon_sat(nt);
+    cov_a = area'./epsilon(nt);
+    cov_a(id{k}) = area(id{k})./epsilon_sat(nt);
     
     % Get coverage only through area with each epsilon 
-    cov_a_exp{nt} = area./epsilon_exp(nt);
+    cov_a_exp{nt} = area./epsilon(nt);
     cov_a_sat{nt} = area./epsilon_sat(nt);
 
-    %W_new = Wf./sum(Wf);
-    W_new = c(nt)*Wf;
-
-    Wa = 1-W_new;
 
 
     % Get weighted mix
     for n = 1:N+1
-        cov(id{n}) = W_new(n)*cov_f(id{n}) + Wa(n)*cov_a(id{n});
+        cov(id{n}) = Wf(n)*cov_f(id{n}) + Wa(n)*cov_a(id{n});
     end
 
     % Outliers
     out = find(cov_f < 0);
     cov_f(out) = 0; % cov_a(out);
+    cov(out) = 0;
 %     time(out) = [];
 %     area(out)=[];
 %     cov_a(out) = [];
 %     cov(out) = [];
-    out = find(cov_f > max(cov_a));
+    out = find(cov_f > 0.42);
     cov_f(out) = cov_a(out);
+    cov(out) = cov_a(out);
 
     cov_mix{nt} = cov;
     cov_f_all{nt} = cov_f;
@@ -124,7 +118,7 @@ end
 
 
 % Choose a temperature
-nt = 4;
+nt = 6;
 dp = [92, 1, 138]/256;
 
 
