@@ -8,6 +8,10 @@ load Absorptivity/mean_area.mat
 % Temperatures
 T = [450, 460, 470, 475, 480, 490];
 
+plot(T, cov_sat)
+xlabel('Temperature')
+ylabel('COV')
+
 
 % Methods
 method = {'dft',  'exp', 'sat'};
