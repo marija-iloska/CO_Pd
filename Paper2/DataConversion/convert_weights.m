@@ -4,7 +4,7 @@ clc
 
 
 % This script covnerts code using Weights (Area + Frequency)
-load weights450.mat
+load weights450area.mat
 %load Absorptivity/mean_area.mat
 
 % Load molar absorptivities
@@ -14,14 +14,19 @@ load Absorptivity/molar_new.mat
 temp_strings = {'450', '460', '470', '475', '480', '490'};
 Nt = length(temp_strings);
 
+% Extinction coefficient
+eps_cov = [0.3727, 0.41369185 0.489873814 0.498506692];
+
 
 
 % WV splits
 %wv_splits = [1824, 1826, 1835, 1907];
 %wv_splits = [1828, 1835, 1900];
-wv_splits = [1840]; %, 1880];
+%wv_splits = [1840]; %, 1880];
+wv_splits = [1835, 1860];
+
 N = length(wv_splits);
-k = 2;
+k = 3;
 
 o_up = 2000;
 o_down=1700;
@@ -30,7 +35,7 @@ o_down=1700;
 % Wf = Der./sum(Der);
 % ratio = Der(2:end)./Der(1:end-1);
 
-
+ext_coeff =@(coverage) - 0.8266*coverage + 0.7756;
 
 % Weights of area
 % Wa = 1 - Wf;
@@ -75,6 +80,7 @@ for nt = 1:Nt
     % GET COV_F
     for n = 1:N+1
         cov_f(id{n}) = polyval(Pc(n,:), wv(id{n}));
+%         cov_a(id{n}) = area(id{n})./eps_cov(n);
     end
 
 
@@ -118,7 +124,7 @@ end
 
 
 % Choose a temperature
-nt = 6;
+nt = 1;
 dp = [92, 1, 138]/256;
 
 
