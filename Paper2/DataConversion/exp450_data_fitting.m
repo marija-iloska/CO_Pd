@@ -2,11 +2,15 @@ clear all
 close all
 clc
 
-% Read data
-%cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
-%wv =[1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246 1913.08053];
-wv = [1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246]; % 1913.08053 1913.08053]; % 1918.86606 1913.08053];
-cov = [0.065669165, 0.168939787, 0.224750444, 0.35752177, 0.394330745, 0.418598707, 0.439547591]; %, 0.428157354, 0.400854903]; %, 0.363157118, 0.223677117];
+
+% Area
+%wv = [1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246]; 
+%cov = [0.065669165, 0.168939787, 0.224750444, 0.35752177, 0.394330745, 0.418598707, 0.439547591]; 
+
+% Isoterm
+wv = [1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246, 1913.08053]; 
+cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
+
 
 % Points to fit
 % id0 = 1:3;
@@ -17,8 +21,15 @@ id0 = 1:3;
 id1 = 3:5;
 id2 = 5:7;
 
-id = {id0, id1, id2};
+id0 = 1:3;
+id1 = 3:8;
+
+id = {id0, id1}; %, id2};
 N = length(id);
+
+% id = {1:8};
+% N = 1;
+
 
 % Polynomial degrees
 degE = 1;
@@ -36,17 +47,22 @@ end
 Wf = Der./max(Der);
 Wa = 1-Wf;
 
-save('weights450area.mat', 'Wf', 'Wa', 'Der', 'Pc');
+%save('weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
 
 cov_test = 0 :0.01 : 0.5;
 
-idx0 = find(cov_test < 0.25);
-idx2 = find(cov_test > 0.34);
-idx1 = find(cov_test < 0.6);
-idx1 = setdiff(idx1, [idx0 idx2]);
+% idx0 = find(cov_test < 0.25);
+% idx2 = find(cov_test > 0.34);
+% idx1 = find(cov_test < 0.6);
+% idx1 = setdiff(idx1, [idx0 idx2]);
+% 
+% idx = {idx0, idx1, idx2};
 
-idx = {idx0, idx1, idx2};
+idx0 = find(cov_test < 0.245);
+idx1  = find(cov_test >0.245);
+idx = {idx0, idx1};
 
+%idx = {1:length(cov_test)};
 % Get coverage fittings for low and high regions
 for n = 1:N
 
