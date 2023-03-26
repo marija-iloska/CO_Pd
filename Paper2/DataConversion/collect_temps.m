@@ -3,7 +3,7 @@ close all
 clc
 
 % PLot areas
-load Temps/AllTemp.mat
+load Temps/AllTemp_old.mat
 
 sz = 20;
 for t = 1 : length(areas)
