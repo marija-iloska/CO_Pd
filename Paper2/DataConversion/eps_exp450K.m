@@ -20,7 +20,7 @@ tp_idx = 45;
 range = 30;
 
 % Get a window
-lim =5;
+lim = 10;
 
 % WV split
 wv_split = 1840;
@@ -28,7 +28,7 @@ Pcw = Pc(2,:);
 
 
 % Range through all temps
-for n = 1:N
+for n = 1:1
 
     % Reset vars
     clear cov
@@ -52,7 +52,7 @@ for n = 1:N
     cov(idx0) = zeros(1, length(idx0));
     
     % Get mean area at split
-    range1 = idx1(end-lim-10 : end-10);
+    range1 = idx1(end-lim-15 : end-15);
     %range1 = idx1(end - lim): idx1(end- 2);
     
     % Get epsilon at split
@@ -80,14 +80,14 @@ sz = 10;
 
 % Choose temperature
 % 1:450  2:460  3:470   4:475  5:480  6:490
-n = 2;
+n = 1;
 
 % WINDOWS plot
 figure(2)
 plot(time_wv{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
 hold on
-plot(time_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
-hold on
+% plot(time_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
+% hold on
 xline(time_area{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
 hold on
 xline(time_area{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
@@ -102,11 +102,6 @@ legend('Coverage', 'Area', 'FontSize',13)
 grid on
 
 
-idx = [1,3,4];
-idx = 1:4;
-figure(3)
-plot( mean_area_sat(idx), cov_sat(idx))
-
-save('epsilons.mat', 'epsilon_sat', 'epsilon_exp')
+%save('epsilons.mat', 'epsilon_sat', 'epsilon_exp')
 %save('450info.mat', 'cov', 'epsilon_exp', 'epsilon_sat', 'cov_sat', 'wv_split', 'tp_idx');
 

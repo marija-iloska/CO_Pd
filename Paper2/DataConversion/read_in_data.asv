@@ -41,10 +41,7 @@ dat_marea(:, [12, 13]) = [];
 L = length(dat_marea(1,:));
 
 for i = 1:N
-    temp_nan = dat_marea(:, L+1-i);
-    temp_nan(isnan(temp_nan)) = [];
-    area{i} = temp_nan;
-    time_area{i} = time(1:length(temp_nan));
+    area{}
 end
 
 
@@ -71,7 +68,5 @@ for i = 4:N+3
 end
 
 
-
-
 % Save all data
-save('Temps/all_temps.mat', 'area', 'wv', 'time_area', 'time_wv', 'temps_strings', "N")
+%save('Temps/all_temps.mat', 'area', 'wv', 'time_area', 'time_wv', 'temps_strings', "N")

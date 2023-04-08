@@ -17,14 +17,18 @@ cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 % id1 = 4:8;
 % id2 = 5:8;
 
-id0 = 1:3;
-id1 = 3:5;
-id2 = 5:7;
+id0 = 1:4;
+id1 = 2:5;
+id2 = 5:8;
 
-id0 = 1:3;
-id1 = 3:8;
+% id0 = 1:3;
+% id1 = 3:5;
+% id2 = 5:7;
 
-id = {id0, id1}; %, id2};
+% id0 = 1:3;
+% id1 = 3:8;
+
+id = {id0, id1, id2};
 N = length(id);
 
 % id = {1:8};
@@ -47,20 +51,22 @@ end
 Wf = Der./max(Der);
 Wa = 1-Wf;
 
-%save('weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
+save('weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
 
 cov_test = 0 :0.01 : 0.5;
 
-% idx0 = find(cov_test < 0.25);
-% idx2 = find(cov_test > 0.34);
-% idx1 = find(cov_test < 0.6);
-% idx1 = setdiff(idx1, [idx0 idx2]);
-% 
-% idx = {idx0, idx1, idx2};
+idx0 = find(cov_test < 0.25);
+idx2 = find(cov_test > 0.34);
+idx1 = find(cov_test < 0.6);
+idx1 = setdiff(idx1, [idx0 idx2]);
 
-idx0 = find(cov_test < 0.245);
-idx1  = find(cov_test >0.245);
-idx = {idx0, idx1};
+idx = {idx0, idx1, idx2};
+% 
+% idx0 = find(cov_test < 0.245);
+% idx1  = find(cov_test >0.245);
+% idx = {idx0, idx1};
+
+
 
 %idx = {1:length(cov_test)};
 % Get coverage fittings for low and high regions
