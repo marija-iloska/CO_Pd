@@ -3,14 +3,17 @@ close all
 clc
 
 % PLot areas
-load Temps/all_temps.mat
+load Temps/T3.mat
 
 
 sz = 20;
-for t = 1 : length(area)-2
+msz = 10;
+for t = 1 : 1
 
-    plot(time_area{t}, area{t}, '.', 'MarkerSize', 15)
+    plot(time_area{t}, movmean(area_mat{t}, 2), '.', 'MarkerSize', msz)
     hold on
+%     plot(timea_area{t}, area_abs{t}, '.', 'MarkerSize', msz)
+%     hold on
 
 end
 xlabel('Time', 'FontSize', sz)

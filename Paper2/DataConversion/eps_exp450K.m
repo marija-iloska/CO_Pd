@@ -8,7 +8,9 @@ load 'weights450isotherm.mat'
 
 % STEP 2
 % Load raw data
-load Temps/all_temps.mat
+%load Temps/all_temps.mat
+load Temps/T3.mat
+area = area_mat;
 
 % Load expected coverage
 load ExpectedCov/expected_coverage.mat
@@ -23,12 +25,18 @@ range = 30;
 lim = 10;
 
 % WV split
-wv_split = 1840;
+wv_split = 1845;
 Pcw = Pc(2,:);
+
+for i = 1:N
+    area{i} = movmean(area{i}, 7);
+end
+
+
 
 
 % Range through all temps
-for n = 1:1
+for n = 1:3
 
     % Reset vars
     clear cov
@@ -50,23 +58,26 @@ for n = 1:1
     % Convert half half
     cov(idx1) = polyval(Pcw, wv{n}(idx1));
     cov(idx0) = zeros(1, length(idx0));
+
     
     % Get mean area at split
-    range1 = idx1(end-lim-15 : end-15);
-    %range1 = idx1(end - lim): idx1(end- 2);
+    range1{1} = idx1(end-lim : end); % 450
+    range1{2} = idx1(end - lim :end - 3); % 460
+    range1{3} = idx1(end - 4 : end);
     
     % Get epsilon at split
-    mean_cov_split(n) = mean( cov(range1));
-    mean_area_split(n) = mean( area{n}(range1) );
+    mean_cov_split(n) = mean( cov(range1{n}));
+    mean_area_split(n) = mean( area{n}(range1{n}) );
     epsilon_exp(n) = mean_area_split(n) / mean_cov_split(n);
 
        
     % Find rest
     cov(idx0) = area{n}(idx0)./epsilon_exp(n);
+    cov(cov > 0.45) = cov_sat(n);
     
     % Store vars
     cov_all{n} = cov;
-    range_all{n} = range1;
+    range_all{n} = range1{n};
 
 end
 
@@ -80,11 +91,11 @@ sz = 10;
 
 % Choose temperature
 % 1:450  2:460  3:470   4:475  5:480  6:490
-n = 1;
+n =1;
 
 % WINDOWS plot
 figure(2)
-plot(time_wv{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
+plot(time_area{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
 hold on
 % plot(time_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
 % hold on
@@ -101,7 +112,8 @@ title(join( [temps_strings{n}, 'K', ' Windows']) ,'FontSize',16)
 legend('Coverage', 'Area', 'FontSize',13)
 grid on
 
-
-%save('epsilons.mat', 'epsilon_sat', 'epsilon_exp')
+%save('epsilon_abs.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+%save('epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('450info.mat', 'cov', 'epsilon_exp', 'epsilon_sat', 'cov_sat', 'wv_split', 'tp_idx');
 
