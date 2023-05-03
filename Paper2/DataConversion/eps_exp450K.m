@@ -29,7 +29,7 @@ wv_split = 1845;
 Pcw = Pc(2,:);
 
 for i = 1:N
-    area{i} = movmean(area{i}, 7);
+    area{i} = movmean(area{i}, 5);
 end
 
 
@@ -113,7 +113,8 @@ legend('Coverage', 'Area', 'FontSize',13)
 grid on
 
 %save('epsilon_abs.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+%save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('450info.mat', 'cov', 'epsilon_exp', 'epsilon_sat', 'cov_sat', 'wv_split', 'tp_idx');
-
+%save('mean_abs_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+%save('mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')

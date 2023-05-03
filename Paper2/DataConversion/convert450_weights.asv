@@ -9,8 +9,8 @@ load weights450isotherm.mat
 
 % Load molar absorptivities
 %load 450info.mat
-load epsilon_abs.mat
-%load epsilons_mat.mat
+%load epsilon_abs.mat
+load epsilons_mat.mat
 
 % Load data
 load Temps/T3.mat
@@ -87,7 +87,7 @@ end
 
 
 % Choose a temperature
-nt = 3;
+nt = 2;
 dp = [92, 1, 138]/256;
 ym = [247, 190, 2]/256;
 

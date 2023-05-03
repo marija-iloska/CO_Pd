@@ -1,0 +1,30 @@
+clear all
+close all
+clc
+
+% Coverage at saturation
+load ExpectedCov/expected_coverage.mat
+
+% Mean area at saturation
+load Absorptivity/mean_area.mat
+
+% Our data
+load Temps/T3.mat
+
+tp_idx = 45;
+% Try for 450 K
+for n = 1:N
+    Aabs = area_abs{n};
+    timeA = time_area{n};
+    cov = Aabs*cov_sat(n)./Aabs(tp_idx);
+    plot(timeA, cov)
+    hold on
+
+end
+
+
+
+
+
+
+

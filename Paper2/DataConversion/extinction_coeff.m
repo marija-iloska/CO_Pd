@@ -127,7 +127,7 @@ end
 
 %save('Absorptivity/molar_new.mat', 'epsilon', 'epsilon_sat')
 %save('Absorptivity/molar_abs.mat', 'epsilon_sat', 'epsilon_exp', 'epsilon_dft')
-%save('Absorptivity/mean_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split', 'cov_sat', epsilon_str)
+%save('Absorptivity/mean_area_abs.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split', 'cov_sat', epsilon_str)
 %save(join(['Converted/half_area_', method,'.mat']), 'cov_all', 'time_all', 'tp_idx_all', 'area_all', 'wv_all')
 
 
