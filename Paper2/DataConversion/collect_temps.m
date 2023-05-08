@@ -8,12 +8,12 @@ load Temps/T3.mat
 
 sz = 20;
 msz = 10;
-for t = 1 : 1
+for t = 1 : 3
 
-    plot(time_area{t}, movmean(area_mat{t}, 2), '.', 'MarkerSize', msz)
-    hold on
-%     plot(timea_area{t}, area_abs{t}, '.', 'MarkerSize', msz)
+%     plot(time_area{t}, movmean(area_mat{t}, 2), '.', 'MarkerSize', msz)
 %     hold on
+    plot(time_area{t}, area_abs{t}, '.', 'MarkerSize', msz)
+    hold on
 
 end
 xlabel('Time', 'FontSize', sz)

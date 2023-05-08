@@ -92,9 +92,9 @@ for i = 1:N
     temp_nan(isnan(temp_nan)) = [];
     temp_nana(isnan(temp_nana)) = [];
     area_mat{i} = temp_nan;
-    time_area{i} = time(1:length(temp_nan));
+    %time_area{i} = time(1:length(temp_nan));
     area_abs{i} = temp_nana;
-    timea_area{i} = time(1:length(temp_nana));
+    time_area{i} = time(1:length(temp_nana));
 
 end
 
@@ -105,16 +105,23 @@ for i = 1:N
     Laa = length(area_abs{i});
     Lam = length(area_mat{i});
 
-    Lmin = min([Lwv, Lam, Laa]);
+    Lsz = Laa - Lwv;
 
-    wv{i} = wv{i}(1:Lmin);
-    area_abs{i} = area_abs{i}(1:Lmin);
-    area_mat{i} = area_mat{i}(1:Lmin);
-    time_area{i} = time_area{i}(1:Lmin);
-    time_wv{i} = time_wv{i}(1:Lmin);
+    if (Lsz > 0)
+        wv{i} = [wv{i}; zeros(Lsz,1)];
+    end
+%     Lmin = min([Lwv, Lam, Laa]);
+% 
+%     wv{i} = wv{i}(1:Lmin);
+%     area_abs{i} = area_abs{i}(1:Lmin);
+%     area_mat{i} = area_mat{i}(1:Lmin);
+%     time_area{i} = time_area{i}(1:Lmin);
+%     time_wv{i} = time_wv{i}(1:Lmin);
 
 end
 
+wv{1}(end) = [];
+
 % Save all data
 %save('Temps/all_temps.mat', 'area', 'wv', 'time_area', 'time_wv', 'temps_strings', "N")
-save('Temps/T3.mat', 'area_abs', "time_area", 'area_mat', 'time_wv', 'time', 'temps_strings', 'N', 'wv')
+save('Temps/T3.mat', 'area_abs', "time_area", 'time_wv', 'time', 'temps_strings', 'N', 'wv')

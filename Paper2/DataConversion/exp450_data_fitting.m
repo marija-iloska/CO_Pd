@@ -3,36 +3,34 @@ close all
 clc
 
 
-% Area
+% Area 450
 %wv = [1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246]; 
 %cov = [0.065669165, 0.168939787, 0.224750444, 0.35752177, 0.394330745, 0.418598707, 0.439547591]; 
 
-% Isoterm
-wv = [1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246, 1913.08053]; 
-cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
+% Isoterm 450
+%wv = [1820 1830.15466 1834.01168 1861.0108 1872.58185 1891.86694 1897.65246, 1913.08053]; 
+%cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 
+% Isotherm 490
+cov = [0.022064467 0.057060629 0.134727552 0.183844973 0.289754413 0.321680737, 0.35972
+];
+wv = [1818.58 1820.5 1824.37 1834 1855.23 1864.87, 1888];
 
-% Points to fit
-% id0 = 1:3;
-% id1 = 4:8;
-% id2 = 5:8;
-
-id0 = 1:3;
-id1 = 3:5;
-id2 = 5:8;
-
+% % Points to fit 450
 % id0 = 1:3;
 % id1 = 3:5;
-% id2 = 5:7;
+% id2 = 5:8;
+% 
+% id = {id0, id1, id2};
+% N = length(id);
 
-% id0 = 1:3;
-% id1 = 3:8;
+% Points to fit 490
+id0 = 1:4;
+id1 = 4:7;
 
-id = {id0, id1, id2};
+id = {id0, id1};
 N = length(id);
 
-% id = {1:8};
-% N = 1;
 
 
 % Polynomial degrees
@@ -51,20 +49,25 @@ end
 Wf = Der./max(Der);
 Wa = 1-Wf;
 
-save('weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
 
 cov_test = 0 :0.01 : 0.5;
 
-idx0 = find(cov_test < 0.25);
-idx2 = find(cov_test > 0.34);
-idx1 = find(cov_test < 0.6);
-idx1 = setdiff(idx1, [idx0 idx2]);
+% 450 split
+% idx0 = find(cov_test < 0.25);
+% idx2 = find(cov_test > 0.34);
+% idx1 = find(cov_test < 0.6);
+% idx1 = setdiff(idx1, [idx0 idx2]);
 
-idx = {idx0, idx1, idx2};
-% 
-% idx0 = find(cov_test < 0.245);
-% idx1  = find(cov_test >0.245);
-% idx = {idx0, idx1};
+%idx = {idx0, idx1, idx2};
+
+
+% 490 split
+idx0 = find(cov_test < 0.2);
+idx1  = find(cov_test >0.2);
+idx = {idx0, idx1};
+
+%save('weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
+%save('weights490isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
 
 
 

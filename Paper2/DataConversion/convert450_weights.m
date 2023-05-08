@@ -3,12 +3,10 @@ close all
 clc
 
 
-% This script covnerts code using Weights (Area + Frequency)
+% This script covnerts 450 and 460 using Weights (Area + Frequency)
 load weights450isotherm.mat
-%load Absorptivity/mean_area.mat
 
 % Load molar absorptivities
-%load 450info.mat
 load epsilon_abs.mat
 %load epsilons_mat.mat
 
@@ -16,123 +14,120 @@ load epsilon_abs.mat
 load Temps/T3.mat
 
 % Create load string
-temp_strings = {'450', '460', '490'};
+temp_strings = {'450', '460'};
 Nt = length(temp_strings);
-
-% Extinction coefficient
-eps_cov = sort([ 0.41369185 0.489873814 0.498506692], 'descend');
-%wv_eps = sort([1897.65246, 1882.22 ,1864.87], 'ascend');
-wv_eps = sort([1882.22 ,1864.87, 1842], 'ascend');
-
-
-%wv_splits = wv_split;
-wv_splits = [1840];%, 1870];
-N = length(wv_splits);
-k = 2;
-
+N = length(wv_split);
 area = area_abs;
-% area = area_mat;
-% for i = 1:N
-%     area{i} = movmean(area{i}, 7);
-% end
-
-
 
 
 
 % Weights of area
 Wa = 1 - Wf;
+Wa(end) = 1;
+Wf(end) = 0;
+time_wv = time_area;
 
+wv{2}([153,158, 159]) = [];
+area{2}([153, 158, 159]) = [];
+time_wv{2}([153, 158, 159]) = [];
+time_area{2} = time_wv{2};
 
 % Loop for all temperatures
-for nt = 1:3
+for nt = 1:2
 
     clear cov cov_f
 
     % Region indices based on WV fitting for derivatives
-    id = region_indices(wv{nt}, wv_splits, N);
+    wv_splits = 1840;
+    id{1} = find(wv{nt} < wv_splits);
+    id{2} = find(wv{nt} > wv_splits);
+    id{3} = find(wv{nt} == 0);
+    id{1} = setdiff(id{1}, id{3});
 
 
     % GET COV( F )
-    for n = 1:N+1
+    for n = 1:N+2
         cov_f(id{n}) = polyval(Pc(n,:), wv{nt}(id{n}));
     end
 
     % Get COV( A )
-    cov_a = area{nt}'./epsilon_exp(nt);
-    cov_a(id{k}) = area{nt}(id{k})./epsilon_sat(nt);
-    
-    % Get coverage only through area with each epsilon 
-    cov_a_exp{nt} = area{nt}./epsilon_exp(nt);
-    cov_a_sat{nt} = area{nt}./epsilon_sat(nt);
+    cov_a = area{nt}'./epsilon_sat(nt);
 
 
-    % Get COV(A + F) 
-    for n = 1:N+1
+    % Get COV(A + F)
+    wv_splits = 1850;
+    id{1} = find(wv{nt} < wv_splits);
+    id{2} = find(wv{nt} > wv_splits);
+    id{3} = find(wv{nt} == 0);
+    id{1} = setdiff(id{1}, id{3});
+    for n = 1:N+2
+        %cov(id{n}) = Wf(N+3-n)*cov_f(id{n}) + Wa(N+3-n)*cov_a(id{n});
         cov(id{n}) = Wf(n)*cov_f(id{n}) + Wa(n)*cov_a(id{n});
-    end
-    cov(cov < 0) = 0;
 
+    end
+    cov(id{N+2}) = cov_a(id{N+2});
+    cov(cov < 0) = 0;
+    cov_f(id{N+2}) = [];
+    time_wv{nt}(id{N+2}) = [];
+
+    % STORE variables
     cov_mix{nt} = cov;
     cov_f_all{nt} = cov_f;
     cov_a_all{nt} = cov_a;
-    area_all{nt} = area;
     time_all{nt} = time;
 
-
-
 end
-
-
 
 
 % Choose a temperature
-nt = 3;
+gr = [4, 148, 124]/256;
 dp = [92, 1, 138]/256;
 ym = [247, 190, 2]/256;
 
-% Plot weighted mix
-figure(1)
-plot(time_area{nt}, cov_a_all{nt}, 'color', [0 0.4470 0.7410], 'linewidth', 1)
-hold on
-plot(time_area{nt}, cov_f_all{nt}, 'color', ym, 'linewidth', 1)
-hold on
-plot(time_area{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
-hold on
-legend('cov(A)', 'cov(F)' , 'cov(A+F)', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
-ylabel('Coverage', 'FontSize',20)
-title(temp_strings{nt}, 'FontSize', 20)
-grid on
+for nt = 1:N+1
+    % Plot weighted mix
+    figure(nt)
+    plot(time_area{nt}, cov_a_all{nt}, 'color', [0 0.4470 0.7410], 'linewidth', 1)
+    hold on
+    plot(time_wv{nt}, cov_f_all{nt}, 'color', ym, 'linewidth', 1)
+    hold on
+    plot(time_area{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
+    hold on
+    legend('cov(A)', 'cov(F)' , 'cov(A+F)', 'FontSize', 20)
+    xlabel('Time', 'FontSize',20)
+    ylabel('Coverage', 'FontSize',20)
+    title(temp_strings{nt}, 'FontSize', 20)
+    grid on
+
+end
 
 
 
-gr = [4, 148, 124]/256;
 
 
 % All areas
-figure(2)
-plot(time_area{nt}, cov_a_exp{nt}, 'color', 'k', 'linewidth', 1)
-hold on
-plot(time_area{nt}, cov_a_sat{nt}, 'linewidth', 1)
-hold on
-%plot(time_area{nt}, cov_a_all{nt},'linewidth', 1)
-%hold on
-legend('Area exp', 'Area sat', 'Area mix', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
-ylabel('Coverage', 'FontSize',20)
-title(temp_strings{nt}, 'FontSize', 20)
-grid on
+% figure(2)
+% plot(time_area{nt}, cov_a_exp{nt}, 'color', 'k', 'linewidth', 1)
+% hold on
+% plot(time_area{nt}, cov_a_sat{nt}, 'linewidth', 1)
+% hold on
+% %plot(time_area{nt}, cov_a_all{nt},'linewidth', 1)
+% %hold on
+% legend('Area exp', 'Area sat', 'Area mix', 'FontSize', 20)
+% xlabel('Time', 'FontSize',20)
+% ylabel('Coverage', 'FontSize',20)
+% title(temp_strings{nt}, 'FontSize', 20)
+% grid on
 
-figure(3)
-for n = 1:3
-    plot(time_area{n}, cov_mix{n}, 'linewidth', 1)
-    hold on
-end
-set(gca, 'FontSize', 20)
-legend('450', '460', '490', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
-ylabel('Coverage', 'FontSize',20)
-title('Area-ABS')
-grid on
+% figure(3)
+% for n = 1:3
+%     plot(time_area{n}, cov_mix{n}, 'linewidth', 1)
+%     hold on
+% end
+% set(gca, 'FontSize', 20)
+% legend('450', '460', '490', 'FontSize', 20)
+% xlabel('Time', 'FontSize',20)
+% ylabel('Coverage', 'FontSize',20)
+% title('Area-ABS')
+% grid on
 
