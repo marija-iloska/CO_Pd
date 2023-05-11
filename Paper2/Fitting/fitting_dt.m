@@ -13,15 +13,6 @@ R2 = tp_AB(1)+1 : tp_idx;
 R3 = tp_idx + 1 : tp_AB(2);
 R4 = tp_AB(2) + 1 : N;
 
-% 490
-% idx = find(dtime < 0.738);
-% R1 = idx(end);
-% idx = find(dtime < time(tp_idx));
-% R2 = idx(end);
-% idx = find(dtime < 3.552);
-% R3 = idx(end);
-% R4 = N;
-
 
 % Fitting
 theta_B = zeros(1,N);

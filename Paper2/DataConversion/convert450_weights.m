@@ -27,10 +27,13 @@ Wa(end) = 1;
 Wf(end) = 0;
 time_wv = time_area;
 
-wv{2}([153,158, 159]) = [];
-area{2}([153, 158, 159]) = [];
-time_wv{2}([153, 158, 159]) = [];
-time_area{2} = time_wv{2};
+WA = [0.2015, 0.7742, 1];
+WF = [0.7985, 0.2258, 0];
+
+% wv{2}([153,158, 159]) = [];
+% area{2}([153, 158, 159]) = [];
+% time_wv{2}([153, 158, 159]) = [];
+% time_area{2} = time_wv{2};
 
 % Loop for all temperatures
 for nt = 1:2
@@ -55,14 +58,18 @@ for nt = 1:2
 
 
     % Get COV(A + F)
-    wv_splits = 1850;
-    id{1} = find(wv{nt} < wv_splits);
-    id{2} = find(wv{nt} > wv_splits);
-    id{3} = find(wv{nt} == 0);
-    id{1} = setdiff(id{1}, id{3});
+    wv_splits = 1840;
+%     id{1} = find(wv{nt} < wv_splits);
+%     id{2} = find(wv{nt} > wv_splits);
+%     id{3} = find(wv{nt} == 0);
+%     id{1} = setdiff(id{1}, id{3});
+    id{1} = find(time_area{nt} < 4);
+    temp = find(time_area{nt} < 10);
+    id{2} = setdiff(temp, id{1});
+    id{3} = find(time_area{nt} > 10);
     for n = 1:N+2
         %cov(id{n}) = Wf(N+3-n)*cov_f(id{n}) + Wa(N+3-n)*cov_a(id{n});
-        cov(id{n}) = Wf(n)*cov_f(id{n}) + Wa(n)*cov_a(id{n});
+        cov(id{n}) = WF(n)*cov_f(id{n}) + WA(n)*cov_a(id{n});
 
     end
     cov(id{N+2}) = cov_a(id{N+2});
@@ -131,3 +138,8 @@ end
 % title('Area-ABS')
 % grid on
 
+time_mix{1} = time_area{1};
+time_mix{2} = time_area{2};
+
+
+%save('cov450_460.mat', 'cov_mix', 'time_mix', 'tp_idx', 'temps_strings')

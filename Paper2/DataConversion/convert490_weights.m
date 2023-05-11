@@ -82,8 +82,8 @@ for nt = 3:3
     hold on
     plot(time_wv{nt}, cov_f_all{nt}, 'color', ym, 'linewidth', 1)
     hold on
-    plot(time_area{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
-    hold on
+%     plot(time_area{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
+%     hold on
     legend('cov(A)', 'cov(F)' , 'cov(A+F)', 'FontSize', 20)
     xlabel('Time', 'FontSize',20)
     ylabel('Coverage', 'FontSize',20)

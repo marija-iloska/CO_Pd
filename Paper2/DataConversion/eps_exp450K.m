@@ -32,11 +32,11 @@ for i = 1:N
     area{i} = movmean(area{i}, 5);
 end
 
-
+wv = wv_dat;
 
 
 % Range through all temps
-for n = 1:3
+for n = 1:N
 
     % Reset vars
     clear cov
@@ -63,7 +63,12 @@ for n = 1:3
     % Get mean area at split
     range1{1} = idx1(end-lim : end); % 450
     range1{2} = idx1(end - lim :end - 3); % 460
-    range1{3} = idx1(end - 4 : end);
+    range1{6} = idx1(end - 4 : end);
+    range1{3} = idx1(end - lim: end);
+    range1{4} = idx1(end - lim: end-3);
+    range1{5} = idx1(end - 7: end-3);
+
+
     
     % Get epsilon at split
     mean_cov_split(n) = mean( cov(range1{n}));
@@ -91,21 +96,21 @@ sz = 10;
 
 % Choose temperature
 % 1:450  2:460  3:470   4:475  5:480  6:490
-n =1;
+n =6;
 
 % WINDOWS plot
 figure(2)
-plot(time_area{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
+plot(time_wv{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
 hold on
 % plot(time_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
 % hold on
-xline(time_area{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
+xline(time_wv{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
 hold on
-xline(time_area{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
+xline(time_wv{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
 hold on
-xline(time_area{n}(tp_idx-range), 'Color', lg, 'linewidth',lwd)
+xline(time_wv{n}(tp_idx-range), 'Color', lg, 'linewidth',lwd)
 hold on
-xline(time_area{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
+xline(time_wv{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
 set(gca, 'FontSize', 15)
 xlabel('Time', 'FontSize',13)
 title(join( [temps_strings{n}, 'K', ' Windows']) ,'FontSize',16)

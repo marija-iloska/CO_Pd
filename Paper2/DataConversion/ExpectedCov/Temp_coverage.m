@@ -13,40 +13,46 @@ load P_extrap.mat
 
 %cov_sat = interp1(T,cov, [450, 460, 470, 475, 480, 490]);
 
-
+temps_strings = {'450 int', '460 int', '470 int', '475 int', '480 int', '490 int'};
 %save('expected_coverage.mat', "cov_sat")
+
+str = {'450 int', '460 int', '470 int', '475 int', '480 int', '490 int', '448K paper', '453K paper', '493K paper'};
+
+T_interest = [450, 460, 470, 475, 480, 490];
 
 
 for p = 1:length(P)
 
     % Here I extrapolate to get the coverages at P = 1e-5;
-    covp(p,:) = interp1(T, cov3(:,p)', [450, 475, 490]);
+    covp(p,:) = interp1(T, cov3(:,p)', T_interest);
 
 end
 
-T_interest = [450, 475, 490];
-
 
 % Plot ISOTHERMS
-figure(1)
-h(1) = plot(P(1:end), covp(1:end,1), '.', 'MarkerSize', 20);
-hold on
-plot(P(1:end), covp(1:end,1), '-', 'Color', 'b', 'Linewidth', 0.5)
-hold on
-h(2) = plot(P(1:end), covp(1:end,2), '.', 'MarkerSize', 20)
-hold on
-plot(P(1:end), covp(1:end,2), '-', 'Color', 'r', 'Linewidth', 0.5)
-hold on
-h(3) = plot(P(1:end), covp(1:end,3), '.', 'MarkerSize', 20)
-hold on
-plot(P(1:end), covp(1:end,3), '-', 'Color', 'g', 'Linewidth', 0.5)
-hold on
-h(4) = plot(p_raw{1}, cov_raw{1}, 'Linewidth', 1.5, 'Color', 'k')
-hold on
-h(5) = plot(p_raw{2}(1:end), cov_raw{2}(1:end), 'Linewidth', 1.5, 'Color', 'k')
-hold on
-h(6) = plot(p_raw{3}(1:end), cov_raw{3}(1:end), 'Linewidth', 1.5, 'Color', 'k')
-hold on
-legend(h, '450K int', '475K int', '490K int', '448K paper', '453K paper', '493K paper', 'FontSize', 20)
+N = length(T_interest);
+col = {'b', 'r', 'g', 'm', 'y', [150, 50, 180]/256};
+for i = 1:N
+    figure(1)
+    h(i) = plot(P(1:end), covp(1:end,i), '.', 'MarkerSize', 20);
+    hold on
+    plot(P(1:end), covp(1:end,i), '-', 'Color', col{i}, 'Linewidth', 0.5)
+    hold on
+
+end
+
+for i = 1:3
+
+    h(N+i) = plot(p_raw{i}, cov_raw{i}, 'Linewidth', 1.5, 'Color', 'k');
+    hold on
+
+end
+legend(h, str, 'FontSize', 20)
+set(gca, 'FontSize', 20)
+xlabel('Pressure', 'FontSize', 20)
+ylabel('Coverage', 'FontSize', 20)
+grid on
+
+
 
 

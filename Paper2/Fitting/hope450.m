@@ -5,9 +5,11 @@ clc
 
 % Load data
 P = 0.001;
-load Temps/cov450_wv.mat
+load ../DataConversion/cov450_460.mat
 str = '450';
 
+cov = cov_mix{1};
+time = time_mix{1};
 
 %% Process Data
 % Get system divisions
@@ -33,8 +35,7 @@ dt = [0, time(2:end)' - time(1:end-1)'];
 N = length(cov);
 tN = 1:N;
 
-dtime = 0.01:0.02:24;
-%dtime = 0.01:0.02:7;
+dtime = 0.01 : 0.02 : 24;
 
 
 % Get individual coverages
