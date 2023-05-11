@@ -97,6 +97,32 @@ for i = 1:N
 end
 
 
+wv_org = dat_wv(:,[8:-1:3]);
+
+   
+% i = 2;
+% 
+% sz = 20;
+% msz = 11;
+% for t = 1 : N
+% 
+%      %plot(time_mat_area{t}, movmean(area_mat{t}, 1), '.', 'MarkerSize', msz)
+%      %hold on
+%      plot(time, wv_org(:,t), '.', 'MarkerSize', msz)
+%      hold on
+% %     plot(time_abs_area{t}, area_abs{t}, '.', 'MarkerSize', msz)
+% %     hold on
+% 
+% end
+% xlabel('Time', 'FontSize', sz)
+% ylabel('MAT Area', 'FontSize', sz)
+% ylabel('Wavenumber', 'FontSize', sz)
+% %title('Smoothed (5 MA points)', 'FontSize', sz)
+% set(gca, 'FontSize', 15)
+% legend( temps_strings, 'FontSize', sz)
+
+
+
 % Save all data
 %save('Temps/all_temps.mat', 'area', 'wv', 'time_area', 'time_wv', 'temps_strings', "N")
-save('Temps/T3.mat', 'area_abs','area_mat', "time_abs_area", 'time_mat_area', 'time_wv', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')
+%save('Temps/T3.mat', 'area_abs','area_mat', "time_abs_area", 'time_mat_area', 'time_wv', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')

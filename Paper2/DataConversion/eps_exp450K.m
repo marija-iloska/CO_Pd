@@ -25,7 +25,7 @@ range = 30;
 lim = 10;
 
 % WV split
-wv_split = 1845;
+wv_split = 1840;
 Pcw = Pc(2,:);
 
 for i = 1:N
@@ -37,6 +37,14 @@ wv = wv_dat;
 
 % Range through all temps
 for n = 1:N
+
+    if (n <= 3)
+        Pcw = Pc(2,:);
+    else
+        load weights490isotherm.mat
+        Pcw = Pc(2,:);
+    end
+        
 
     % Reset vars
     clear cov
@@ -96,14 +104,14 @@ sz = 10;
 
 % Choose temperature
 % 1:450  2:460  3:470   4:475  5:480  6:490
-n =6;
+n = 6;
 
 % WINDOWS plot
 figure(2)
 plot(time_wv{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
 hold on
-% plot(time_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
-% hold on
+plot(time_mat_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
+hold on
 xline(time_wv{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
 hold on
 xline(time_wv{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
@@ -114,11 +122,11 @@ xline(time_wv{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
 set(gca, 'FontSize', 15)
 xlabel('Time', 'FontSize',13)
 title(join( [temps_strings{n}, 'K', ' Windows']) ,'FontSize',16)
-legend('Coverage', 'Area', 'FontSize',13)
+legend('Coverage', 'Area', 'FontSize',20)
 grid on
 
 %save('epsilon_abs.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-%save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('450info.mat', 'cov', 'epsilon_exp', 'epsilon_sat', 'cov_sat', 'wv_split', 'tp_idx');
 %save('mean_abs_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')

@@ -18,11 +18,11 @@ load Temps/T3.mat
 % area_sat_temps = mean_area_sat(idx);
 % 
 % for i = 1:N-1
-% 
-%     A_new{i} = (cov_sat(i)/cov_sat(N))*(mean_area_sat(N)/mean_area_sat(i))*movmean(area_mat{i},5);
+%     c = (mean_area_sat(N)/mean_area_sat(i));
+%     A_new{i} = (cov_sat(i)/cov_sat(N))*c*movmean(area_mat{i},5);
 % 
 % end
-% A_new{N} = movmean(area_mat{N}, 5);
+A_new{N} = movmean(area_mat{N}, 5);
 for i = 1:N
     MA_area{i} = movmean(area_mat{i}, 5);
 end
@@ -30,7 +30,7 @@ end
 
 for i = 2:N
 
-    A_new{i} = (cov_sat(i)/cov_sat(1))*(MA_area{1}./mean_area_sat(i)).*MA_area{i};
+    A_new{i} = (cov_sat(i)/cov_sat(1))*(mean_area_sat(1)./mean_area_sat(i)).*MA_area{i};
 
 end
 A_new{1} = MA_area{1};
@@ -44,8 +44,8 @@ end
 set(gca, 'FontSize', 20)
 legend(temps_strings, 'FontSize', 20)
 xlabel('Time', 'FontSize',20)
-ylabel('Coverage', 'FontSize',20)
-title('Area-MAT')
+ylabel('Area-MAT', 'FontSize',20)
+%title('Area-MAT')
 grid on
 
 
@@ -55,16 +55,20 @@ for i = 1:N
     hold on
     plot(time_mat_area{i}, movmean(area_mat{i},5))
     title(temps_strings{i}, 'FontSize', 20)
-    legend('New', 'Old','FontSize', 20)
+    legend('Normalized', 'Unnormalized','FontSize', 20)
+    xlabel('Time', 'FontSize',20)
+    ylabel('Area-MAT', 'FontSize',20)
+    %title('Area-MAT')
+    grid on
 end
 
 
-i = 3;
-plot(time_mat_area{i}, MA_area{i})
-hold on
-%plot(time_mat_area{i}, MA_area{i}/mean_area_sat(i))
-%hold on
-plot(time_mat_area{i}, A_new{i})
+% i = 3;
+% plot(time_mat_area{i}, MA_area{i})
+% hold on
+% %plot(time_mat_area{i}, MA_area{i}/mean_area_sat(i))
+% %hold on
+% plot(time_mat_area{i}, A_new{i})
 % hold on
 % plot(time_mat_area{1}, A_new{1})
 

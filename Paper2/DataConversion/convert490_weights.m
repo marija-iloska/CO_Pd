@@ -7,8 +7,8 @@ clc
 load weights490isotherm.mat
 
 % Load molar absorptivities
-load epsilon_abs.mat
-%load epsilons_mat.mat
+%load epsilon_abs.mat
+load epsilons_mat.mat
 
 % Load data
 load Temps/T3.mat
@@ -17,8 +17,10 @@ load Temps/T3.mat
 temp_strings = {'490'};
 Nt = length(temp_strings);
 N = length(wv_split);
-area = area_abs;
 
+for i = 1:6
+    area{i} = movmean(area_mat{i},4);
+end
 
 
 % Weights of area
@@ -28,7 +30,7 @@ Wf(end) = 0;
 
 
 % Loop for all temperatures
-for nt = 3:3
+for nt = 6:6
 
     clear cov cov_f
 
@@ -61,6 +63,9 @@ for nt = 3:3
     cov(id{N+2}) = cov_a(id{N+2});
     cov(cov < 0) = 0;
 
+    cov_a(cov_a < 0) = 0;
+    cov_f(cov_f < 0) = 0;
+
     % STORE variables
     cov_mix{nt} = cov;
     cov_f_all{nt} = cov_f;
@@ -75,15 +80,15 @@ gr = [4, 148, 124]/256;
 dp = [92, 1, 138]/256;
 ym = [247, 190, 2]/256;
 
-for nt = 3:3
+for nt = 6:6
     % Plot weighted mix
     figure(nt)
-    plot(time_area{nt}, cov_a_all{nt}, 'color', [0 0.4470 0.7410], 'linewidth', 1)
+    plot(time_mat_area{nt}, cov_a_all{nt}', 'color', [0 0.4470 0.7410], 'linewidth', 1)
     hold on
-    plot(time_wv{nt}, cov_f_all{nt}, 'color', ym, 'linewidth', 1)
+    plot(time_wv{nt}, cov_f_all{nt}, 'color', ym, 'linewidth', 2)
     hold on
-%     plot(time_area{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
-%     hold on
+    plot(time_wv{nt}, cov_mix{nt}, 'color', 'k','linewidth', 2)
+    hold on
     legend('cov(A)', 'cov(F)' , 'cov(A+F)', 'FontSize', 20)
     xlabel('Time', 'FontSize',20)
     ylabel('Coverage', 'FontSize',20)
