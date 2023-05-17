@@ -7,32 +7,27 @@ clc
 load 'weights450isotherm.mat'
 
 % STEP 2
-% Load raw data
-%load Temps/all_temps.mat
-load Temps/T3.mat
-area = area_mat;
+% Load  data
+load area_ref490_MA5.mat
+load wv_MA5.mat
 
-% Load expected coverage
-load ExpectedCov/expected_coverage.mat
+% Strings of temps in data
+temps_strings = { '450', '460', '470', '475', '480', '490'};
 
 % Pressure on index
 tp_idx = 45;
+N = 6;
 
 % Molar absorptivity at saturation
-range = 30;
+range = 28;
 
 % Get a window
 lim = 10;
 
 % WV split
-wv_split = 1840;
+wv_split = 1838;
 Pcw = Pc(2,:);
 
-for i = 1:N
-    area{i} = movmean(area{i}, 5);
-end
-
-wv = wv_dat;
 
 
 % Range through all temps
@@ -69,12 +64,12 @@ for n = 1:N
 
     
     % Get mean area at split
-    range1{1} = idx1(end-lim : end); % 450
-    range1{2} = idx1(end - lim :end - 3); % 460
-    range1{6} = idx1(end - 4 : end);
-    range1{3} = idx1(end - lim: end);
-    range1{4} = idx1(end - lim: end-3);
-    range1{5} = idx1(end - 7: end-3);
+    range1{1} = idx1(end-lim + 6 : end); % 450
+    range1{2} = idx1(end - lim + 4 :end); % 460
+    range1{3} = idx1(end - lim + 8: end);
+    range1{4} = idx1(end - lim + 3: end);
+    range1{5} = idx1(end - lim + 9: end);
+    range1{6} = idx1(end - lim + 9 : end);
 
 
     
@@ -104,11 +99,11 @@ sz = 10;
 
 % Choose temperature
 % 1:450  2:460  3:470   4:475  5:480  6:490
-n = 6;
+n = 1;
 
 % WINDOWS plot
 figure(2)
-plot(time_wv{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
+plot(time_mat_area{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
 hold on
 plot(time_mat_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
 hold on
@@ -125,9 +120,15 @@ title(join( [temps_strings{n}, 'K', ' Windows']) ,'FontSize',16)
 legend('Coverage', 'Area', 'FontSize',20)
 grid on
 
+% RAW AREA
 %save('epsilon_abs.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+%save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('450info.mat', 'cov', 'epsilon_exp', 'epsilon_sat', 'cov_sat', 'wv_split', 'tp_idx');
 %save('mean_abs_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 %save('mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+
+
+% NORMALIZED AREA
+%save('mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')

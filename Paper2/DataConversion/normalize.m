@@ -7,35 +7,63 @@ load ExpectedCov/expected_coverage.mat
 
 % Mean area at saturation
 load Absorptivity/mean_area.mat
-%load mean_abs_area.mat
 load mean_mat_area.mat
 
 % Our data
-load Temps/T3.mat
+load Temps/T6.mat
 
-% Temperatures 450 460 and 490
-%cov_sat_temps = cov_sat(idx);
-% area_sat_temps = mean_area_sat(idx);
-% 
-% for i = 1:N-1
-%     c = (mean_area_sat(N)/mean_area_sat(i));
-%     A_new{i} = (cov_sat(i)/cov_sat(N))*c*movmean(area_mat{i},5);
-% 
-% end
-A_new{N} = movmean(area_mat{N}, 5);
+
+% MOVING AVERAGE OF AREA
+MA = 5;
+kb = 3;
+kf = 6;
 for i = 1:N
-    MA_area{i} = movmean(area_mat{i}, 5);
+    MA_area{i} = [ area_mat{i}(1:4)' movmean(area_mat{i}(5:end), [kb, kf])' ];
+end
+
+kb = 3;
+kf = 3;
+% MOVING AVERAGE OF WV
+for i = 1:N
+    MA_wv{i} = [ wv_dat{i}(1:4)' movmean(wv_dat{i}(5:end), [kb, kf])' ];
+    L = length(MA_wv{i});
+    wv{i}(1:L) = MA_wv{i};
 end
 
 
-for i = 2:N
+% PLOT regular Area
+figure(1)
+for i = 1:N
 
-    A_new{i} = (cov_sat(i)/cov_sat(1))*(mean_area_sat(1)./mean_area_sat(i)).*MA_area{i};
+    plot(time_mat_area{i}, MA_area{i}, 'linewidth', 1.5)
+    hold on
+end
+set(gca, 'FontSize', 20)
+legend(temps_strings, 'FontSize', 20)
+title('Raw AREA', 'FontSize', 20)
+xlabel('Time', 'FontSize',20)
+ylabel('Area-MAT', 'FontSize',20)
+grid on
+
+% NORMALIZE
+% Choose 1 for ref 450 and 2 for ref 490
+ref = 2;
+T = [1, N];
+range{1} = [2, N];
+range{2} = [1, N-1];
+for i = range{ref}(1) : range{ref}(2)
+
+    c = mean_area_sat(T(ref))/mean_area_sat(i);
+    A_new{i} = (cov_sat(i)/cov_sat(T(ref)))*c*MA_area{i};
 
 end
-A_new{1} = MA_area{1};
+A_new{T(ref)} = MA_area{T(ref)};
 
-figure(7)
+
+
+
+% Plot ALL normalized Area together
+figure(2)
 for i = 1:N
 
     plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
@@ -43,34 +71,58 @@ for i = 1:N
 end
 set(gca, 'FontSize', 20)
 legend(temps_strings, 'FontSize', 20)
+title('Normalized AREA', 'FontSize', 20)
 xlabel('Time', 'FontSize',20)
 ylabel('Area-MAT', 'FontSize',20)
-%title('Area-MAT')
 grid on
 
 
+% Plot all raw areas against their normalization
 for i = 1:N
-    figure(i)
-    plot(time_mat_area{i}, A_new{i})
+    figure;
+    plot(time_mat_area{i}, MA_area{i}, 'Linewidth',1.5)
     hold on
-    plot(time_mat_area{i}, movmean(area_mat{i},5))
+    plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
     title(temps_strings{i}, 'FontSize', 20)
-    legend('Normalized', 'Unnormalized','FontSize', 20)
+    legend('Unnormalized', 'Normalized','FontSize', 20)
     xlabel('Time', 'FontSize',20)
     ylabel('Area-MAT', 'FontSize',20)
-    %title('Area-MAT')
     grid on
 end
 
 
-% i = 3;
-% plot(time_mat_area{i}, MA_area{i})
-% hold on
-% %plot(time_mat_area{i}, MA_area{i}/mean_area_sat(i))
-% %hold on
-% plot(time_mat_area{i}, A_new{i})
-% hold on
-% plot(time_mat_area{1}, A_new{1})
+
+% PLOT all frequencies Together
+figure;
+for i = 1:N
+
+    plot(time_wv{i}, MA_wv{i}, 'linewidth', 1.5)
+    hold on
+end
+set(gca, 'FontSize', 20)
+legend(temps_strings, 'FontSize', 20)
+title('Smoothed FREQ', 'FontSize', 20)
+xlabel('Time', 'FontSize',20)
+ylabel('FREQ', 'FontSize',20)
+grid on
+
+% PLOT all frequencies
+for i = 1:N
+    figure;
+    plot(time_wv{i}, wv_dat{i}, 'linewidth',1)
+    hold on
+    plot(time_wv{i}, MA_wv{i}, 'linewidth', 1)
+    title(temps_strings{i}, 'FontSize', 20)
+    legend('Raw', 'Smoothed','FontSize', 20)
+    xlabel('Time', 'FontSize',20)
+    ylabel('FREq', 'FontSize',20)
+    grid on
+end
 
 
+
+area = A_new;
+
+save('area_ref490_MA5.mat', 'area', 'time_mat_area', 'cov_sat')
+save('wv_MA5.mat', 'wv', 'wv_dat', 'time_wv', 'cov_sat')
 

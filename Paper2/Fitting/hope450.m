@@ -5,7 +5,7 @@ clc
 
 % Load data
 P = 0.001;
-load ../DataConversion/cov450_460.mat
+load ../DataConversion/coverage_vs_time.mat
 str = '450';
 
 cov = cov_mix{1};
@@ -13,12 +13,8 @@ time = time_mix{1};
 
 %% Process Data
 % Get system divisions
-% 450 cut 0.3
-% 460
-% 470  cut1 0.258  cut2 0.23
-% 480  cut1 0.285  cut2 0.28
-cut_off1 = 0.3;
-cut_off2 = 0.3;
+cut_off1 = 0.24;
+cut_off2 = 0.28;
 tp_AB1 = find(cov > cut_off1);
 tp_AB2 = find(cov > cut_off2);
 tp_AB = [tp_AB1(1), tp_AB2(end)];

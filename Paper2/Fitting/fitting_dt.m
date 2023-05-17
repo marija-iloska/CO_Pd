@@ -9,9 +9,9 @@ N = length(dt);
 
 % Region indices
 R1 = 1:tp_AB(1);
-R2 = tp_AB(1)+1 : tp_idx;
-R3 = tp_idx + 1 : tp_AB(2);
-R4 = tp_AB(2) + 1 : N;
+R2 = tp_AB(1) : tp_idx;
+R3 = tp_idx  : tp_AB(2);
+R4 = tp_AB(2) : N;
 
 
 % Fitting
@@ -34,8 +34,8 @@ for t = 2 : R1
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
 end
 
-% theta_A(t) = covA(t);
-% theta_B(t) = covB(t);
+% theta_A(t) = covA(tp_AB(1));
+% theta_B(t) = covB(tp_AB(1));
 
 idx = find(dtime < time(tp_idx));
 R2 = idx(end);
