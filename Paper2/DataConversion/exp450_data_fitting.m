@@ -15,7 +15,7 @@ cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 id0 = 1:3;
 id1 = 3:5;
 id2 = 5:8;
-wv_splits = [floor(wv(id1(1))), floor(wv(id1(end)))];
+wv_splits = [(wv(id1(1))), (wv(id1(end)))];
 
 id = {id0, id1, id2};
 N = length(id);

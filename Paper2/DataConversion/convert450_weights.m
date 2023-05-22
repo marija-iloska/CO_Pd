@@ -48,9 +48,17 @@ for n = 1:N
     % Get COV( A )
     cov_a_sat{n} = area{n}./epsilon_sat(n);
     cov_a_exp{n} = area{n}./epsilon_exp(n);
+    cov_a_mid2{n} = 0.85*cov_a_exp{n} + 0.15*cov_a_sat{n};
+    cov_a_mid3{n} = 0.15*cov_a_exp{n} + 0.85*cov_a_sat{n};
+
+
+    % COV ( A ) importance
     cov_a = cov_a_sat{n};
     cov_a(id{1}) = cov_a_exp{n}(id{1});
     cov_a(id{2}) = cov_a_exp{n}(id{2});
+    cov_a(id{2}) = cov_a_mid2{n}(id{2});
+    cov_a(id{3}) = cov_a_mid3{n}(id{3});
+
 
 
     % Get COV(A + F)
@@ -75,6 +83,19 @@ for n = 1:N
 
 end
 
+% for n = 1:N
+%     figure;
+%     plot(time_mat_area{n}, cov_a_mid2{n}, 'k', 'linewidth', 1)
+%     hold on    
+%     plot(time_mat_area{n}, cov_a_mid3{n}, 'b', 'linewidth', 1)
+%     hold on
+%     plot(time_mat_area{n}, cov_a_exp{n}, 'linewidth', 1)
+%     hold on
+%     plot(time_mat_area{n}, cov_a_sat{n}, 'linewidth', 1)
+% end
+
+
+
 
 % Choose a temperature
 gr = [4, 148, 124]/256;
@@ -88,15 +109,15 @@ for n = 1:N
     hold on
     plot(time_mat_area{n}, cov_a_exp{n}, 'color', 'r', 'linewidth', 1.5)
     hold on
-    plot(time_wv{n}, cov_f_all{n}, 'color', ym, 'linewidth', 1.5)
+    plot(time_wv{n}, cov_f_all{n}, 'color', gr, 'linewidth', 1.5)
     hold on
     plot(time_mat_area{n}, cov_mix{n}, 'color', 'k','linewidth', 1)
     hold on
-%     yline(range{nt}(1), 'm')
-%     hold on
-%     yline(range{nt}(2), 'm')
-%     hold on
-%     yline(range{nt}(3), 'm')
+    yline(range{n}(1), 'm')
+    hold on
+    yline(range{n}(2), 'm')
+    hold on
+    yline(range{n}(3), 'm')
     legend('cov( A_{SAT} )', 'cov( A_{EXP} )', 'cov( F )' , 'cov( A+F )', 'FontSize', 20)
     xlabel('Time', 'FontSize',20)
     ylabel('Coverage', 'FontSize',20)
@@ -108,5 +129,5 @@ end
 % Store TIME for plotting
 time_mix = time_mat_area;
 
-%save('coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all', 'temps_strings', 'tp_idx', 'Nt')
+save('coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
 
