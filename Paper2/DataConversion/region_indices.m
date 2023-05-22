@@ -1,20 +1,20 @@
-function [id] = region_indices(wv, wv_splits, N)
+function [id] = region_indices(wv, wv_splits, R)
 
-    id{1} = find(wv < wv_splits(1));
-%     for n = 2:N
-%         % Get indices UP to split
-%         id{n} = find(wv < wv_splits(n-1));
-%     end
+% Initialize indices for wv == 0
+id{1} = find(wv == 0);
 
+% Get middle regions for all less than wv_split
+for r = 1:R
+    id{r+1} = find(wv < wv_splits(r));
+end
 
-    % Last index
-    id{N+1} = find(wv > wv_splits(end));
-    id{N+2} = find(wv == 0);
+% Get final region greater than last split
+id{R+2} = find(wv > wv_splits(R));
 
+% Clean up middle regions
+for r = 1:R
+    id{R+2-r} = setdiff(id{R+2-r}, id{R+1-r});
+end
 
-    % Remove repeating coeffs
-    for n = 2:N
-        id{N-n+1} = setdiff(id{N-n+1}, id{N-n});
-    end
 
 end

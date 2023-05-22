@@ -17,14 +17,14 @@ load Temps/T6.mat
 % MOVING AVERAGE OF AREA
 K = 4;
 MA = 5;
-kb = 3;
-kf = 6;
+kb = 5;
+kf = 5;
 for i = 1:N
     MA_area{i} = [ area_mat{i}(1:K)' movmean(area_mat{i}(K+1:end), [kb, kf])' ];
 end
 
-kb = 3;
-kf = 3;
+kb = 4;
+kf = 4;
 % MOVING AVERAGE OF WV
 % Preserve 0s padding/replacements in wv, but remove in wv_dat for plotting
 for i = 1:N
@@ -127,4 +127,5 @@ area = A_new;
 
 save('area_ref490_MA5.mat', 'area', 'time_mat_area', 'cov_sat')
 save('wv_MA5.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
+save('temps_info.mat', 'temps_strings', 'N', 'tp_idx')
 

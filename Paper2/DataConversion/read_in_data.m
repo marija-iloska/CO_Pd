@@ -100,4 +100,4 @@ end
 
 
 % Save all data
-save('Temps/T6.mat','area_mat', 'time_mat_area', 'time_wv', 'time_dat', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')
+%save('Temps/T6.mat','area_mat', 'time_mat_area', 'time_wv', 'time_dat', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')
