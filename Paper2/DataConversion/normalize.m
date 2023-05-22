@@ -6,11 +6,10 @@ clc
 load ExpectedCov/expected_coverage.mat
 
 % Mean area at saturation
-load Absorptivity/mean_area.mat
-load mean_mat_area.mat
+load Absorptivity/mean_mat_area.mat
 
 % Our data
-load Temps/T6.mat
+load Data/T6.mat
 
 
 % Preserve the first L points since they have higher uncertainty
@@ -128,7 +127,7 @@ area = A_new;
 % Store P off index
 tp_idx = 45;
 
-save('area_ref490_MA5.mat', 'area', 'time_mat_area', 'cov_sat')
-save('wv_MA5.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
-save('temps_info.mat', 'temps_strings', 'N', 'tp_idx')
+save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
+save('Data/wv.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
+save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
 

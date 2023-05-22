@@ -5,26 +5,20 @@ clc
 
 % Load data
 P = 0.001;
-load ../DataConversion/coverage_vs_time.mat
+load ../DataConversion/Data/cov_time_for_fitting.mat
 str = '450';
 
-cov = cov_mix{1};
-time = time_mix{1};
+cov = cov_mix{3};
+time = time_mix{3};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.24;
-cut_off2 = 0.28;
-tp_AB1 = find(cov > cut_off1);
-tp_AB2 = find(cov > cut_off2);
-tp_AB = [tp_AB1(1), tp_AB2(end)];
-
+cut_off1 = 0.22;
+tp_AB = find(cov > cut_off1);
+tp_AB = [tp_AB(1), tp_AB(end)];
 
 tp_idx = 45; % when it closes
 
-% Get approximations
-idx = find(cov == 0);
-cov(idx) = 10e-3;
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
@@ -35,7 +29,7 @@ dtime = 0.01 : 0.02 : 24;
 
 
 % Get individual coverages
-[S, M, covA, covB] = get_sat(cov, tN, tp_idx, tp_AB, cut_off1, cut_off2);
+[S, M, covA, covB] = get_sat(cov, tN, tp_idx, tp_AB, cut_off1);
 
 % Saturation
 SA = covA(tp_idx);
@@ -48,11 +42,8 @@ r23 = 0;
 r34 = 0;
 
 
-
-
 % Get k constants
 [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M);
-
 vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
 

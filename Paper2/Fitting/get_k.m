@@ -3,15 +3,15 @@ function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, cov
 
 % Region indices
 R1 = 2:tp_AB(1);
-R2 = tp_AB(1) +1 : tp_idx;
+R2 = tp_AB(1) : tp_idx;
 R3 = tp_idx : tp_AB(2);
 R4 = tp_AB(2) : N;
 
 
 
 % Get kBo   R4    and  R1
-ln_covB = - log(covB(R4)./covB(tp_AB(2)));
-timeR4 = time(R4) - time(tp_AB(2)+1);
+ln_covB = - log(covB(R4(2:end))./covB(R4(1)));
+timeR4 = time(R4(2:end)) - time(R4(1)+1);
 dlm_kbo = fitlm(timeR4,ln_covB,'Intercept',false);
 k_Bo = dlm_kbo.Coefficients.Estimate;
 

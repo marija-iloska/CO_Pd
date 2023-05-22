@@ -1,16 +1,21 @@
-function [k] = k_des(cov, time, cov_split)
+function [k, k_SE, Rsq_k] = k_des(cov, time, cov_split, tp_idx)
+
+cov(cov <= 0) = 10e-4;
 
 % Region 4
-N = length(time);
-tp_AB = find(cov > cov_split);
-R = tp_AB(end) + 1 : N;
+R = find(cov < cov_split);
+R(R < tp_idx) = [];
 
 % Get indexed lnCOV and time for linear equation
-ln_cov = - log(cov(R)./cov(tp_AB(2)));
-time = time(R) - time(tp_AB(2)+1);
+ln_cov = - log(cov(R(2:end))./cov(R(1)));
+time = time(R(2:end)) - time(R(1));
 
 % Get fitting
 dlm_k = fitlm(time, ln_cov,'Intercept',false);
 k = dlm_k.Coefficients.Estimate;
+
+
+k_SE = dlm_k.Coefficients.SE(1);
+Rsq_k = dlm_k.Rsquared.Ordinary;
 
 end
