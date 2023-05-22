@@ -125,6 +125,6 @@ end
 
 area = A_new;
 
-save('area_ref490_MA5.mat', 'area', 'time_mat_area', 'cov_sat')
-save('wv_MA5.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
+%save('area_ref490_MA5.mat', 'area', 'time_mat_area', 'cov_sat')
+%save('wv_MA5.mat', 'wv', 'wv_dat', 'time_wv', 'cov_sat')
 

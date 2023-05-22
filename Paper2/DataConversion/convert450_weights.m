@@ -1,4 +1,4 @@
-clear all
+lear all
 close all
 clc
 

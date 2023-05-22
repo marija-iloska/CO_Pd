@@ -32,22 +32,17 @@ min_temp = 0;
 % Get wv peaks
 for i = 1:N
 
-    % Find all NaNs
+    % Clear nans
     temp_nan = dat_wv(:, Lw+1-i);
     nan_indx = isnan(temp_nan);
-
-    % Replace NaNs in first rows with 0s
     if (nan_indx(2))
         temp_nan(1:2) = min_temp;
     elseif (nan_indx(1))
         temp_nan(1) = min_temp;
     end
-
-    % Clear rest of NaNs
     temp_nan(isnan(temp_nan))= [];
     wv{i} = temp_nan;
 
-    % Get time length of WV data points
     time_wv{i} = time(1:length(temp_nan));
 
 end
@@ -57,13 +52,8 @@ rm = find(wv{2}(end - 20: end) > 1840);
 wv{2}(end-21 + rm) = [];
 time_wv{2}(end-21 + rm) = [];
 
-% Save raw WV without any 0 padding
+% Store frequency data without padded 0s
 wv_dat = wv;
-time_dat = time_wv;
-for i = 1:N
-    wv_dat{i}(1:2, :) = [];
-    time_dat{i}(1:2, :) = [];
-end
 
 
 % Get areas and remove NaNs
@@ -100,4 +90,4 @@ end
 
 
 % Save all data
-save('Temps/T6.mat','area_mat', 'time_mat_area', 'time_wv', 'time_dat', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')
+%save('Temps/T6.mat','area_mat', 'time_mat_area', 'time_wv', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')
