@@ -6,10 +6,11 @@ clc
 % Load data
 P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
+load ../DataConversion/Data/temps_info.mat
 str = '450';
 
-cov = cov_mix{3};
-time = time_mix{3};
+cov = cov_mix{2};
+time = time_mix{2};
 
 %% Process Data
 % Get system divisions
@@ -17,23 +18,15 @@ cut_off1 = 0.22;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
-tp_idx = 45; % when it closes
-
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-N = length(cov);
-tN = 1:N;
-
 dtime = 0.01 : 0.02 : 24;
+tN = 1:length(cov);
 
 
 % Get individual coverages
-[S, M, covA, covB] = get_sat(cov, tN, tp_idx, tp_AB, cut_off1);
-
-% Saturation
-SA = covA(tp_idx);
-SB = covB(tp_idx);
+[M, covA, covB] = get_sat(cov, tN, tp_AB, cut_off1);
 
 
 % Initial points shifts
@@ -43,7 +36,7 @@ r34 = 0;
 
 
 % Get k constants
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M);
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
 
@@ -61,8 +54,6 @@ lwd = 2;
 sz = 40;
 fsz = 35;
 %plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
-
-%plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, dt, lwd, sz, fsz)
 
 purple = [132, 53, 148]/256;
 

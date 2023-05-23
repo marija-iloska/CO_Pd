@@ -23,7 +23,7 @@ R = 0.001987204258;
 
 % Ea with different initial coverages
 covs = 0.1 : 0.002 : 0.32;
-covs = 0.22;
+covs = 0.215;
 Nsplit = length(covs);
 
 

@@ -18,7 +18,7 @@ theta_B(1) = cov(1);
 
 % Region I
 idx = find(dtime < time(tp_AB(1)));
-R1 = idx(end);
+R1 = idx(end)+1;
 for t = 2 : R1
     covX = theta_A(t-1) + theta_B(t-1);
 
@@ -29,10 +29,10 @@ for t = 2 : R1
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
 end
 
-theta_A(t) = covA(tp_AB(1));
-theta_B(t) = covB(tp_AB(1));
+theta_A(t) = covA(tp_AB(1)+2);
+theta_B(t) = covB(tp_AB(1)+2);
 
-idx = find(dtime < time(tp_idx));
+idx = find(dtime < time(tp_idx + 5));
 R2 = idx(end);
 % Region II
 for t = R1+1 : R2

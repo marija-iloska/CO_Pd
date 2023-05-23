@@ -1,4 +1,4 @@
-function [S, M, theta_A, theta_B] = get_sat(theta_X, tN, tp_idx, tp_AB, cut_off1)
+function [ M, theta_A, theta_B] = get_sat(theta_X, tN, tp_AB, cut_off1)
 
 % Max possible
 M = 0.5; 
@@ -15,10 +15,6 @@ X_A(R3) = (theta_X(R3) - cut_off1)./(M - cut_off1);
 % Get A using the fraction, and get B using A
 theta_A = M*X_A;
 theta_B = theta_X - theta_A;
-
-% Get saturation coverage
-S = theta_X(tp_idx);
-
 
 
 

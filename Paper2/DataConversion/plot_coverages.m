@@ -36,4 +36,4 @@ grid on
 
 
 % Save for fitting
-save('Data/cov_time_for_fitting.mat', 'cov_mix', 'time_mix')
+%save('Data/cov_time_for_fitting.mat', 'cov_mix', 'time_mix')
