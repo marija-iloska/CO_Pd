@@ -10,8 +10,8 @@ cut = [18.8, 18.2, 10.45, 10.1, 10.1];
 
 for i = 1:N-1
 
-    cov_mix{i}(time_mix{i} > cut(i)) = [];
-    time_mix{i}(time_mix{i} > cut(i)) = [];
+    cov_mix{i}(time_mix{i} > cut(i)) = 10e-3;
+    %time_mix{i}(time_mix{i} > cut(i)) = [];
 end
 
 
@@ -36,4 +36,4 @@ grid on
 
 
 % Save for fitting
-%save('Data/cov_time_for_fitting.mat', 'cov_mix', 'time_mix')
+save('Data/cov_time_for_fitting.mat', 'cov_mix', 'time_mix')

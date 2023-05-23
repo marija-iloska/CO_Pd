@@ -7,10 +7,11 @@ clc
 P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
-str = '450';
 
-cov = cov_mix{3};
-time = time_mix{3};
+t = 1;
+cov = cov_mix{t};
+time = time_mix{t};
+str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
@@ -36,7 +37,7 @@ r34 = 0;
 
 
 % Get k constants
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M);
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
 
@@ -54,8 +55,6 @@ lwd = 2;
 sz = 40;
 fsz = 35;
 %plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
-
-%plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, dt, lwd, sz, fsz)
 
 purple = [132, 53, 148]/256;
 
