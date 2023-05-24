@@ -8,7 +8,7 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 6;
+t = 1;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
@@ -37,8 +37,8 @@ r34 = 0;
 
 
 % Get k constants
-%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = k_model_test(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+% [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = k_model_test(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
 vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
@@ -47,8 +47,8 @@ vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 %write_out(str, dlms, vals);
 
 % Get fitting (simulation)
-%[theta_A, theta_B] = fitting_dt(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
-[theta_A, theta_B] = model_test(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
+[theta_A, theta_B] = fitting_dt(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
+% [theta_A, theta_B] = model_test(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
 
 theta = theta_A + theta_B;
 dtime(end)=[];

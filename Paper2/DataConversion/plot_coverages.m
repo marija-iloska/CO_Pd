@@ -10,8 +10,8 @@ cut = [18.8, 18.2, 10.45, 10.1, 10.1];
 
 for i = 1:N-1
 
-    cov_mix{i}(time_mix{i} > cut(i)) = 10e-3;
-    %time_mix{i}(time_mix{i} > cut(i)) = [];
+    cov_mix{i}(time_mix{i} > cut(i)) = [];
+    time_mix{i}(time_mix{i} > cut(i)) = [];
 end
 
 
@@ -24,7 +24,7 @@ for t = 1 : N
 %      plot(time_mix{t}, cov_mix{t}, '.', 'MarkerSize', msz)
 %      hold on
 
-     plot(time_mix{t}, movmean(cov_mix{t}, 1), 'Linewidth', 2)
+     plot(time_mix{t}, movmean(cov_mix{t}, 8), 'Linewidth', 2)
      hold on
 
 end

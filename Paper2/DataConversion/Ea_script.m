@@ -16,14 +16,14 @@ T = [450, 460, 470, 475, 480, 490];
 
 
 % Which data point to exclude
-idx = setdiff(1:N, [4]);
+idx = setdiff(1:N, []);
 
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.1 : 0.002 : 0.32;
-covs = 0.215;
+covs = 0.1 : 0.005 : 0.32;
+% covs = 0.22;
 Nsplit = length(covs);
 
 
@@ -57,4 +57,6 @@ title('Arrhenius Equation', 'FontSize', 15)
 
 figure;
 plot(covs, Ea)
+xlabel('Initial Coverage')
+ylabel('Ea')
 % ylim([floor(min(Ea)),round(max(Ea))])

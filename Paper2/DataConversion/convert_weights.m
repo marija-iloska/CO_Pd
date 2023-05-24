@@ -20,9 +20,17 @@ load Data/temps_info.mat
 % Number of region splits (R + 2 regions)
 R = length(wv_splits);
 
+
+% Wf(1) = 0;
+% Wf(2) = (Der(2) - Der(1))/(Der(3) - Der(1));
+% 
+
 % Include weights for lowest regions
-Wf = [0, Wf];
+Wf = [0, 0, 1, 1];
+%Wf = [0, Wf];
 Wa = 1 - Wf;
+
+
 
 % Use original time with padding for WV
 time_wv = time_mat_area;
@@ -56,7 +64,7 @@ for n = 1:N
     cov_a = cov_a_sat{n};
     cov_a(id{1}) = cov_a_exp{n}(id{1});
     cov_a(id{2}) = cov_a_exp{n}(id{2});
-    cov_a(id{2}) = cov_a_mid2{n}(id{2});
+    %cov_a(id{2}) = cov_a_mid2{n}(id{2});
     %cov_a(id{3}) = cov_a_mid3{n}(id{3});
 
 
@@ -113,11 +121,11 @@ for n = 1:N
     hold on
     plot(time_mat_area{n}, cov_mix{n}, 'color', 'k','linewidth', 2)
     hold on
-    yline(range{n}(1), 'm')
-    hold on
-    yline(range{n}(2), 'm')
-    hold on
-    yline(range{n}(3), 'm')
+%     yline(range{n}(1), 'm')
+%     hold on
+%     yline(range{n}(2), 'm')
+%     hold on
+%     yline(range{n}(3), 'm')
     legend('cov( A_{SAT} )', 'cov( A_{EXP} )', 'cov( F )' , 'cov( A+F )', 'FontSize', 20)
     xlabel('Time', 'FontSize',20)
     ylabel('Coverage', 'FontSize',20)
