@@ -1,4 +1,4 @@
-function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M)
+function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = k_model_test(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M)
 
 
 % Region indices
@@ -13,6 +13,7 @@ R4 = tp_AB(2) : N;
 % It takes tau = 0 as starting point
 tau1 = R4(2:end);
 tau = R4(1:end-1);
+
 ln_covB = - log(covB(tau1)./covB(tau(1)));
 timeR4 = time(tau1) - time(tau(1)+1);
 timeR4 = time(tau1) - time(tau(1));
@@ -39,8 +40,11 @@ tau1 = R3(2:end);
 tau = R3(1:end-1);
 
 
-Y = covB(tau1) - covB(tau) + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
-X = covA(tau).*dt(tau).*(M - cov(tau));
+Bdiff = (cov(tau) - covB(tau))./cov(tau);
+Adiff = (cov(tau) - covA(tau))./cov(tau);
+
+Y = covB(tau1) - covB(tau) + k_Bo*dt(tau).*covB(tau).*Adiff;
+X = covA(tau).*dt(tau).*(M - cov(tau)).*Bdiff;
 dlm_kab = fitlm(X,Y,'Intercept',false);
 k_AB = dlm_kab.Coefficients.Estimate;
 k_AB_SE = dlm_kab.Coefficients.SE;
@@ -60,7 +64,11 @@ k_AB_SE = dlm_kab.Coefficients.SE;
 % Get kAo from kAB_________________________________________________ 
 tau1 = R3(2:end);
 tau = R3(1:end-1);
-Y = covA(tau1) - (1 - k_AB*dt(tau).*(M - cov(tau) )).*covA(tau);
+
+Bdiff = (cov(tau) - covB(tau))./cov(tau);
+Adiff = (cov(tau) - covA(tau))./cov(tau);
+
+Y = covA(tau1) - (1 - k_AB*dt(tau).*(M - cov(tau) ).*Bdiff).*covA(tau);
 X = -dt(tau).*covA(tau);
 dlm_kao = fitlm(X,Y,'Intercept',false);
 k_Ao = dlm_kao.Coefficients.Estimate;
@@ -80,11 +88,15 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 
 % Get kBA_________________________________________________ 
 % Adding 1 to tp_AB(1) makes kBA MUCH higher. Check in results
-tau1 = R2(2:end)+1;
-tau = R2(1:end-1)+1;
-Y = covB(tau1) - covB(tau) - k_AB*dt(tau).*covA(tau).*(M - cov(tau));
-Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
-X = - dt(tau)*P.*covB(tau);
+tau1 = R2(2:end);
+tau = R2(1:end-1);
+
+Bdiff = (cov(tau) - covB(tau))./cov(tau);
+Adiff = (cov(tau) - covA(tau))./cov(tau);
+
+Y = covB(tau1) - covB(tau) - k_AB*dt(tau).*covA(tau).*(M - cov(tau)).*Bdiff;
+Y = Y + k_Bo*dt(tau).*covB(tau).*Adiff  - k_oB*P*(M - cov(tau)).*Adiff;
+X = - dt(tau)*P.*covB(tau).*Adiff;
 dlm_kba = fitlm(X,Y,'Intercept',false);
 k_BA = dlm_kba.Coefficients.Estimate;
 k_BA_SE = dlm_kba.Coefficients.SE;
@@ -92,8 +104,13 @@ k_BA_SE = dlm_kba.Coefficients.SE;
 
 
 % Get koA
+tau1 = R2(2:end);
+tau = R2(1:end-1);
+
+Bdiff = (cov(tau) - covB(tau))./cov(tau);
+Adiff = (cov(tau) - covA(tau))./cov(tau);
 Y = cov(tau1) - cov(tau) + k_Ao*dt(tau).*covA(tau);
-Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
+Y = Y + k_Bo*dt(tau).*covB(tau).*Adiff;
 X = dt(tau)*P.*(M - cov(tau));
 dlm_koa = fitlm(X,Y,'Intercept',false);
 k_oA = dlm_koa.Coefficients.Estimate;
