@@ -8,7 +8,7 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 2;
+t = 1;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};

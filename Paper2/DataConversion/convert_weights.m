@@ -53,7 +53,9 @@ for n = 1:N
     end
 
     % Get COV( A )
-    cov_a_sat{n} = area{n}./epsilon_sat(n);
+    temp = area{n}./epsilon_sat(n);
+    temp(temp < 0) =10e-4;
+    cov_a_sat{n} = temp;
     cov_a_exp{n} = area{n}./epsilon_exp(n);
     cov_a_mid2{n} = 0.8*cov_a_exp{n} + 0.2*cov_a_sat{n};
     cov_a_mid3{n} = 0.2*cov_a_exp{n} + 0.8*cov_a_sat{n};
@@ -81,6 +83,7 @@ for n = 1:N
 
 
     % STORE variables
+    
     cov_mix{n} = cov;
     cov_f_all{n} = cov_f;
     cov_a_all{n} = cov_a;
@@ -135,6 +138,7 @@ end
 
 % Store TIME for plotting
 time_mix = time_mat_area;
+%cov_mix = cov_a_sat;
 
 
 save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')

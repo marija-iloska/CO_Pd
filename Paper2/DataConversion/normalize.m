@@ -22,8 +22,9 @@ for i = 1:N
     MA_area{i} = [ area_mat{i}(1:K)' movmean(area_mat{i}(K+1:end), [kb, kf])' ];
 end
 
-kb = 8;
-kf = 8;
+kb = 5;
+kf = 3;
+K = 5;
 % MOVING AVERAGE OF WV
 % Preserve 0s padding/replacements in wv, but remove in wv_dat for plotting
 for i = 1:N

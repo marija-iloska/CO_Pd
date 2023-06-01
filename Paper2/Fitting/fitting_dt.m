@@ -36,7 +36,7 @@ end
 theta_A(t+1) = covA(tp_AB(1)+3);
 theta_B(t+1) = covB(tp_AB(1)+3);
 
-idx = find(dtime < time(tp_idx+3));
+idx = find(dtime < time(tp_idx+5));
 R2 = idx(end);
 for t = R1+2 : R2
 
@@ -59,10 +59,10 @@ end
 
 
 % Region III ________________________________________________
-theta_A(t) = covA(tp_idx);
-theta_B(t) = covB(tp_idx);
+theta_A(t) = covA(tp_idx+6);
+theta_B(t) = covB(tp_idx+6);
 
-idx = find(dtime < time(tp_AB(2)+1));
+idx = find(dtime < time(tp_AB(2)-2));
 R3 = idx(end);
 
 for t = R2+1 : R3
