@@ -16,20 +16,20 @@ T = [450, 460, 470, 475, 480, 490];
 
 
 % Which data point to exclude
-idx = setdiff(1:N, []);
+idx = setdiff(1:N, [5]);
 
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
 
 % Ea with different initial coverages
 covs = 0.1 : 0.005 : 0.32;
-% covs = 0.22;
+covs = 0.22;
 Nsplit = length(covs);
 
 
 for j = 1 : Nsplit
 
-    k = 1;
+    %k = 1;
 
     for n = 1:N
     

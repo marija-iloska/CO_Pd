@@ -50,13 +50,13 @@ for n = 1:N
 
 
     % Get mean area at split
-    move = 1;
-    range1{1} = idx1(end-lim + 2 : end-move); % 450
+    move = 0;
+    range1{1} = idx1(end - lim + 3 :end-move); % 450
     range1{2} = idx1(end - lim + 3 :end-move); % 460
     range1{3} = idx1(end - lim + 3: end);
     range1{4} = idx1(end - lim + 3: end-move);
     range1{5} = idx1(end - lim + 3: end-move);
-    range1{6} = idx1(end - lim+2 : end);
+    range1{6} = idx1(end - lim + 3 : end);
 
 
 
@@ -111,5 +111,5 @@ end
 
 
 % NORMALIZED AREA
-%save('mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')

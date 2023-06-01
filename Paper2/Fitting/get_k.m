@@ -35,11 +35,11 @@ k_oB_SE = dlm_kob.Coefficients.SE;
 
 
 % Get kAB from kBo_________________________________________________ 
-tau1 = R3(2:end);
-tau = R3(1:end-1);
+tau1 = R3(2:end)+3;
+tau = R3(1:end-1)+3;
 
 
-Y = covB(tau1) - covB(tau) + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
+Y = covB(tau1) - covB(tau); % + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
 X = covA(tau).*dt(tau).*(M - cov(tau));
 dlm_kab = fitlm(X,Y,'Intercept',false);
 k_AB = dlm_kab.Coefficients.Estimate;
@@ -47,19 +47,19 @@ k_AB_SE = dlm_kab.Coefficients.SE;
 
 
 % Get kAo from kBo_________________________________________________ 
-% tau1 = R3(2:end)-4;
-% tau = R3(1:end-1)-4;
+% tau1 = R3(2:end)+4;
+% tau = R3(1:end-1)+4;
 % 
-% Y = cov(tau1) -  cov(tau) + k_Bo*dt(tau).*covB(tau).*(M - covA(tau))/M;
+% Y = cov(tau1) -  cov(tau); % + k_Bo*dt(tau).*covB(tau).*(M - covA(tau))/M;
 % X = -dt(tau).*covA(tau);
 % dlm_kao = fitlm(X,Y,'Intercept',false);
 % k_Ao = dlm_kao.Coefficients.Estimate;
 % k_Ao_SE = dlm_kao.Coefficients.SE;
 
 
-% Get kAo from kAB_________________________________________________ 
-tau1 = R3(2:end);
-tau = R3(1:end-1);
+% Get kAo from kAB________________________________________________ 
+tau1 = R3(2:end)+7;
+tau = R3(1:end-1)+7;
 Y = covA(tau1) - (1 - k_AB*dt(tau).*(M - cov(tau) )).*covA(tau);
 X = -dt(tau).*covA(tau);
 dlm_kao = fitlm(X,Y,'Intercept',false);
@@ -83,7 +83,7 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 tau1 = R2(2:end)+1;
 tau = R2(1:end-1)+1;
 Y = covB(tau1) - covB(tau) - k_AB*dt(tau).*covA(tau).*(M - cov(tau));
-Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
+%Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
 X = - dt(tau)*P.*covB(tau);
 dlm_kba = fitlm(X,Y,'Intercept',false);
 k_BA = dlm_kba.Coefficients.Estimate;
@@ -93,7 +93,7 @@ k_BA_SE = dlm_kba.Coefficients.SE;
 
 % Get koA
 Y = cov(tau1) - cov(tau) + k_Ao*dt(tau).*covA(tau);
-Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
+%Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
 X = dt(tau)*P.*(M - cov(tau));
 dlm_koa = fitlm(X,Y,'Intercept',false);
 k_oA = dlm_koa.Coefficients.Estimate;

@@ -36,7 +36,7 @@ end
 theta_A(t+1) = covA(tp_AB(1)+3);
 theta_B(t+1) = covB(tp_AB(1)+3);
 
-idx = find(dtime < time(tp_idx-1));
+idx = find(dtime < time(tp_idx+3));
 R2 = idx(end);
 for t = R1+2 : R2
 
@@ -44,7 +44,7 @@ for t = R1+2 : R2
 
     % B
     gain_B =  k_AB*dt(t)*theta_A(t-1)*( M - covX );
-    loss_B = - k_BA*dt(t)*P*theta_B(t-1) - k_Bo*dt(t)*theta_B(t-1)*(covX - theta_A(t-1))/covX;
+    loss_B = - k_BA*dt(t)*P*theta_B(t-1); % - k_Bo*dt(t)*theta_B(t-1)*(covX - theta_A(t-1))/covX;
 
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
     
@@ -62,8 +62,8 @@ end
 theta_A(t) = covA(tp_idx);
 theta_B(t) = covB(tp_idx);
 
-idx = find(dtime < time(tp_AB(2)));
-R3 = idx(end)+1;
+idx = find(dtime < time(tp_AB(2)+1));
+R3 = idx(end);
 
 for t = R2+1 : R3
     
@@ -72,7 +72,7 @@ for t = R2+1 : R3
     % B
     gain_B = k_AB * dt(t) * theta_A(t - 1)*(M - covX);
     loss_B = 0;
-    loss_B = - k_Bo*dt(t)*theta_B(t-1)*(covX - theta_A(t-1))/covX;
+    %loss_B = - k_Bo*dt(t)*theta_B(t-1)*(covX - theta_A(t-1))/covX;
 
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
     
@@ -83,8 +83,8 @@ for t = R2+1 : R3
     
 end
 
-% 
-% while (theta_A(t-1) > 10e-3)
+
+% while (covX > 0.22)
 %     
 %     covX = theta_A(t-1) + theta_B(t-1);
 % 
