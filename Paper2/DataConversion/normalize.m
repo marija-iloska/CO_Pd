@@ -16,8 +16,8 @@ load Data/T6.mat
 % MOVING AVERAGE OF AREA
 K = 3;
 MA = 5;
-kb = 8;
-kf = 8;
+kb = 4;
+kf = 4;
 for i = 1:N
     MA_area{i} = [ area_mat{i}(1:K)' movmean(area_mat{i}(K+1:end), [kb, kf])' ];
 end

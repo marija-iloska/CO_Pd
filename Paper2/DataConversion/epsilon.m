@@ -16,7 +16,7 @@ load Data/temps_info.mat
 range = 28;
 
 % Get a window
-lim = 7;
+lim = 6;
 
 % WV split
 wv_split = wv_splits(1);
@@ -50,13 +50,13 @@ for n = 1:N
 
 
     % Get mean area at split
-    move = 0;
-    range1{1} = idx1(end - lim + 3 :end-move); % 450
-    range1{2} = idx1(end - lim + 3 :end-move); % 460
+    move = 1;
+    range1{1} = idx1(end - lim + 2 :end-move); % 450
+    range1{2} = idx1(end - lim + 6 :end); % 460
     range1{3} = idx1(end - lim + 3: end);
     range1{4} = idx1(end - lim + 3: end-move);
-    range1{5} = idx1(end - lim + 3: end-move);
-    range1{6} = idx1(end - lim + 3 : end);
+    range1{5} = idx1(end - lim + 6: end);
+    range1{6} = idx1(end - lim + 6 : end);
 
 
 

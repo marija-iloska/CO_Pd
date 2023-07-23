@@ -15,7 +15,7 @@ str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.22;
+cut_off1 = 0.25;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
@@ -56,7 +56,7 @@ dtime(end)=[];
 
 % Plotting 
 lwd = 2;
-sz = 40;
+sz = 20;
 fsz = 35;
 %plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
 

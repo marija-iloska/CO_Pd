@@ -6,7 +6,7 @@ clc
 load Data/coverage_vs_time.mat
 load Data/temps_info.mat
 
-cut = [18.8, 18.2, 10.45, 10.1, 10.1];
+cut = [21.44, 20, 10.85, 10.5, 10.5];
 
 for i = 1:N-1
 
@@ -32,6 +32,7 @@ xlabel('Time', 'FontSize', sz)
 ylabel('Coverages', 'FontSize', sz)
 legend( temps_strings, 'FontSize', sz)
 grid on
+
 
 
 % Save for fitting

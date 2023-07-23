@@ -67,25 +67,44 @@ save('Data/weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc', 'wv_splits');
 
 
 
+
 %idx = {1:length(cov_test)};
+
+wv_test = 1810:5:1970;
+
+idx{1} = find(wv_test < wv_splits(1));
+idx{2} = find(wv_test < wv_splits(2));
+idx{2} = setdiff(idx{2}, idx{1});
+idx{3} = find(wv_test > wv_splits(2));
+
 % Get coverage fittings for low and high regions
 for n = 1:N
-
-    wv_fit{n} = polyval(P(n,:), cov_test(idx{n}));
-
-end
-
+ 
+      cov_fit{n} = polyval(Pc(n,:), wv_test(idx{n}));
+%     wv_fit{n} = polyval(P(n,:), cov_test(idx{n}));
+ 
+ end
+ 
+% figure(1)
+% for n = 1:N
+%     plot(cov_test(idx{n}), wv_fit{n}, 'linewidth',1)
+%     hold on
+% end
+% scatter(cov, wv, 40, 'k', 'filled')
+% xlabel('Coverage', 'FontSize',15)
+% ylabel('Wavenumber', 'FontSize',15)
+% set(gca, 'Ydir', 'reverse', 'FontSize', 15)
+% title('Line fitting in regions','FontSize', 15)
+% grid on
 
 figure(1)
 for n = 1:N
-    plot(cov_test(idx{n}), wv_fit{n}, 'linewidth',1)
+    plot(wv_test(idx{n}), cov_fit{n}, 'linewidth',1)
     hold on
 end
-scatter(cov, wv, 40, 'k', 'filled')
+scatter(wv, cov, 40, 'k', 'filled')
 xlabel('Coverage', 'FontSize',15)
 ylabel('Wavenumber', 'FontSize',15)
 set(gca, 'Ydir', 'reverse', 'FontSize', 15)
 title('Line fitting in regions','FontSize', 15)
 grid on
-
-

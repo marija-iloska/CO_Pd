@@ -39,7 +39,8 @@ tau1 = R3(2:end)+3;
 tau = R3(1:end-1)+3;
 
 
-Y = covB(tau1) - covB(tau); % + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
+Y = covB(tau1) - covB(tau); 
+% Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
 X = covA(tau).*dt(tau).*(M - cov(tau));
 dlm_kab = fitlm(X,Y,'Intercept',false);
 k_AB = dlm_kab.Coefficients.Estimate;
