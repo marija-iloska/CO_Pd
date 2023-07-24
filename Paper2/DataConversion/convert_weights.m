@@ -100,7 +100,7 @@ for n = 1:N
     hold on
     plot(time_wv{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
     hold on
-    plot(time_mat_area{n}, movmean(cov_mix{n}, [2,1]), 'color', 'k','linewidth', 2)
+    plot(time_mat_area{n}, movmean(cov_mix{n}, [1,2]), 'color', 'k','linewidth', 2)
     hold on
     legend('cov( A )', 'cov( F )', 'cov( A+F )', 'FontSize', 20)
     xlabel('Time', 'FontSize',20)

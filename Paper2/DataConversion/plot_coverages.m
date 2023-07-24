@@ -6,7 +6,8 @@ clc
 load Data/coverage_vs_time.mat
 load Data/temps_info.mat
 
-cut = [21.44, 20, 10.85, 10.5, 10.5];
+% cut = [21.5, 20, 11, 10.3, 10];
+cut = [25, 25, 25, 25, 10.3, 25];
 
 for i = 1:N-1
 
@@ -20,13 +21,13 @@ sz = 20;
 msz = 11;
 for t = 1 : N
 
-      plot(time_mix{t}, movmean(cov_mix{t}, 5), '.', 'MarkerSize', msz)
-      hold on
+  %   plot(time_mix{t}, movmean(cov_mix{t}, [1,1]), '.', 'MarkerSize', msz)
+  %    hold on
 
-%     plot(time_mix{t}, movmean(cov_mix{t}, 8), 'Linewidth', 2)
- %    hold on
+     plot(time_mix{t}, movmean(cov_mix{t}, [1,1]), 'Linewidth', 2)
+     hold on
 
-      cov_mix{t} = movmean(cov_mix{t}, 5);
+      cov_mix{t} = movmean(cov_mix{t}, [1,1]);
 
 end
 set(gca, 'FontSize', 15)

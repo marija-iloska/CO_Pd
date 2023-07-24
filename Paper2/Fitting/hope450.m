@@ -8,21 +8,21 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 2;
+t = 6;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.22;
+cut_off1 = 0.23;
 tp_AB = find(cov > cut_off1);
-tp_AB = [tp_AB(1), tp_AB(end)];
+tp_AB = [tp_AB(1), tp_AB(end)+1];
 
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 24;
+dtime = 0.01 : 0.02 : 12;
 tN = 1:length(cov);
 
 
@@ -61,13 +61,14 @@ fsz = 35;
 %plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
 
 purple = [132, 53, 148]/256;
+blue = [62, 158, 222]/256;
+green = [44, 199, 114]/256;
 
 figure(1)
 scatter(time, covB, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime, theta_B, 'b', 'Linewidth',lwd)
+plot(dtime, theta_B, 'Color', blue, 'Linewidth',lwd)
 hold on
-xline(time(tp_idx), 'm','Linewidth',lwd);
 xline(time(tp_idx), 'm','Linewidth',lwd);
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
@@ -81,7 +82,7 @@ legend('Experimental', 'Fitted','FontSize', 15)
 figure(2)
 scatter(time, covA, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime, theta_A, 'b','Linewidth', lwd)
+plot(dtime, theta_A, 'Color', blue, 'Linewidth', lwd)
 hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 title(strcat(str,'K'), 'FontSize', 40)
@@ -96,7 +97,7 @@ xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
 scatter(time, cov, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime, theta, 'Color', 'b', 'Linewidth', lwd)
+plot(dtime, theta, 'Color', green, 'Linewidth', lwd)
 xlabel('Time', 'FontSize', fsz)
 ylabel('Coverage','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
