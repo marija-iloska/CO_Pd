@@ -8,14 +8,14 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 6;
+t = 2;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.25;
+cut_off1 = 0.22;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
