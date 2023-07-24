@@ -20,11 +20,13 @@ sz = 20;
 msz = 11;
 for t = 1 : N
 
-%      plot(time_mix{t}, cov_mix{t}, '.', 'MarkerSize', msz)
-%      hold on
+      plot(time_mix{t}, movmean(cov_mix{t}, 5), '.', 'MarkerSize', msz)
+      hold on
 
-     plot(time_mix{t}, movmean(cov_mix{t}, 8), 'Linewidth', 2)
-     hold on
+%     plot(time_mix{t}, movmean(cov_mix{t}, 8), 'Linewidth', 2)
+ %    hold on
+
+      cov_mix{t} = movmean(cov_mix{t}, 5);
 
 end
 set(gca, 'FontSize', 15)
