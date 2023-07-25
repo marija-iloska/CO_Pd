@@ -8,7 +8,7 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 6;
+t = 3;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
@@ -22,7 +22,7 @@ tp_AB = [tp_AB(1), tp_AB(end)+1];
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 12;
+dtime = 0.01 : 0.02 : 20;
 tN = 1:length(cov);
 
 
@@ -76,6 +76,8 @@ xlabel('Time', 'FontSize', 20)
 ylabel('Coverage B', 'FontSize', 20)
 legend('Experimental', 'Fitted','FontSize', 15)
 
+filename = join(['figs/', str, '_Bfit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 
 % Plot A
@@ -90,6 +92,9 @@ set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time', 'FontSize', 20)
 ylabel('Coverage A', 'FontSize', 20)
 legend('Experimental', 'Fitted', 'FontSize', 15)
+
+filename = join(['figs/', str, '_Afit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 % Plot B
 figure(3)
@@ -106,5 +111,7 @@ grid on
 box on
 legend('Pressure off', 'Data','Fitted')
 
+filename = join(['figs/', str, '_Xfit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 

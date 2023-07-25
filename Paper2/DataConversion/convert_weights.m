@@ -98,6 +98,25 @@ for n = 1:N
     figure
     plot(time_mat_area{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 1.5)
     hold on
+    plot(time_mat_area{n}, cov_a_sat{n}, 'color', gr, 'linewidth', 1.5)
+    hold on
+    plot(time_mat_area{n}, cov_a_exp{n}, 'color', dp ,'linewidth', 2)
+    hold on
+    legend('cov( A )', 'cov( A^{SAT} )', 'cov( A^{EXP} )', 'FontSize', 20)
+    xlabel('Time', 'FontSize',20)
+    ylabel('Coverage', 'FontSize',20)
+    title(temps_strings{n}, 'FontSize', 20)
+    grid on
+
+    filename = join(['figs/covA', temps_strings{n}, '.eps']);
+    print(gcf, filename, '-depsc2', '-r300');
+end
+
+for n = 1:N
+    % Plot weighted mix
+    figure
+    plot(time_mat_area{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 1.5)
+    hold on
     plot(time_wv{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
     hold on
     plot(time_mat_area{n}, movmean(cov_mix{n}, [1,2]), 'color', 'k','linewidth', 2)
@@ -107,6 +126,10 @@ for n = 1:N
     ylabel('Coverage', 'FontSize',20)
     title(temps_strings{n}, 'FontSize', 20)
     grid on
+    
+
+    filename = join(['figs/cov', temps_strings{n}, '.eps']);
+    print(gcf, filename, '-depsc2', '-r300');
 
 end
 
