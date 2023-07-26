@@ -3,12 +3,15 @@ close all
 clc
 
 % Read in WV and AREA excel
-dat_wv = table2array(readtable('../peaks_latest.xlsx'));
+%dat_wv = table2array(readtable('../peaks_latest.xlsx'));
+dat_wv = table2array(readtable('../mat_area_latest.xlsx', 'Sheet', 'Peak'));
 dat_marea = table2array(readtable('../mat_area_latest.xlsx', 'Sheet', 'Area'));
 
 % Remove NaN rows and 500 K column
-dat_wv(1:3, :) = [];
-dat_wv(:,3) = [];
+% dat_wv(1:3, :) = [];
+% dat_wv(:,3) = [];
+dat_wv(1:2, :) = [];
+
 
 % Get length of Area and WV file to read in backwards
 Lw = length(dat_wv(1,:));

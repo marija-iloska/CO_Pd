@@ -50,13 +50,22 @@ for n = 1:N
 
 
     % Get mean area at split
-    move = 1;
-    range1{1} = idx1(end - lim + 2 :end-move); % 450
-    range1{2} = idx1(end - lim + 6 :end); % 460
-    range1{3} = idx1(end - lim + 3: end);
-    range1{4} = idx1(end - lim + 3: end-move);
-    range1{5} = idx1(end - lim + 6: end);
-    range1{6} = idx1(end - lim + 6 : end);
+%     move = 1;
+%     range1{1} = idx1(end - lim + 2 :end-move); % 450
+%     range1{2} = idx1(end - lim + 6 :end); % 460
+%     range1{3} = idx1(end - lim + 3: end);
+%     range1{4} = idx1(end - lim + 3: end-move);
+%     range1{5} = idx1(end - lim + 6: end);
+%     range1{6} = idx1(end - lim + 6 : end);
+
+    move = 0;
+    range1{1} = idx1(end - lim - 1  :end-3); % 450
+    range1{2} = idx1(end - lim + 2 :end); % 460
+    range1{3} = idx1(end - lim + 4: end);
+    range1{4} = idx1(end - lim + 4: end-move);
+    range1{5} = idx1(end - lim + 4: end);
+    range1{6} = idx1(end - lim + 5 : end);
+
 
 
 

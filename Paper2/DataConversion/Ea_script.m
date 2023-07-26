@@ -16,13 +16,13 @@ T = [450, 460, 470, 475, 480, 490];
 
 
 % Which data point to exclude
-idx = setdiff(1:N, []);
+idx = setdiff(1:N, [4]);
 
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.16 : 0.001 : 0.32;
+covs = 0.16 : 0.005 : 0.4;
 %covs = 0.23;
 Nsplit = length(covs);
 
@@ -44,7 +44,7 @@ for j = 1 : Nsplit
 
 end
 
-id = find(covs < 0.242);
+id = find(covs < 0.24);
 
 % Plot fit
 figure;
@@ -58,17 +58,18 @@ title('Arrhenius Equation', 'FontSize', 15)
 
 blue = [62, 158, 222]/256;
 figure;
-h = errorbar(covs, Ea, Ea_SE, 'Linewidth', 1, 'Color' , 'k')
+%h = errorbar(covs, Ea, Ea_SE, 'Linewidth', 1, 'Color' , 'k');
+plot(covs, Ea)
 hold on
 plot(covs(id), mean(Ea(id))*ones(1, length(id)), 'Color', 'r', 'Linewidth', 3)
 hold on
-xline(0.242, 'Linewidth', 3, 'Color', blue)
+xline(0.24, 'Linewidth', 3, 'Color', blue)
 set(gca, 'FontSize', 15)
 xlabel('Initial Coverage', 'FontSize', 15)
 ylabel('Ea', 'FontSize', 15)
-legend('Ea', 'Mean Ea', 'Drop starts', 'FontSize', 15)
+legend('Ea', 'Mean Ea', 'Change starts', 'FontSize', 15)
 % ylim([floor(min(Ea)),round(max(Ea))])
 % 
-filename = 'figs/Ea.eps';
-print(gcf, filename, '-depsc2', '-r300');
+% filename = 'figs/Ea.eps';
+% print(gcf, filename, '-depsc2', '-r300');
 

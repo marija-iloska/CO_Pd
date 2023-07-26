@@ -107,9 +107,9 @@ for n = 1:N
     ylabel('Coverage', 'FontSize',20)
     title(temps_strings{n}, 'FontSize', 20)
     grid on
-
-    filename = join(['figs/covA', temps_strings{n}, '.eps']);
-    print(gcf, filename, '-depsc2', '-r300');
+% 
+%     filename = join(['figs/covA', temps_strings{n}, '.eps']);
+%     print(gcf, filename, '-depsc2', '-r300');
 end
 
 for n = 1:N
@@ -119,7 +119,7 @@ for n = 1:N
     hold on
     plot(time_wv{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
     hold on
-    plot(time_mat_area{n}, movmean(cov_mix{n}, [1,2]), 'color', 'k','linewidth', 2)
+    plot(time_mat_area{n}, movmean(cov_mix{n}, 1), 'color', 'k','linewidth', 2)
     hold on
     legend('cov( A )', 'cov( F )', 'cov( A+F )', 'FontSize', 20)
     xlabel('Time', 'FontSize',20)
@@ -127,9 +127,9 @@ for n = 1:N
     title(temps_strings{n}, 'FontSize', 20)
     grid on
     
-
-    filename = join(['figs/cov', temps_strings{n}, '.eps']);
-    print(gcf, filename, '-depsc2', '-r300');
+% 
+%     filename = join(['figs/cov', temps_strings{n}, '.eps']);
+%     print(gcf, filename, '-depsc2', '-r300');
 
 end
 
