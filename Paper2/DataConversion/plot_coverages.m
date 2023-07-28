@@ -22,24 +22,24 @@ msz = 11;
 gr = [48, 219, 159]/256;
 for t = 1 : N
 
-     plot(time_mix{t}, movmean(cov_mix{t}, [1,2]), '.', 'MarkerSize', msz)
-      hold on
+     %plot(time_mix{t}, movmean(cov_mix{t}, [1,2]), '.', 'MarkerSize', msz)
+     %hold on
 % 
-%     plot(time_mix{t}, movmean(cov_mix{t}, [0,1]), 'Linewidth', 3)
-%      hold on
+     plot(time_mix{t}, movmean(cov_mix{t}, [0,1]), 'Linewidth', 3)
+      hold on
 %     xline(3, 'Color', 'm', 'linewidth', 3)
 %     hold on
 %     yline(0.31, 'Color', gr, 'linewidth', 3)
 %     hold on
 
-      cov_mix{t} = movmean(cov_mix{t}, [1,2]);
+      %cov_mix{t} = movmean(cov_mix{t}, [1,2]);
 
 end
 set(gca, 'FontSize', 15)
 xlabel('Time', 'FontSize', sz)
 ylabel('Coverage', 'FontSize', sz)
-%legend( temps_strings, 'FontSize', sz)
-legend( '\theta_{\tau}^X', 'FontSize', sz)
+legend( temps_strings, 'FontSize', sz)
+%legend( '\theta_{\tau}^X', 'FontSize', sz)
 %grid on
 
 % filename = 'figs/all_cov.eps';

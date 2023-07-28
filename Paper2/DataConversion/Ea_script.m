@@ -22,7 +22,7 @@ idx = setdiff(1:N, [4]);
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.16 : 0.005 : 0.4;
+covs = 0.16 : 0.005 : 0.33;
 %covs = 0.23;
 Nsplit = length(covs);
 
