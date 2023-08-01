@@ -16,7 +16,7 @@ load P_extrap.mat
 temps_strings = {'450 int', '460 int', '470 int', '475 int', '480 int', '490 int'};
 %save('expected_coverage.mat', "cov_sat")
 
-str = {'450 int', '460 int', '470 int', '475 int', '480 int', '490 int', '448K paper', '453K paper', '493K paper'};
+str = {'450 int', '460 int', '470 int', '475 int', '480 int', '490 int', '448K dig', '453K dig', '493K dig'};
 
 T_interest = [450, 460, 470, 475, 480, 490];
 
@@ -47,10 +47,11 @@ for i = 1:3
     hold on
 
 end
-legend(h, str, 'FontSize', 20)
+xline(1e-5, 'Color', 'k', 'LineStyle','--', 'LineWidth', 2)
+legend(h, str, 'FontSize', 15)
 set(gca, 'FontSize', 20)
-xlabel('Pressure', 'FontSize', 20)
-ylabel('Coverage', 'FontSize', 20)
+xlabel('Pressure [mbar]', 'FontSize', 20)
+ylabel('Coverage [ML]', 'FontSize', 20)
 grid on
 
 
