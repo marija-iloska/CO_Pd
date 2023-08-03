@@ -12,15 +12,15 @@ load Absorptivity/mean_mat_area.mat
 load Data/T6.mat
 
 
-% Preserve the first L points since they have higher uncertainty
-% MOVING AVERAGE OF AREA
-K = 3;
-MA = 5;
-kb = 6;
-kf = 6;
-for i = 1:N
-    MA_area{i} = [ area_mat{i}(1:K)' movmean(area_mat{i}(K+1:end), [kb, kf])' ];
-end
+% % Preserve the first L points since they have higher uncertainty
+% % MOVING AVERAGE OF AREA
+% K = 3;
+% MA = 5;
+% kb = 6;
+% kf = 6;
+% for i = 1:N
+%     MA_area{i} = [ area_mat{i}(1:K)' movmean(area_mat{i}(K+1:end), [kb, kf])' ];
+% end
 
 kb = 6; %6;
 kf = 4; %4;
@@ -57,10 +57,10 @@ range{2} = [1, N-1];
 for i = range{ref}(1) : range{ref}(2)
 
     c = mean_area_sat(T(ref))/mean_area_sat(i);
-    A_new{i} = (cov_sat(i)/cov_sat(T(ref)))*c*MA_area{i};
+    A_new{i} = (cov_sat(i)/cov_sat(T(ref)))*c*area_mat{i};
 
 end
-A_new{T(ref)} = MA_area{T(ref)};
+A_new{T(ref)} = area_mat{T(ref)};
 
 
 
@@ -72,26 +72,57 @@ for i = 1:N
     plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
     hold on
 end
+yline(0)
 set(gca, 'FontSize', 20)
 legend(temps_strings, 'FontSize', 20)
-title('Normalized AREA', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
-ylabel('Area-MAT', 'FontSize',20)
+%title('Normalized AREA', 'FontSize', 20)
+xlabel('Time[s]', 'FontSize',20)
+ylabel('Area', 'FontSize',20)
 grid on
+ylim([-0.05, 0.22])
 
 
-% Plot all raw areas against their normalization
+% Preserve the first L points since they have higher uncertainty
+% MOVING AVERAGE OF AREA
+K = 3;
+MA = 5;
+kb = 6;
+kf = 6;
 for i = 1:N
+    MA_area{i} = [ A_new{i}(1:K)' movmean(A_new{i}(K+1:end), [kb, kf])' ];
+end
+
+or = [0.9290 0.6940 0.1250];
+
+% Plot all raw areas against their smoothing
+for i = 1:2
     figure;
-    plot(time_mat_area{i}, MA_area{i}, 'Linewidth',1.5)
+    plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5, 'Color', or)
     hold on
-    plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
+    plot(time_mat_area{i}, MA_area{i}, 'Linewidth', 1.2, 'Color', 'k')
+    set(gca, 'FontSize', 15)
     title(temps_strings{i}, 'FontSize', 20)
-    legend('Unnormalized', 'Normalized','FontSize', 20)
-    xlabel('Time', 'FontSize',20)
-    ylabel('Area-MAT', 'FontSize',20)
+    legend('Raw', 'Smoothed','FontSize', 20)
+    xlabel('Time[s]', 'FontSize',20)
+    ylabel('Area', 'FontSize',20)
     grid on
 end
+
+
+
+
+% % Plot all raw areas against their normalization
+% for i = 1:N
+%     figure;
+%     plot(time_mat_area{i}, MA_area{i}, 'Linewidth',1.5)
+%     hold on
+%     plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
+%     title(temps_strings{i}, 'FontSize', 20)
+%     legend('Unnormalized', 'Normalized','FontSize', 20)
+%     xlabel('Time', 'FontSize',20)
+%     ylabel('Area-MAT', 'FontSize',20)
+%     grid on
+% end
 
 
 
@@ -99,26 +130,27 @@ end
 figure;
 for i = 1:N
 
-    plot(time_dat{i}, MA_wv{i}, 'linewidth', 1.5)
+    plot(time_dat{i}, wv_dat{i}, 'linewidth', 2)
     hold on
 end
 set(gca, 'FontSize', 20)
 legend(temps_strings, 'FontSize', 20)
-title('Smoothed FREQ', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
-ylabel('FREQ', 'FontSize',20)
+%title('Smoothed', 'FontSize', 20)
+xlabel('Time [s]', 'FontSize',20)
+ylabel('Wavenumber [cm^{-1}]', 'FontSize',20)
 grid on
 
 % PLOT frequencies against their smoothed version
-for i = 1:N
+for i = 1:2
     figure;
-    plot(time_dat{i}, wv_dat{i}, 'linewidth',1)
+    plot(time_dat{i}, wv_dat{i}, 'linewidth',2)
     hold on
-    plot(time_dat{i}, MA_wv{i}, 'linewidth', 1)
+    plot(time_dat{i}, MA_wv{i}, 'linewidth', 1.5, 'color', 'k')
     title(temps_strings{i}, 'FontSize', 20)
     legend('Raw', 'Smoothed','FontSize', 20)
-    xlabel('Time', 'FontSize',20)
-    ylabel('FREq', 'FontSize',20)
+    set(gca, 'FontSize', 15)
+    xlabel('Time [s]', 'FontSize',20)
+    ylabel('Wavenumber [cm^{-1}]', 'FontSize',20)
     grid on
 end
 
@@ -127,8 +159,8 @@ area = A_new;
 
 % Store P off index
 tp_idx = 45;
-
-save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
-save('Data/wv.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
-save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
+% 
+% save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
+% save('Data/wv.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
+% save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
 

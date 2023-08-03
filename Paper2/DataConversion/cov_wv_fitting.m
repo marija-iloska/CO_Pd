@@ -13,7 +13,7 @@ cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 
 % % Points to fit 450
 id0 = 1:3;
-id1 = 3:5;
+id1 = 3:6;
 id2 = 6:8;
 wv_splits = [(wv(id1(1))), (wv(id1(end)))];
 
@@ -62,7 +62,7 @@ idx = {idx0, idx1, idx2};
 % idx1  = find(cov_test >0.2);
 % idx = {idx0, idx1};
 
-save('Data/weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc', 'wv_splits');
+%save('Data/weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc', 'wv_splits');
 %save('weights490isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
 
 
@@ -70,7 +70,7 @@ save('Data/weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc', 'wv_splits');
 
 %idx = {1:length(cov_test)};
 
-wv_test = 1810:5:1970;
+wv_test = 1813:1:1940;
 
 idx{1} = find(wv_test < wv_splits(1));
 idx{2} = find(wv_test < wv_splits(2));
@@ -99,12 +99,12 @@ for n = 1:N
 
 figure(1)
 for n = 1:N
-    plot(wv_test(idx{n}), cov_fit{n}, 'linewidth',1)
+    plot(wv_test(idx{n}), cov_fit{n}, 'linewidth',2)
     hold on
 end
-scatter(wv, cov, 40, 'k', 'filled')
-xlabel('Coverage', 'FontSize',15)
-ylabel('Wavenumber', 'FontSize',15)
-set(gca, 'Ydir', 'reverse', 'FontSize', 15)
-title('Line fitting in regions','FontSize', 15)
+scatter(wv, cov, 60, 'k', 'filled')
+ylabel('Coverage [ML]', 'FontSize',15)
+xlabel('Wavenumber [cm^{-1}]', 'FontSize',15)
+set(gca, 'FontSize', 15)
+%title('Regions','FontSize', 15)
 grid on
