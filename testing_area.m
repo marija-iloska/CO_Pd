@@ -19,12 +19,12 @@ idx1 = idx1(1);
 
 range_idx = idx1:idx0;
 
-for i = 2:20
+for i = 2:6
 
 %     figure(1)
     temp = dat(range,i) - mean(dat(range,i));
     %y = lowpass(temp, 0.02);
-    plot(dat(range_idx, wv_idx), temp(range_idx-1), 'linewidth', 1)
+    plot(dat(range_idx, wv_idx), temp(range_idx-1), 'linewidth', 1.5)
     hold on
     yline(0)
     hold on
@@ -32,13 +32,13 @@ for i = 2:20
     xlim([1700, 2100])
     set(gca, 'FontSize', 15)
     xlabel('Wavenumber [cm^-^1]', 'FontSize', 20)
-    ylabel('Intensity', 'FontSize', 20)
+    ylabel('Absorbance', 'FontSize', 20)
 
 
 %      area_mat_raw(i-1) = trapz(temp(range_idx-1));
 %      area_mat(i-1) = trapz(abs(y(range_idx-1)));
 end
-
+legend('\tau_1', '\tau_2', '\tau_3', '\tau_4', '\tau_5', 'FontSize', 20)
 
 % figure;
 % plot(movmean(lowpass(area_mat, 0.02), 1))

@@ -14,7 +14,7 @@ cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 % % Points to fit 450
 id0 = 1:3;
 id1 = 3:6;
-id2 = 6:8;
+id2 = 5:8;
 wv_splits = [(wv(id1(1))), (wv(id1(end)))];
 
 id = {id0, id1, id2};
@@ -37,6 +37,8 @@ for n = 1:N
 
     P(n,:) = polyfit( cov(id{n}),  wv(id{n}), degE);
     Pc(n,:) = polyfit( wv(id{n}), cov(id{n}), degE);
+    Pnew(n,:) = polyfit( wv(id{n}), cov(id{n}), 2);
+
 
     Der(n) = polyder(P(n,:));
 
@@ -46,15 +48,16 @@ Wf = Der./max(Der);
 Wa = 1-Wf;
 
 
-cov_test = 0 :0.01 : 0.5;
+
+cov_test = 0 :0.005 : 0.5;
 
 % 450 split
-idx0 = find(cov_test < 0.25);
-idx2 = find(cov_test > 0.34);
-idx1 = find(cov_test < 0.6);
-idx1 = setdiff(idx1, [idx0 idx2]);
-
-idx = {idx0, idx1, idx2};
+% idx0 = find(cov_test < 0.25);
+% idx2 = find(cov_test > 0.36);
+% idx1 = find(cov_test < 0.6);
+% idx1 = setdiff(idx1, [idx0 idx2]);
+% 
+% idx = {idx0, idx1, idx2};
 
 
 % 490 split
@@ -77,6 +80,9 @@ idx{2} = find(wv_test < wv_splits(2));
 idx{2} = setdiff(idx{2}, idx{1});
 idx{3} = find(wv_test > wv_splits(2));
 
+
+
+
 % Get coverage fittings for low and high regions
 for n = 1:N
  
@@ -87,19 +93,19 @@ for n = 1:N
  
 % figure(1)
 % for n = 1:N
-%     plot(cov_test(idx{n}), wv_fit{n}, 'linewidth',1)
+%     plot(cov_test(idx{n}), wv_fit{n}, 'linewidth',3)
 %     hold on
 % end
-% scatter(cov, wv, 40, 'k', 'filled')
-% xlabel('Coverage', 'FontSize',15)
-% ylabel('Wavenumber', 'FontSize',15)
+% scatter(cov, wv, 60, 'k', 'filled')
+% xlabel('Coverage [ML]', 'FontSize',15)
+% ylabel('Wavenumber [cm^{-1}]', 'FontSize',15)
 % set(gca, 'Ydir', 'reverse', 'FontSize', 15)
-% title('Line fitting in regions','FontSize', 15)
+% %title('Line fitting in regions','FontSize', 15)
 % grid on
 
 figure(1)
 for n = 1:N
-    plot(wv_test(idx{n}), cov_fit{n}, 'linewidth',2)
+    plot(wv_test(idx{n}), cov_fit{n}, 'linewidth',3)
     hold on
 end
 scatter(wv, cov, 60, 'k', 'filled')
@@ -108,3 +114,24 @@ xlabel('Wavenumber [cm^{-1}]', 'FontSize',15)
 set(gca, 'FontSize', 15)
 %title('Regions','FontSize', 15)
 grid on
+
+
+% i{1}= 1:4;
+% i{2} = 5:8;
+% N = 2;
+% 
+% Pnew(1,:) = polyfit( wv(i{1}), cov(i{1}), 2);
+% Pnew(2,:) = polyfit( wv(i{2}), cov(i{2}), 2);
+% 
+% % ONE FITTING
+% %Pnew = polyfit(wv, cov, 4);
+% for n = 1:N
+%     cov_new{n} = polyval(Pnew(n,:), wv_test(idx{n}));
+% end
+% figure;
+% for n = 1:N
+%     plot(wv_test(idx{n}), cov_new{n}, 'linewidth',3)
+%     hold on
+% end
+% scatter(wv, cov, 60, 'k', 'filled')
+

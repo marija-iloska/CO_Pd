@@ -60,7 +60,7 @@ for n = 1:N
 
     move = 0;
     range1{1} = idx1(end - lim - 1  :end-3); % 450
-    range1{2} = idx1(end - lim + 2 :end); % 460
+    range1{2} = idx1(end - lim + 4 :end); % 460
     range1{3} = idx1(end - lim + 4: end);
     range1{4} = idx1(end - lim + 4: end-move);
     range1{5} = idx1(end - lim + 4: end);
@@ -81,6 +81,7 @@ for n = 1:N
 
     % Store vars
     cov_all{n} = cov;
+    range1{2} = idx1(end - lim :end); % 460
     range_all{n} = range1{n};
 
 end
@@ -94,7 +95,7 @@ lwd = 2;
 sz = 10;
 
 % WINDOWS plot
-for n = 1:N
+for n = 2:2
     figure;
     plot(time_mat_area{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
     hold on
@@ -107,10 +108,12 @@ for n = 1:N
     xline(time_wv{n}(tp_idx-range), 'Color', lg, 'linewidth',lwd)
     hold on
     xline(time_wv{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
+    hold on
+    yline(0.24, 'linewidth', 1)
     set(gca, 'FontSize', 15)
     xlabel('Time', 'FontSize',13)
     title(join( [temps_strings{n}, 'K', ' Windows']) ,'FontSize',16)
-    legend('Coverage', 'Area', 'FontSize',20)
+    legend('Coverage', 'Area', 'FontSize',15)
     grid on
 end
 
@@ -120,5 +123,5 @@ end
 
 
 % NORMALIZED AREA
-save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
-save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+%save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+%save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')

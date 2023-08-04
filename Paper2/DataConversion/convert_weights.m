@@ -90,29 +90,29 @@ end
 
 % Choose a temperature
 gr = [4, 148, 124]/256;
-dp = [92, 1, 138]/256;
+dp = [132, 1, 168]/256;
 ym = [247, 190, 2]/256;
 
-for n = 1:N
+for n = 2:2
     % Plot weighted mix
     figure
-    plot(time_mat_area{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 1.5)
-    hold on
-    plot(time_mat_area{n}, cov_a_sat{n}, 'color', gr, 'linewidth', 1.5)
+    plot(time_mat_area{n}, cov_a_sat{n}, 'color', gr, 'linewidth', 2)
     hold on
     plot(time_mat_area{n}, cov_a_exp{n}, 'color', dp ,'linewidth', 2)
     hold on
-    legend('cov( A )', 'cov( A^{SAT} )', 'cov( A^{EXP} )', 'FontSize', 20)
-    xlabel('Time', 'FontSize',20)
-    ylabel('Coverage', 'FontSize',20)
-    title(temps_strings{n}, 'FontSize', 20)
+    plot(time_mat_area{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 2)
+    hold on
+    legend('cov( A^{SAT} )', 'cov( A^{LOW} )', 'cov( A )',  'FontSize', 17)
+    xlabel('Time [s]', 'FontSize',17)
+    ylabel('Coverage [ML]', 'FontSize',17)
+    title(temps_strings{n}, 'FontSize', 17)
     grid on
 % 
 %     filename = join(['figs/covA', temps_strings{n}, '.eps']);
 %     print(gcf, filename, '-depsc2', '-r300');
 end
 
-for n = 1:N
+ for n = 1:N
     % Plot weighted mix
     figure
     plot(time_mat_area{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 1.5)
@@ -121,22 +121,24 @@ for n = 1:N
     hold on
     plot(time_mat_area{n}, movmean(cov_mix{n}, 1), 'color', 'k','linewidth', 2)
     hold on
+    set(gca, 'FontSize', 15)
     legend('cov( A )', 'cov( F )', 'cov( A+F )', 'FontSize', 20)
-    xlabel('Time', 'FontSize',20)
-    ylabel('Coverage', 'FontSize',20)
+    xlabel('Time [s]', 'FontSize',20)
+    ylabel('Coverage [ML]', 'FontSize',20)
     title(temps_strings{n}, 'FontSize', 20)
     grid on
+
     
 % 
 %     filename = join(['figs/cov', temps_strings{n}, '.eps']);
 %     print(gcf, filename, '-depsc2', '-r300');
 
-end
+ end
 
 % Store TIME for plotting
 time_mix = time_mat_area;
 
 
 
-save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
+%save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
 
