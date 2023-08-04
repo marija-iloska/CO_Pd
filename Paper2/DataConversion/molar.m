@@ -49,7 +49,7 @@ for n = 1:N
     cov(idx0) = zeros(1, length(idx0));
 
 
-    % Get mean area at split
+    % WINDOWS
 %     move = 1;
 %     range1{1} = idx1(end - lim + 2 :end-move); % 450
 %     range1{2} = idx1(end - lim + 6 :end); % 460
@@ -59,14 +59,12 @@ for n = 1:N
 %     range1{6} = idx1(end - lim + 6 : end);
 
     move = 0;
-    range1{1} = idx1(end - lim - 1  :end-3); % 450
-    range1{2} = idx1(end - lim + 4 :end); % 460
+    range1{1} = idx1(end - lim - 1  :end-3);
+    range1{2} = idx1(end - lim + 4 :end); 
     range1{3} = idx1(end - lim + 4: end);
     range1{4} = idx1(end - lim + 4: end-move);
     range1{5} = idx1(end - lim + 4: end);
     range1{6} = idx1(end - lim + 5 : end);
-
-
 
 
     % Get epsilon at split
@@ -95,7 +93,7 @@ lwd = 2;
 sz = 10;
 
 % WINDOWS plot
-for n = 2:2
+for n = 1:N
     figure;
     plot(time_mat_area{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
     hold on

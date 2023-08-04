@@ -20,15 +20,9 @@ load Data/temps_info.mat
 % Number of region splits (R + 2 regions)
 R = length(wv_splits);
 
-
-% Wf(1) = 0;
-% Wf(2) = (Der(2) - Der(1))/(Der(3) - Der(1));
-
 % Include weights for lowest regions
-%Wf = [0, 0, 1, 1];
 Wf = [0, Wf];
 Wa = 1 - Wf;
-
 
 
 % Use original time with padding for WV
@@ -59,10 +53,8 @@ for n = 1:N
     cov_a(cov_a < 0) = 10e-4;
    
     % COV ( eps_SAT  vs eps_EXP )
-     cov_a_sat{n} = area{n}./epsilon_sat(n);
-     cov_a_exp{n} = area{n}./epsilon_exp(n);
-
-
+    cov_a_sat{n} = area{n}./epsilon_sat(n);
+    cov_a_exp{n} = area{n}./epsilon_exp(n);
 
 
     % Get COV(A + F)
@@ -83,17 +75,16 @@ for n = 1:N
     cov_a_all{n} = cov_a;
 
     % Plot horizontal lines to observe the split changes
-    range{n} = [cov(id{1}(end)), cov(id{2}(end)), cov(id{3}(end))];
+    % range{n} = [cov(id{1}(end)), cov(id{2}(end)), cov(id{3}(end))];
 
 end
-
 
 % Choose a temperature
 gr = [4, 148, 124]/256;
 dp = [132, 1, 168]/256;
 ym = [247, 190, 2]/256;
 
-for n = 2:2
+for n = 1:N
     % Plot weighted mix
     figure
     plot(time_mat_area{n}, cov_a_sat{n}, 'color', gr, 'linewidth', 2)
@@ -107,7 +98,7 @@ for n = 2:2
     ylabel('Coverage [ML]', 'FontSize',17)
     title(temps_strings{n}, 'FontSize', 17)
     grid on
-% 
+ 
 %     filename = join(['figs/covA', temps_strings{n}, '.eps']);
 %     print(gcf, filename, '-depsc2', '-r300');
 end
@@ -119,7 +110,7 @@ end
     hold on
     plot(time_wv{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
     hold on
-    plot(time_mat_area{n}, movmean(cov_mix{n}, 1), 'color', 'k','linewidth', 2)
+    plot(time_mat_area{n}, movmean(cov_mix{n}, 3), 'color', 'k','linewidth', 2)
     hold on
     set(gca, 'FontSize', 15)
     legend('cov( A )', 'cov( F )', 'cov( A+F )', 'FontSize', 20)
@@ -128,8 +119,6 @@ end
     title(temps_strings{n}, 'FontSize', 20)
     grid on
 
-    
-% 
 %     filename = join(['figs/cov', temps_strings{n}, '.eps']);
 %     print(gcf, filename, '-depsc2', '-r300');
 

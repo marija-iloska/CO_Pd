@@ -3,15 +3,11 @@ close all
 clc
 
 % Read in WV and AREA excel
-%dat_wv = table2array(readtable('../peaks_latest.xlsx'));
 dat_wv = table2array(readtable('../mat_area_latest.xlsx', 'Sheet', 'Peak'));
 dat_marea = table2array(readtable('../mat_area_latest.xlsx', 'Sheet', 'Area'));
 
-% Remove NaN rows and 500 K column
-% dat_wv(1:3, :) = [];
-% dat_wv(:,3) = [];
+% Remove NaN rows
 dat_wv(1:2, :) = [];
-
 
 % Get length of Area and WV file to read in backwards
 Lw = length(dat_wv(1,:));
@@ -29,7 +25,6 @@ N = length(temps_strings);
 
 % FREQUENCY________________________________________________________
 % Replace first rows Nans with 0s (all weights will be on area)
-%min_temp = min(min(dat_wv(:,3:end)));
 min_temp = 0;
 
 % Get wv peaks
@@ -51,24 +46,21 @@ for i = 1:N
     wv{i} = temp_nan;
 
     % Get time length of WV data points
-    time_wv{i} = time(1:length(temp_nan));
+    time_dat{i} = time(1:length(temp_nan));
 
 end
 
-% Remove outliers in 460K at the end
-rm = find(wv{2}(end - 20: end) > 1840);
-wv{2}(end-21 + rm) = [];
-time_wv{2}(end-21 + rm) = [];
 
 % Save raw WV without any 0 padding
 wv_dat = wv;
-time_dat = time_wv;
+%time_dat = time_wv;
 for i = 1:N
     wv_dat{i}(1:2, :) = [];
     time_dat{i}(1:2, :) = [];
 end
 
 
+% AREA _______________________________________________________
 % Get areas and remove NaNs
 for i = 1:N
     
@@ -97,10 +89,11 @@ for i = 1:N
     if (Lsz > 0)
         wv{i} = [wv{i}; zeros(Lsz,1)];
     end
+    % Make appropriate time variable for it
+    time_wv{i} = time(1:length(wv{i}));
 
 end
 
 
-
 % Save all data
-save('Data/T6.mat','area_mat', 'time_mat_area', 'time_wv', 'time_dat', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')
+%save('Data/T6.mat','area_mat', 'time_mat_area', 'time_wv', 'time_dat', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')

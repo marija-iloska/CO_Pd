@@ -22,8 +22,9 @@ load Data/T6.mat
 %     MA_area{i} = [ area_mat{i}(1:K)' movmean(area_mat{i}(K+1:end), [kb, kf])' ];
 % end
 
-kb = 6; %6;
-kf = 4; %4;
+% Choose number of moving average points for FREQ
+kb = 6;
+kf = 4;
 K = 5;
 % MOVING AVERAGE OF WV
 % Preserve 0s padding/replacements in wv, but remove in wv_dat for plotting
@@ -34,19 +35,7 @@ for i = 1:N
 end
 
 
-% PLOT regular Area
-figure(1)
-for i = 1:N
 
-    plot(time_mat_area{i}, MA_area{i}, 'linewidth', 1.5)
-    hold on
-end
-set(gca, 'FontSize', 20)
-legend(temps_strings, 'FontSize', 20)
-title('Raw AREA', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
-ylabel('Area-MAT', 'FontSize',20)
-grid on
 
 % NORMALIZE
 % Choose 1 for ref 450 and 2 for ref 490
@@ -63,27 +52,39 @@ end
 A_new{T(ref)} = area_mat{T(ref)};
 
 
-
-
-% Plot ALL normalized Area together
-figure(2)
+% PLOT AREA (unnormalized OR normalized)
+figure(1)
 for i = 1:N
-
-    plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
+    %plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
+    plot(time_mat_area{i}, area_mat{i}, 'linewidth', 1.5)
     hold on
 end
-yline(0)
 set(gca, 'FontSize', 20)
 legend(temps_strings, 'FontSize', 20)
-%title('Normalized AREA', 'FontSize', 20)
-xlabel('Time[s]', 'FontSize',20)
+title('Raw AREA', 'FontSize', 20)
+xlabel('Time', 'FontSize',20)
+%ylabel('Area Normalized', 'FontSize',20)
 ylabel('Area', 'FontSize',20)
 grid on
-ylim([-0.05, 0.22])
 
 
-% Preserve the first L points since they have higher uncertainty
+
+% % Plot raw areas against their normalization
+for i = 1:N
+    figure;
+    plot(time_mat_area{i}, area_mat{i}, 'Linewidth',1.5)
+    hold on
+    plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
+    title(temps_strings{i}, 'FontSize', 20)
+    legend('Unnormalized', 'Normalized','FontSize', 20)
+    xlabel('Time', 'FontSize',20)
+    ylabel('Area', 'FontSize',20)
+    grid on
+end
+
+
 % MOVING AVERAGE OF AREA
+% Preserve the first L points since they have higher uncertainty
 K = 3;
 MA = 5;
 kb = 6;
@@ -92,10 +93,13 @@ for i = 1:N
     MA_area{i} = [ A_new{i}(1:K)' movmean(A_new{i}(K+1:end), [kb, kf])' ];
 end
 
-or = [0.9290 0.6940 0.1250];
+
+
 
 % Plot all raw areas against their smoothing
-for i = 1:2
+% orange color
+or = [0.9290 0.6940 0.1250];
+for i = 1:N
     figure;
     plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5, 'Color', or)
     hold on
@@ -109,36 +113,6 @@ for i = 1:2
 end
 
 
-
-
-% % Plot all raw areas against their normalization
-% for i = 1:N
-%     figure;
-%     plot(time_mat_area{i}, MA_area{i}, 'Linewidth',1.5)
-%     hold on
-%     plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
-%     title(temps_strings{i}, 'FontSize', 20)
-%     legend('Unnormalized', 'Normalized','FontSize', 20)
-%     xlabel('Time', 'FontSize',20)
-%     ylabel('Area-MAT', 'FontSize',20)
-%     grid on
-% end
-
-
-
-% PLOT all frequencies Together smoothed
-figure;
-for i = 1:N
-
-    plot(time_dat{i}, wv_dat{i}, 'linewidth', 2)
-    hold on
-end
-set(gca, 'FontSize', 20)
-legend(temps_strings, 'FontSize', 20)
-%title('Smoothed', 'FontSize', 20)
-xlabel('Time [s]', 'FontSize',20)
-ylabel('Wavenumber [cm^{-1}]', 'FontSize',20)
-grid on
 
 % PLOT frequencies against their smoothed version
 for i = 1:2
@@ -154,12 +128,41 @@ for i = 1:2
     grid on
 end
 
+% PLOT all frequencies Together smoothed
+figure;
+for i = 1:N
+
+    plot(time_dat{i}, MA_wv{i}, 'linewidth', 2)
+    hold on
+end
+set(gca, 'FontSize', 20)
+legend(temps_strings, 'FontSize', 20)
+xlabel('Time [s]', 'FontSize',20)
+ylabel('Wavenumber [cm^{-1}]', 'FontSize',20)
+grid on
+
+
+% PLOT all frequencies Together smoothed
+figure;
+for i = 1:N
+
+    plot(time_mat_area{i}, MA_area{i}, 'linewidth', 2)
+    hold on
+end
+set(gca, 'FontSize', 20)
+legend(temps_strings, 'FontSize', 20)
+%title('Smoothed', 'FontSize', 20)
+xlabel('Time [s]', 'FontSize',20)
+ylabel('Wavenumber [cm^{-1}]', 'FontSize',20)
+grid on
+
+
 % Store area
 area = A_new;
 
 % Store P off index
 tp_idx = 45;
-% 
+ 
 % save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
 % save('Data/wv.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
 % save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
