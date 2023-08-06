@@ -24,7 +24,7 @@ str = temps_strings{idx};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.34;
+cut_off1 = 0.33;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
@@ -36,7 +36,7 @@ tp_AB = [tp_AB(1), tp_AB(end)];
 
 theta_pred = theta_A_pred + theta_B_pred;
 sz = 40;
-lwd = 1.5;
+lwd = 2.5;
 purple = [132, 53, 148]/256;
 blue = [62, 158, 222]/256;
 green = [44, 199, 114]/256;
@@ -48,19 +48,19 @@ fsz = 20;
 figure(1)
 scatter(time, cov, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime(1:end-1), theta_pred, 'Color', gd, 'Linewidth', lwd)
-hold on
-plot(dtime, theta, 'Color', blue, 'Linewidth', lwd)
-hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
 yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
+hold on
+plot(dtime, theta, 'Color', gd, 'Linewidth', lwd)
+hold on
+plot(dtime(1:end-1), theta_pred, 'Color', blue, 'Linewidth', lwd)
 hold on
 xlabel('Time [s]', 'FontSize', fsz)
 ylabel('Coverage [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
-legend('Data','Prediction', 'Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
+legend('Data','Pressure off', 'Phase change', 'Fitting', 'Prediction',  'FontSize',15)
 grid on
 box on
 
@@ -70,17 +70,18 @@ box on
 figure(2)
 scatter(time, covB, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime(1:end-1), theta_B_pred, 'Color', gd, 'Linewidth', lwd)
-hold on
-plot(dtime, theta_B, 'Color', blue, 'Linewidth', lwd)
-hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
+yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
+hold on
+plot(dtime, theta_B, 'Color', gd, 'Linewidth', lwd)
+hold on
+plot(dtime(1:end-1), theta_B_pred, 'Color', blue, 'Linewidth', lwd)
 xlabel('Time [s]', 'FontSize', fsz)
 ylabel('Coverage [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
-legend('Data','Prediction', 'Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
+legend('Data','Pressure off', 'Phase change', 'Fitting', 'Prediction',  'FontSize',15)
 grid on
 box on
 
@@ -88,15 +89,15 @@ box on
 figure(3)
 scatter(time, covA, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime(1:end-1), theta_A_pred, 'Color', gd, 'Linewidth', lwd)
-hold on
-plot(dtime, theta_A, 'Color', blue, 'Linewidth', lwd)
-hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
+hold on
+plot(dtime, theta_A, 'Color', gd, 'Linewidth', lwd)
+hold on
+plot(dtime(1:end-1), theta_A_pred, 'Color', blue, 'Linewidth', lwd)
 xlabel('Time [s]', 'FontSize', fsz)
 ylabel('Coverage [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
-legend('Data','Prediction', 'Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
+legend('Data','Pressure off', 'Fitting', 'Prediction',  'FontSize',15)
 grid on
 box on

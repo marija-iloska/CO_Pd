@@ -15,7 +15,7 @@ str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.34;
+cut_off1 = 0.33;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
@@ -56,7 +56,7 @@ dtime(end)=[];
 
 
 % Plotting 
-lwd = 2;
+lwd = 2.5;
 sz = 20;
 fsz = 35;
 %plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
@@ -74,7 +74,8 @@ plot(dtime, theta_B, 'Color', blue, 'Linewidth',lwd)
 hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
-%yline(cut_off1)
+yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
+hold on
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time [s]', 'FontSize', 20)
@@ -83,8 +84,8 @@ legend('Data', 'Fitting','FontSize', 15)
 grid on
 box on
 
-% filename = join(['figs/', str, '_Bfit.eps']);
-% print(gcf, filename, '-depsc2', '-r300');
+filename = join(['figs/', str, '_Bfit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 
 % Plot A
@@ -95,7 +96,7 @@ plot(dtime, theta_A, 'Color', blue, 'Linewidth', lwd)
 hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
-%yline(cut_off1)
+ylim([0, 0.2])
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time [s]', 'FontSize', 20)
@@ -104,10 +105,10 @@ legend('Data', 'Fitting', 'FontSize', 15)
 grid on
 box on
 
-% filename = join(['figs/', str, '_Afit.eps']);
-% print(gcf, filename, '-depsc2', '-r300');
+filename = join(['figs/', str, '_Afit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
-% Plot B
+% Plot FINAL
 figure(3)
 scatter(time, cov, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
@@ -115,7 +116,7 @@ plot(dtime, theta, 'Color', gd, 'Linewidth', lwd)
 hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
-yline(cut_off1, 'color', tq, 'LineWidth', lwd)
+yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
 hold on
 xlabel('Time [s]', 'FontSize', fsz)
 ylabel('Coverage [ML]','FontSize', fsz)
@@ -125,8 +126,8 @@ grid on
 box on
 legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 
-% filename = join(['figs/', str, '_Xfit.eps']);
-% print(gcf, filename, '-depsc2', '-r300');
+filename = join(['figs/', str, '_Xfit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 %save('Data/475ks.mat', 'vals', 'dlms')
 %save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');
