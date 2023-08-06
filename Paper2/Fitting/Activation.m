@@ -30,12 +30,12 @@ T = [450, 460, 470, 475, 480, 490];
 R = 0.001987204258;
 
 idx = 1:6;
+idx = setdiff(idx, 4);
 
+% Ea
 for n = 1:N
-     [Ea, A, Ea_SE, A_SE, ln_k, Rsq_Ea] = get_Ea(k{n}(idx), T(idx), R);
-     Ea_k(n) = Ea;
-     Ea_kSE(n) = Ea_SE;
+     [Ea(n), A(n), Ea_SE(n), A_SE(n), ln_k, Rsq_Ea(n)] = get_Ea(k{n}(idx), T(idx), R);
 end
 
-
+save('Ea_all.mat', 'Ea', 'Ea_SE', 'A', 'A_SE', 'Rsq_Ea', 'T', 'R', "k")
 

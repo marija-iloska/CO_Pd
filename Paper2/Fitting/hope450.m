@@ -8,21 +8,21 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 2;
+t = 4;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.31;
+cut_off1 = 0.34;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 24;
+dtime = 0.01 : 0.02 : 15;
 tN = 1:length(cov);
 
 
@@ -83,8 +83,8 @@ legend('Data', 'Fitting','FontSize', 15)
 grid on
 box on
 
-filename = join(['figs/', str, '_Bfit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Bfit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 
 % Plot A
@@ -104,8 +104,8 @@ legend('Data', 'Fitting', 'FontSize', 15)
 grid on
 box on
 
-filename = join(['figs/', str, '_Afit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Afit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 % Plot B
 figure(3)
@@ -125,7 +125,8 @@ grid on
 box on
 legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 
-filename = join(['figs/', str, '_Xfit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Xfit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
-%save('Data/490ks.mat', 'vals', 'dlms')
+%save('Data/475ks.mat', 'vals', 'dlms')
+%save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');

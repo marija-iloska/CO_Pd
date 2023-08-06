@@ -1,0 +1,38 @@
+clear all
+close all
+clc
+
+load ../DataConversion/Data/temps_info.mat
+load ../DataConversion/Data/cov_time_for_fitting.mat
+load Ea_all.mat
+
+% k = {koB, kBo, kAo, koA, kAB, kBA};
+% T = [450, 460, 470, 475, 480, 490];
+
+% Index of temperature we want to predict for
+idx = 4;
+
+% Arrhenious equation
+% k = A exp(-Ea/(RT))
+k_pred = A.*exp(- Ea./(R*T(idx)) );
+
+t = 2;
+cov = cov_mix{t};
+time = time_mix{t};
+str = temps_strings{t};
+
+%% Process Data
+% Get system divisions
+cut_off1 = 0.31;
+tp_AB = find(cov > cut_off1);
+tp_AB = [tp_AB(1), tp_AB(end)];
+
+
+% Delta Time
+dt = [0, time(2:end)' - time(1:end-1)'];
+dtime = 0.01 : 0.02 : 24;
+tN = 1:length(cov);
+
+
+% Get individual coverages
+[M, covA, covB] = get_sat(cov, tN, tp_AB, cut_off1);
