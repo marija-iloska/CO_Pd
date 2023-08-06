@@ -17,7 +17,7 @@ theta_A = zeros(1,N);
 % Region I _________________________________________________
 theta_B(1) = cov(1);
 
-idx = find(dtime < time(tp_AB(1)-1));
+idx = find(dtime < time(tp_AB(1)-3));
 R1 = idx(end);
 for t = 2 : R1
     covX = theta_A(t-1) + theta_B(t-1);
@@ -32,8 +32,8 @@ end
 
 
 % Region II ________________________________________________
-theta_A(t+1) = covA(tp_AB(1)+1);
-theta_B(t+1) = covB(tp_AB(1)+1);
+theta_A(t+1) = covA(tp_AB(1));
+theta_B(t+1) = covB(tp_AB(1));
 
 idx = find(dtime < time(tp_idx));
 R2 = idx(end);
