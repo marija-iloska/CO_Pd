@@ -8,16 +8,16 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 3;
+t = 2;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.23;
+cut_off1 = 0.33;
 tp_AB = find(cov > cut_off1);
-tp_AB = [tp_AB(1), tp_AB(end)+1];
+tp_AB = [tp_AB(1), tp_AB(end)];
 
 
 % Delta Time
@@ -37,8 +37,8 @@ r34 = 0;
 
 
 % Get k constants
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
-% [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = k_model_test(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
 vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
@@ -47,8 +47,9 @@ vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 %write_out(str, dlms, vals);
 
 % Get fitting (simulation)
-[theta_A, theta_B] = fitting_dt(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
-% [theta_A, theta_B] = model_test(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
+%[theta_A, theta_B] = fitting_dt(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, N, r12, r23, r34, M, P);
+[theta_A, theta_B] = fitting1(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
+
 
 theta = theta_A + theta_B;
 dtime(end)=[];
@@ -63,6 +64,8 @@ fsz = 35;
 purple = [132, 53, 148]/256;
 blue = [62, 158, 222]/256;
 green = [44, 199, 114]/256;
+tq = [50, 230, 191]/256;
+gd = [196, 191, 24]/256;
 
 figure(1)
 scatter(time, covB, sz, 'filled', 'k', 'Linewidth', lwd)
@@ -70,11 +73,13 @@ hold on
 plot(dtime, theta_B, 'Color', blue, 'Linewidth',lwd)
 hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
+hold on
+%yline(cut_off1)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
-xlabel('Time', 'FontSize', 20)
-ylabel('Coverage B', 'FontSize', 20)
-legend('Experimental', 'Fitted','FontSize', 15)
+xlabel('Time [s]', 'FontSize', 20)
+ylabel('Coverage B [ML]', 'FontSize', 20)
+legend('Data', 'Fitting','FontSize', 15)
 
 filename = join(['figs/', str, '_Bfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
@@ -87,29 +92,34 @@ hold on
 plot(dtime, theta_A, 'Color', blue, 'Linewidth', lwd)
 hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
+hold on
+%yline(cut_off1)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
-xlabel('Time', 'FontSize', 20)
-ylabel('Coverage A', 'FontSize', 20)
-legend('Experimental', 'Fitted', 'FontSize', 15)
+xlabel('Time [s]', 'FontSize', 20)
+ylabel('Coverage A [ML]', 'FontSize', 20)
+legend('Data', 'Fitting', 'FontSize', 15)
 
 filename = join(['figs/', str, '_Afit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
 
 % Plot B
 figure(3)
-xline(time(tp_idx), 'm','Linewidth',lwd);
-hold on
 scatter(time, cov, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime, theta, 'Color', green, 'Linewidth', lwd)
-xlabel('Time', 'FontSize', fsz)
-ylabel('Coverage','FontSize', fsz)
+plot(dtime, theta, 'Color', gd, 'Linewidth', lwd)
+hold on
+xline(time(tp_idx), 'm','Linewidth',lwd);
+hold on
+yline(cut_off1, 'color', tq, 'LineWidth', lwd)
+hold on
+xlabel('Time [s]', 'FontSize', fsz)
+ylabel('Coverage [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
 grid on
 box on
-legend('Pressure off', 'Data','Fitted')
+legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 
 filename = join(['figs/', str, '_Xfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');

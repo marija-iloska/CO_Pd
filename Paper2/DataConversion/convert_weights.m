@@ -126,8 +126,8 @@ end
 
 % Store TIME for plotting
 time_mix = time_mat_area;
+cov_mix = cov_a_all;
 
 
-
-%save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
+save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
 

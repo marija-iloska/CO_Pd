@@ -87,8 +87,8 @@ end
 % Preserve the first L points since they have higher uncertainty
 K = 3;
 MA = 5;
-kb = 6;
-kf = 6;
+kb = 2;
+kf = 1;
 for i = 1:N
     MA_area{i} = [ A_new{i}(1:K)' movmean(A_new{i}(K+1:end), [kb, kf])' ];
 end
@@ -158,12 +158,12 @@ grid on
 
 
 % Store area
-area = A_new;
+area = MA_area;
 
 % Store P off index
 tp_idx = 45;
  
-% save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
-% save('Data/wv.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
-% save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
+save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
+save('Data/wv.mat', 'wv', 'wv_dat', 'time_wv', 'time_dat', 'cov_sat')
+save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
 
