@@ -73,8 +73,8 @@ k_oA = k_oX; % - k_oB;
 
 
 % Get kAB from kBo_________________________________________________ 
-tau1 = R3(2:end)+1;
-tau = R3(1:end-1)+1;
+tau1 = R3(2:end);
+tau = R3(1:end-1);
 
 Y = covB(tau1) - covB(tau); 
 % Y = covB(tau1) - (1 - k_Bo*dt(tau)).*covB(tau); 

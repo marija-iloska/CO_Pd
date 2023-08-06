@@ -8,21 +8,21 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 5;
+t = 2;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.33;
+cut_off1 = 0.31;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 20;
+dtime = 0.01 : 0.02 : 24;
 tN = 1:length(cov);
 
 
@@ -40,7 +40,7 @@ r34 = 0;
 %[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
-vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
+vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo];
 
 
 % Store stats to excel file
@@ -80,6 +80,8 @@ set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time [s]', 'FontSize', 20)
 ylabel('Coverage B [ML]', 'FontSize', 20)
 legend('Data', 'Fitting','FontSize', 15)
+grid on
+box on
 
 filename = join(['figs/', str, '_Bfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
@@ -99,6 +101,8 @@ set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time [s]', 'FontSize', 20)
 ylabel('Coverage A [ML]', 'FontSize', 20)
 legend('Data', 'Fitting', 'FontSize', 15)
+grid on
+box on
 
 filename = join(['figs/', str, '_Afit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
@@ -124,4 +128,4 @@ legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 filename = join(['figs/', str, '_Xfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
 
-%save('Data/480ks.mat', 'vals', 'dlms')
+%save('Data/490ks.mat', 'vals', 'dlms')

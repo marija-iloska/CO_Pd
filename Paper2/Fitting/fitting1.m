@@ -87,7 +87,7 @@ end
 theta_B(t) = covB(tp_AB(2));
 theta_A(t) = covA(tp_AB(2));
 
-idx = find(dtime > time(tp_AB(2))+5);
+idx = find(dtime > time(tp_AB(2))+1);
 R4 = idx(end-1);
 
 for t = R3+1 : R4

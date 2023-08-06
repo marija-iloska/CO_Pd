@@ -87,8 +87,8 @@ end
 % Preserve the first L points since they have higher uncertainty
 K = 3;
 MA = 5;
-kb = 2;
-kf = 1;
+kb = 4;
+kf = 4;
 for i = 1:N
     MA_area{i} = [ A_new{i}(1:K)' movmean(A_new{i}(K+1:end), [kb, kf])' ];
 end

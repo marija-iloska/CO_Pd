@@ -121,5 +121,5 @@ end
 
 
 % NORMALIZED AREA
-%save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
-%save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
