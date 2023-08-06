@@ -61,7 +61,7 @@ end
 theta_A(t) = covA(tp_idx);
 theta_B(t) = covB(tp_idx);
 
-idx = find(dtime < time(tp_AB(2)-1));
+idx = find(dtime < time(tp_AB(2)));
 R3 = idx(end);
 
 for t = R2+1 : R3
@@ -84,10 +84,10 @@ end
 
 % Region IV ________________________________________________
 
-theta_B(t) = covB(tp_AB(2)+1);
-theta_A(t) = covA(tp_AB(2)+1);
+theta_B(t) = covB(tp_AB(2));
+theta_A(t) = covA(tp_AB(2));
 
-idx = find(dtime > time(tp_AB(2)+1));
+idx = find(dtime > time(tp_AB(2))+5);
 R4 = idx(end-1);
 
 for t = R3+1 : R4

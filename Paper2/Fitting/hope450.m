@@ -8,7 +8,7 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 2;
+t = 3;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
@@ -124,4 +124,4 @@ legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 filename = join(['figs/', str, '_Xfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
 
-
+%save('Data/470ks.mat', 'vals', 'dlms')
