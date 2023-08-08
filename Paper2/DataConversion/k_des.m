@@ -1,4 +1,4 @@
-function [k, k_SE, Rsq_k] = k_des(cov, time, cov_split, tp_idx)
+function [k, k_SE, Rsq_k, cov_plot] = k_des(cov, time, cov_split, tp_idx)
 
 cov(cov <= 0) = 10e-4;
 
@@ -17,5 +17,7 @@ k = dlm_k.Coefficients.Estimate;
 
 k_SE = dlm_k.Coefficients.SE(1);
 Rsq_k = dlm_k.Rsquared.Ordinary;
+
+cov_plot = cov(R);
 
 end

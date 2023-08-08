@@ -22,8 +22,8 @@ idx = setdiff(1:N, [4]);
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.16 : 0.005 : 0.33;
-%covs = 0.23;
+%covs = 0.16 : 0.005 : 0.33;
+covs = 0.23;
 Nsplit = length(covs);
 
 
@@ -34,15 +34,34 @@ for j = 1 : Nsplit
     for n = 1:N
     
         % Get k_des for each temp
-        [k(j,n), k_SE(j,n), Rsq_k(j,n)] = k_des(cov_mix{n}, time_mix{n}, covs(j), tp_idx);
+        [k(j,n), k_SE(j,n), Rsq_k(j,n), cov_plot] = k_des(cov_mix{n}, time_mix{n}, covs(j), tp_idx);
+
+        theta(1) = cov_plot(1);
+        theta0 = cov_plot(2);   
+        for t = 2 : length(cov_mix{n})      
+            theta(t) = theta0*exp(-k(j,n)*time_mix{n}(t));
+            
+        end
+
+        figure;
+        plot(theta)
+        hold on
+        plot(cov_plot, '.')
+        clear theta
     
     end
+
+
     
     
     % Get Ea
     [Ea(j), A(j), Ea_SE(j), A_SE(j), ln_k, Rsq_Ea(j)] = get_Ea(k(j, idx), T(idx), R);
 
 end
+
+
+
+
 
 id = find(covs < 0.24);
 
