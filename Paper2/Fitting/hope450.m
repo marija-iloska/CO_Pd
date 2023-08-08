@@ -15,14 +15,14 @@ str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.33;
+cut_off1 = 0.32;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 15;
+dtime = 0.01 : 0.02 : 25;
 tN = 1:length(cov);
 
 
@@ -70,43 +70,42 @@ gd = [196, 191, 24]/256;
 figure(1)
 scatter(time, covB, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime, theta_B, 'Color', blue, 'Linewidth',lwd)
-hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
 yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
+hold on
+plot(dtime, theta_B, 'Color', gd, 'Linewidth',lwd)
 hold on
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time [s]', 'FontSize', 20)
 ylabel('Coverage B [ML]', 'FontSize', 20)
-legend('Data', 'Fitting','FontSize', 15)
+legend('Data','Pressure off', 'Phase change','Fitting',  'FontSize',15)
 grid on
 box on
 
-filename = join(['figs/', str, '_Bfit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Bfit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 
 % Plot A
 figure(2)
 scatter(time, covA, sz, 'filled', 'k', 'Linewidth', lwd)
 hold on
-plot(dtime, theta_A, 'Color', blue, 'Linewidth', lwd)
-hold on
 xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
-ylim([0, 0.2])
+plot(dtime, theta_A, 'Color', gd, 'Linewidth', lwd)
+hold on
+xlabel('Time [s]', 'FontSize', fsz)
+ylabel('Coverage [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
-xlabel('Time [s]', 'FontSize', 20)
-ylabel('Coverage A [ML]', 'FontSize', 20)
-legend('Data', 'Fitting', 'FontSize', 15)
+legend('Data','Pressure off', 'Fitting',  'FontSize',15)
 grid on
 box on
 
-filename = join(['figs/', str, '_Afit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Afit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 % Plot FINAL
 figure(3)
@@ -126,8 +125,8 @@ grid on
 box on
 legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 
-filename = join(['figs/', str, '_Xfit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Xfit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 %save('Data/475ks.mat', 'vals', 'dlms')
 %save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');

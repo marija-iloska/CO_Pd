@@ -7,7 +7,7 @@ load ../DataConversion/Data/temps_info.mat
 %temps_strings(4) = [];
 N = length(temps_strings);
 
-%    vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA,k_oX, k_Xo];]
+% vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA,k_oX, k_Xo];]
 
 for n = 1 : N
 
@@ -25,7 +25,7 @@ for n = 1 : N
 
 end
 
-k = {koB, kBo, kAo, koA, kAB, kBA};
+k = {koB, kBo, kAo, koA, kAB, kBA, koX, kXo};
 T = [450, 460, 470, 475, 480, 490];
 R = 0.001987204258;
 
@@ -33,9 +33,9 @@ idx = 1:6;
 idx = setdiff(idx, 4);
 
 % Ea
-for n = 1:N
-     [Ea(n), A(n), Ea_SE(n), A_SE(n), ln_k, Rsq_Ea(n)] = get_Ea(k{n}(idx), T(idx), R);
+for n = 1:8
+     [Ea(n), ln_A(n), Ea_SE(n), A_SE(n), ln_k, Rsq_Ea(n)] = get_Ea(k{n}(idx), T(idx), R);
 end
 
-save('Ea_all.mat', 'Ea', 'Ea_SE', 'A', 'A_SE', 'Rsq_Ea', 'T', 'R', "k")
+%save('Ea_all.mat', 'Ea', 'Ea_SE', 'A', 'A_SE', 'Rsq_Ea', 'T', 'R', "k")
 
