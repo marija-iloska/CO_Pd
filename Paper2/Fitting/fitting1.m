@@ -2,7 +2,7 @@ function [theta_A, theta_B] = fitting1(cov, covA, covB, dtime, time, vals, tp_AB
 
 vals = num2cell(vals);
 [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA] = vals{:};
-
+c = vals{end};
 
 dt = dtime(2:end)-dtime(1:end-1);
 N = length(dt);
@@ -24,7 +24,7 @@ for t = 2 : R1
 
     % B
     gain_B =   k_oB*dt(t)*P*( M - covX );
-    loss_B = - k_Bo*dt(t)*theta_B(t-1);
+    loss_B = - k_Bo*dt(t)*theta_B(t-1) + c*dt(t);
 
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
 end
@@ -98,7 +98,7 @@ idx = find(dtime > time(tp_AB(2))+1);
 R4 = idx(end-1);
 
 for t = R3+1 : R4
-    loss_B = - k_Bo*dt(t)*theta_B(t-1);
+    loss_B = - k_Bo*dt(t)*theta_B(t-1) + c*dt(t);
     theta_B(t) = theta_B(t-1) + loss_B;
 end
 

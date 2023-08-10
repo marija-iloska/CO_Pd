@@ -8,14 +8,14 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 5;
+t = 2;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.32;
+cut_off1 = 0.33;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
@@ -38,9 +38,9 @@ r34 = 0;
 
 % Get k constants
 %[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[c, k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
-vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo];
+vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, c];
 
 
 % Store stats to excel file

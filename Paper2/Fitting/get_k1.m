@@ -1,4 +1,4 @@
-function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M)
+function [c, k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M)
 
 
 % Region indices
@@ -15,10 +15,13 @@ R4 = tp_AB(2)+1 : N;
 tau1 = R4(2:end);
 tau = R4(1:end-1);
 
-Y= - log(covB(tau1)./covB(tau(1)));
-X = time(tau1) - time(tau(1));
-dlm_kbo = fitlm(X, Y,'Intercept',false);
-k_Bo = dlm_kbo.Coefficients.Estimate;
+% Y= - log(covB(tau1)./covB(tau(1)));
+% X = time(tau1) - time(tau(1));
+Y = (covB(tau1) - covB(tau))./dt(tau);
+X = - covB(tau);
+dlm_kbo = fitlm(X, Y,'Intercept',true);
+c = dlm_kbo.Coefficients.Estimate(1);
+k_Bo = dlm_kbo.Coefficients.Estimate(2);
 k_Bo_SE = dlm_kbo.Coefficients.SE;
 
 
@@ -49,7 +52,7 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 tau1 = R1(2:end);
 tau = R1(1:end-1);
 
-Y = covB(tau1) - (1 - k_Bo*dt(tau)).*covB(tau);
+Y = covB(tau1) - (1 - k_Bo*dt(tau)).*covB(tau) - c*dt(tau);
 X = dt(tau).*P.*(M - cov(tau));
 dlm_kob = fitlm(X,Y,'Intercept',false);
 k_oB = dlm_kob.Coefficients.Estimate;
