@@ -60,10 +60,10 @@ end
 
 
 % Region III ________________________________________________
-theta_A(t) = covA(tp_idx);
-theta_B(t) = covB(tp_idx);
-% theta_A(t+1) = theta_A(t);
-% theta_B(t+1) = theta_B(t);
+% theta_A(t) = covA(tp_idx);
+% theta_B(t) = covB(tp_idx);
+theta_A(t+1) = theta_A(t);
+theta_B(t+1) = theta_B(t);
 
 idx = find(dtime < time(tp_AB(2)));
 R3 = idx(end);
@@ -91,8 +91,8 @@ end
 theta_B(t) = covB(tp_AB(2));
 theta_A(t) = covA(tp_AB(2));
 
-% theta_A(t+1) = theta_A(t);
-% theta_B(t+1) = theta_B(t);
+theta_A(t+1) = theta_A(t);
+theta_B(t+1) = theta_B(t);
 
 idx = find(dtime > time(tp_AB(2))+1);
 R4 = idx(end-1);

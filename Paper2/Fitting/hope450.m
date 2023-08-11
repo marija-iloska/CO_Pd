@@ -8,10 +8,20 @@ P = 0.001;
 load ../DataConversion/Data/cov_time_for_fitting.mat
 load ../DataConversion/Data/temps_info.mat
 
-t = 2;
+cut = [19, 20, 13, 12, 10.3, 10];
+for i = 1:N
+
+    cov_mix{i}(time_mix{i} > cut(i)) = [];
+    time_mix{i}(time_mix{i} > cut(i)) = [];
+end
+
+t = 4;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
+
+
+
 
 %% Process Data
 % Get system divisions
@@ -22,7 +32,7 @@ tp_AB = [tp_AB(1), tp_AB(end)];
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 25;
+dtime = 0.01 : 0.02 : 12;
 tN = 1:length(cov);
 
 
@@ -57,7 +67,7 @@ dtime(end)=[];
 
 % Plotting 
 lwd = 2.5;
-sz = 20;
+sz = 30;
 fsz = 35;
 %plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
 
@@ -76,6 +86,7 @@ yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
 hold on
 plot(dtime, theta_B, 'Color', gd, 'Linewidth',lwd)
 hold on
+ylim([0,0.4])
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
 xlabel('Time [s]', 'FontSize', 20)
@@ -84,8 +95,8 @@ legend('Data','Pressure off', 'Phase change','Fitting',  'FontSize',15)
 grid on
 box on
 
-% filename = join(['figs/', str, '_Bfit.eps']);
-% print(gcf, filename, '-depsc2', '-r300');
+filename = join(['figs/', str, '_Bfit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 
 % Plot A
@@ -96,16 +107,17 @@ xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
 plot(dtime, theta_A, 'Color', gd, 'Linewidth', lwd)
 hold on
+ylim([0,0.4])
 xlabel('Time [s]', 'FontSize', fsz)
-ylabel('Coverage [ML]','FontSize', fsz)
+ylabel('Coverage A [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
 set(gca,'FontSize',15, 'Linewidth', 1)
 legend('Data','Pressure off', 'Fitting',  'FontSize',15)
 grid on
 box on
 
-% filename = join(['figs/', str, '_Afit.eps']);
-% print(gcf, filename, '-depsc2', '-r300');
+filename = join(['figs/', str, '_Afit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
 % Plot FINAL
 figure(3)
@@ -117,6 +129,7 @@ xline(time(tp_idx), 'm','Linewidth',lwd);
 hold on
 yline(cut_off1, 'color', 'm', 'LineWidth', lwd, 'LineStyle', '--')
 hold on
+ylim([0,0.5])
 xlabel('Time [s]', 'FontSize', fsz)
 ylabel('Coverage [ML]','FontSize', fsz)
 title(strcat(str,'K'), 'FontSize', 40)
@@ -125,8 +138,8 @@ grid on
 box on
 legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 
-% filename = join(['figs/', str, '_Xfit.eps']);
-% print(gcf, filename, '-depsc2', '-r300');
+filename = join(['figs/', str, '_Xfit.eps']);
+print(gcf, filename, '-depsc2', '-r300');
 
-%save('Data/475ks.mat', 'vals', 'dlms')
-%save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');
+%save('Data/450ks.mat', 'vals', 'dlms')
+save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');

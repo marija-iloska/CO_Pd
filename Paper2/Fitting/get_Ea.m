@@ -1,4 +1,4 @@
-function [Ea, ln_A, Ea_SE, A_SE, ln_k, Rsq_Ea] = get_Ea(k, T, R)
+function [Ea, A, Ea_SE, A_SE, ln_k, Rsq_Ea] = get_Ea(k, T, R)
 
 % The units of Ea depend on the units of the R value entered
 
