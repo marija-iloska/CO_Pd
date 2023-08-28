@@ -99,7 +99,7 @@ end
 idx = find(dtime < time(end));
 R4 = idx(end-1);
 
-for t = R3 : R4
+for t = R3 : N
     loss_B = - k_Bo*dt(t)*theta_B(t-1); % + c*dt(t);
     theta_B(t) = theta_B(t-1) + loss_B;
 end
