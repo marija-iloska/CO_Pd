@@ -1,4 +1,4 @@
-function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M)
+function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k450(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M)
 
 
 % Region indices

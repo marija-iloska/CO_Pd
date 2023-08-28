@@ -1,4 +1,4 @@
-function [theta_A, theta_B] = fitting1(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P)
+function [theta_A, theta_B] = fitting450(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P)
 
 vals = num2cell(vals);
 [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA] = vals{:};
@@ -17,7 +17,7 @@ theta_A = zeros(1,N);
 % Region I _________________________________________________
 theta_B(1) = cov(1);
 
-idx = find(dtime < time(tp_AB(1)-3));
+idx = find(dtime < time(tp_AB(1)));
 R1 = idx(end);
 for t = 2 : R1
     covX = theta_A(t-1) + theta_B(t-1);
@@ -32,14 +32,14 @@ end
 
 
 % Region II ________________________________________________
-theta_A(t+1) = covA(tp_AB(1));
-theta_B(t+1) = covB(tp_AB(1));
+% theta_A(t) = covA(tp_AB(1));
+% theta_B(t) = covB(tp_AB(1));
 % theta_A(t+1) = theta_A(t);
 % theta_B(t+1) = theta_B(t);
 
-idx = find(dtime < time(tp_idx));
+idx = find(dtime < time(tp_idx+1));
 R2 = idx(end);
-for t = R1+2 : R2
+for t = R1 : R2
 
     covX = theta_A(t-1) + theta_B(t-1);
 
@@ -62,13 +62,14 @@ end
 % Region III ________________________________________________
 % theta_A(t) = covA(tp_idx);
 % theta_B(t) = covB(tp_idx);
-theta_A(t+1) = theta_A(t);
-theta_B(t+1) = theta_B(t);
+% theta_A(t+1) = theta_A(t);
+% theta_B(t+1) = theta_B(t);
 
-idx = find(dtime < time(tp_AB(2)));
+
+idx = find(dtime < time(tp_AB(2)+5));
 R3 = idx(end);
 
-for t = R2+1 : R3
+for t = R2+1 : R3+1
     
     covX = theta_A(t-1) + theta_B(t-1);
 
@@ -87,18 +88,18 @@ end
 
 
 % Region IV ________________________________________________
-% 
-theta_B(t+1) = covB(tp_AB(2));
-theta_A(t+1) = covA(tp_AB(2));
+
+% theta_B(t) = covB(tp_AB(2)+2);
+% theta_A(t) = covA(tp_AB(2)+2);
  
 % theta_A(t+1) = theta_A(t);
 % theta_B(t+1) = theta_B(t);
 
 
-idx = find(dtime > time(tp_AB(2)));
+idx = find(dtime < time(end));
 R4 = idx(end-1);
 
-for t = R3+1 : R4
+for t = R3 : R4
     loss_B = - k_Bo*dt(t)*theta_B(t-1); % + c*dt(t);
     theta_B(t) = theta_B(t-1) + loss_B;
 end

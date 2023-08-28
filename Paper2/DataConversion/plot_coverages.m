@@ -5,15 +5,16 @@ clc
 % PLOT coverages
 load Data/coverage_vs_time.mat
 load Data/temps_info.mat
+load ../Fitting/cov_time_stochastic.mat
 
-cut = [21.5, 20, 11, 10.3, 10];
-% cut = [25, 25, 25, 25, 10.3, 25];
-
-for i = 1:N-1
-
-    cov_mix{i}(time_mix{i} > cut(i)) = [];
-    time_mix{i}(time_mix{i} > cut(i)) = [];
-end
+% cut = [21.5, 20, 11, 10.3, 10];
+% % cut = [25, 25, 25, 25, 10.3, 25];
+% 
+% for i = 1:N-1
+% 
+%     cov_mix{i}(time_mix{i} > cut(i)) = [];
+%     time_mix{i}(time_mix{i} > cut(i)) = [];
+% end
 
 % cov_mix{1}(end-5:end) = 10e-4;
 
@@ -22,11 +23,12 @@ msz = 11;
 gr = [48, 219, 159]/256;
 for t = 1 : N
 
-     %plot(time_mix{t}, movmean(cov_mix{t}, [1,2]), '.', 'MarkerSize', msz)
-     %hold on
+     plot( theta{t},wv{t}, '.', 'MarkerSize', msz)
+     hold on
+     ylim([1810, 1900])
 % 
-     plot(time_mix{t}, movmean(cov_mix{t}, 1), 'Linewidth', 3)
-      hold on
+%      plot(time_mix{t}, movmean(cov_mix{t}, 1), 'Linewidth', 3)
+%       hold on
 %     xline(3, 'Color', 'm', 'linewidth', 3)
 %     hold on
 %     yline(0.31, 'Color', gr, 'linewidth', 3)
@@ -35,7 +37,7 @@ for t = 1 : N
       %cov_mix{t} = movmean(cov_mix{t}, [1,2]);
 
 end
-set(gca, 'FontSize', 15)
+set(gca, 'FontSize', 15, 'YDir', 'reverse')
 xlabel('Time [s]', 'FontSize', sz)
 ylabel('Coverage [ML]', 'FontSize', sz)
 legend( temps_strings, 'FontSize', sz)
@@ -46,7 +48,7 @@ grid on
 % print(gcf, filename, '-depsc2', '-r300');
 
 % Save for fitting
-%save('Data/cov_time_for_fitting.mat', 'cov_mix', 'time_mix')
+save('Data/cov_time_for_fitting1.mat', 'cov_mix', 'time_mix')
 % 
 % filename = 'all_cov.csv';
 % 

@@ -5,6 +5,8 @@ clc
 % PLot areas
 load Data/T6.mat
 
+load Absorptivity/epsilons_mat.mat
+
 sz = 20;
 msz = 11;
 for t = 1 : N

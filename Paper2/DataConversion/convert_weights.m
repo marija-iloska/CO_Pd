@@ -110,7 +110,7 @@ end
     hold on
     plot(time_wv{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
     hold on
-    plot(time_mat_area{n}, movmean(cov_mix{n}, 3), 'color', 'k','linewidth', 2)
+    plot(time_mat_area{n}, movmean(cov_mix{n}, 1), 'color', 'k','linewidth', 2)
     hold on
     set(gca, 'FontSize', 15)
     legend('cov( A )', 'cov( F )', 'cov( A+F )', 'FontSize', 20)
@@ -126,7 +126,7 @@ end
 
 % Store TIME for plotting
 time_mix = time_mat_area;
-cov_mix = cov_a_all;
+%cov_mix = cov_a_all;
 
 
 save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')

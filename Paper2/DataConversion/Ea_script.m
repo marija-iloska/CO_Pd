@@ -9,6 +9,10 @@ clc
 
 load Data/temps_info.mat
 load Data/cov_time_for_fitting.mat
+load ../Fitting/cov_time_stochastic.mat
+
+% cov_mix = theta;
+% time_mix = time_mat_area;
 sz = 60;
 
 % Temperatures
@@ -16,13 +20,13 @@ T = [450, 460, 470, 475, 480, 490];
 
 
 % Which data point to exclude
-idx = setdiff(1:N, [4]);
+idx = setdiff(1:N, []);
 
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.16 : 0.005 : 0.33;
+covs = 0.2 : 0.005 : 0.35;
 %covs = 0.23;
 Nsplit = length(covs);
 

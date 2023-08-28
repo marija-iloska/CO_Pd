@@ -61,8 +61,8 @@ for n = 1:N
     move = 0;
     range1{1} = idx1(end - lim - 1  :end-3);
     range1{2} = idx1(end - lim + 4 :end); 
-    range1{3} = idx1(end - lim + 4: end);
-    range1{4} = idx1(end - lim + 4: end-move);
+    range1{3} = idx1(end - lim + 6: end);
+    range1{4} = idx1(end - lim + 6: end-move);
     range1{5} = idx1(end - lim + 4: end);
     range1{6} = idx1(end - lim + 5 : end);
 

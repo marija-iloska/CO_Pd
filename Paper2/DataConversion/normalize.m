@@ -23,8 +23,8 @@ load Data/T6.mat
 % end
 
 % Choose number of moving average points for FREQ
-kb = 6;
-kf = 4;
+kb = 2;
+kf = 1;
 K = 5;
 % MOVING AVERAGE OF WV
 % Preserve 0s padding/replacements in wv, but remove in wv_dat for plotting
@@ -87,8 +87,8 @@ end
 % Preserve the first L points since they have higher uncertainty
 K = 3;
 MA = 5;
-kb = 4;
-kf = 4;
+kb = 1;
+kf = 1;
 for i = 1:N
     MA_area{i} = [ A_new{i}(1:K)' movmean(A_new{i}(K+1:end), [kb, kf])' ];
 end
