@@ -55,7 +55,7 @@ r34 = 0;
 
 % Get k constants
 %[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
-[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k1(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k450(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
 vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo];
 
@@ -147,7 +147,7 @@ legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 filename = join(['figs/', str, '_Xfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
 
-%save('Data/450ks.mat', 'vals', 'dlms')
+save('Data/450ks_fix.mat', 'vals', 'dlms')
 %save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');
 
 % filename = join(['Data/', temps_strings{t}, 'ks_stoch.mat']);

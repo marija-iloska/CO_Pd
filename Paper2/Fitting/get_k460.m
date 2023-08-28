@@ -51,8 +51,8 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 
 % Get koB _________________________________________________ 
 % Takes tau 0 starting
-tau1 = R1(2:end);
-tau = R1(1:end-1);
+tau1 = R1(2:end)+1;
+tau = R1(1:end-1)+1;
 
 Y = covB(tau1) - (1 - k_Bo*dt(tau)).*covB(tau); % - c*dt(tau);
 X = dt(tau).*P.*(M - cov(tau));

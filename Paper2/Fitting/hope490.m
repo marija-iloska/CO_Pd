@@ -22,7 +22,7 @@ end
 % time = time_mat_area{t};
 % str = temps_strings{t};
 
-t = 3;
+t = 6;
 cov = cov_mix{t};
 time = time_mix{t};
 str = temps_strings{t};
@@ -39,7 +39,7 @@ tp_AB = [tp_AB(1), tp_AB(end)];
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 15;
+dtime = 0.01 : 0.02 : 10;
 tN = 1:length(cov);
 
 
@@ -55,7 +55,7 @@ r34 = 0;
 
 % Get k constants
 %[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
-[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k470(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k490(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
 vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo];
 
@@ -64,7 +64,7 @@ vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo];
 %write_out(str, dlms, vals);
 
 % Get fitting (simulation)
-[theta_A, theta_B] = fitting470(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
+[theta_A, theta_B] = fitting490(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
 
 
 theta = theta_A + theta_B;
@@ -147,7 +147,7 @@ legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 filename = join(['figs/', str, '_Xfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
 
-save('Data/470ks_fix.mat', 'vals', 'dlms')
+%save('Data/450ks.mat', 'vals', 'dlms')
 %save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');
 
 % filename = join(['Data/', temps_strings{t}, 'ks_stoch.mat']);

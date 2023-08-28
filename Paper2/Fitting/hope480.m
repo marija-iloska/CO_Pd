@@ -147,7 +147,7 @@ legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
 filename = join(['figs/', str, '_Xfit.eps']);
 print(gcf, filename, '-depsc2', '-r300');
 
-%save('Data/450ks.mat', 'vals', 'dlms')
+save('Data/480ks_fix.mat', 'vals', 'dlms')
 %save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');
 
 % filename = join(['Data/', temps_strings{t}, 'ks_stoch.mat']);
