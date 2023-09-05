@@ -4,7 +4,7 @@ clc
 
 load ../DataConversion/Data/temps_info.mat
 
-temps_strings([4,6]) = [];
+temps_strings([4]) = [];
 N = length(temps_strings);
 
 % vals = [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA,k_oX, k_Xo];]
@@ -20,25 +20,19 @@ for n = 1 : N
     koA(n) = vals(4);
     kAB(n) = vals(5);
     kBA(n) = vals(6);
-    koX(n) = vals(7);
-    kXo(n) = vals(8);
+%     koX(n) = vals(7);
+%     kXo(n) = vals(8);
     %c(n) = vals(9);
 
 end
 
-k = {koB, kBo, kAo, koA, kAB, kBA}; %, koX, kXo};
-T = [450, 460, 470, 475, 480, 490];
+k = {koB, kBo, kAo, koA, kAB, kBA};
+T = [450, 460, 470, 480, 490];
 R = 0.001987204258;
 
-idx = 1:4;
+idx = 1:5;
 idx = setdiff(idx, []);
 
-% dlm_c = fitlm(T(idx), c(idx),'Intercept',true);
-% a = dlm_c.Coefficients.Estimate(2);
-% b = dlm_c.Coefficients.Estimate(1);
-% 
-% 
-% c_new = a*T(4)+ b;
 
 
 % Ea

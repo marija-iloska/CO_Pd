@@ -11,8 +11,8 @@ R4 = tp_AB(2)+1 : N;
 % PHASE B
 
 % Get kBo _________________________________________________ 
-tau1 = R4(2:end)-10;
-tau = R4(1:end-1)-10;
+tau1 = R4(7:end);
+tau = R4(6:end-1);
 
 Y = (covB(tau1) - covB(tau))./dt(tau);
 X = - covB(tau);
@@ -59,8 +59,8 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 
 % Get koA _________________________________________________ 
 % Takes tau 0 starting
-tau1 = R2(2:end)+3;
-tau = R2(1:end-1)+3;
+tau1 = R2(2:end)-3;
+tau = R2(1:end-1)-3;
 
 Y = cov(tau1) - (1 - k_Xo*dt(tau)).*cov(tau); 
 X = dt(tau).*P.*(M - cov(tau));
@@ -75,17 +75,23 @@ k_oA_SE = dlm_koa.Coefficients.SE;
 
 % Get kBA and KAB____________________________________
 % Number of points
-L = 25;
 L3 = length(R3);
 L2 = length(R2);
-space3 = round(L3/L);
-space2 = round(L2/L);
-start = 1;
 
-range2 = start+1 : space2 : min(L2,L3)-2;
-range3 = start+1 : space3 : min(L2,L3)-2;
+L = min(L2, L3);
 
-skip3 = +1;
+start = 2;
+
+if L == L2
+    range2 = start : 1 : L;
+    range3 = floor(linspace(start, L3, length(range2)));
+else
+    range3 = start : 1 : L;
+    range2 = floor(linspace(start, L2, length(range3)));
+end
+
+
+skip3 = -1;
 skip2 = 0;
 tau13 = R3(range3) + skip3;
 tau3 = R3(range3-1) + skip3;

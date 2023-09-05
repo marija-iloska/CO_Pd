@@ -12,8 +12,8 @@ R4 = tp_AB(2)+1 : N;
 
 % Get kBo _________________________________________________ 
 % It takes tau = 0 as starting point
-tau1 = R4(2:end)-5;
-tau = R4(1:end-1)-5;
+tau1 = R4(2:end)-6;
+tau = R4(1:end-1)-6;
 
 % Y= - log(covB(tau1)./covB(tau(1)));
 % X = time(tau1) - time(tau(1));

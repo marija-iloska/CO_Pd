@@ -1,4 +1,4 @@
-function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k_NM(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M, cut_off)
+function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_470k_NM(cov, time, covA, covB, dt, tp_idx, tp_AB, N, P, M, cut_off)
 
 
 % Region indices
@@ -11,8 +11,8 @@ R4 = tp_AB(2)+1 : N;
 % PHASE B
 
 % Get kBo _________________________________________________ 
-tau1 = R4(2:end)-10;
-tau = R4(1:end-1)-10;
+tau1 = R4(2:end)-2;
+tau = R4(1:end-1)-2;
 
 Y = (covB(tau1) - covB(tau))./dt(tau);
 X = - covB(tau);
@@ -39,8 +39,8 @@ k_oB_SE = dlm_kob.Coefficients.SE;
 
 % Get kAo _________________________________________________ 
 % It takes tau = 0 as starting point
-tau1 = R3(2:end)+3;
-tau = R3(1:end-1)+3;
+tau1 = R3(4:end)+3;
+tau = R3(3:end-1)+3;
 
 Y= - log(cov(tau1)./cov(tau(1)));
 X = time(tau1) - time(tau(1));
@@ -59,8 +59,8 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 
 % Get koA _________________________________________________ 
 % Takes tau 0 starting
-tau1 = R2(2:end)+3;
-tau = R2(1:end-1)+3;
+tau1 = R2(4:end)-4;
+tau = R2(3:end-1)-4;
 
 Y = cov(tau1) - (1 - k_Xo*dt(tau)).*cov(tau); 
 X = dt(tau).*P.*(M - cov(tau));
@@ -75,17 +75,23 @@ k_oA_SE = dlm_koa.Coefficients.SE;
 
 % Get kBA and KAB____________________________________
 % Number of points
-L = 25;
 L3 = length(R3);
 L2 = length(R2);
-space3 = round(L3/L);
-space2 = round(L2/L);
-start = 1;
 
-range2 = start+1 : space2 : min(L2,L3)-2;
-range3 = start+1 : space3 : min(L2,L3)-2;
+L = min(L2, L3);
 
-skip3 = +1;
+start = 2;
+
+if L == L2
+    range2 = start : 1 : L;
+    range3 = floor(linspace(start, L3, length(range2)));
+else
+    range3 = start : 1 : L;
+    range2 = floor(linspace(start, L2, length(range3)));
+end
+
+
+skip3 = 0;
 skip2 = 0;
 tau13 = R3(range3) + skip3;
 tau3 = R3(range3-1) + skip3;

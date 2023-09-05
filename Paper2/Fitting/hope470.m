@@ -55,16 +55,17 @@ r34 = 0;
 
 % Get k constants
 %[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
-[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k470(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+%[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k470(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_470k_NM(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M, cut_off1);
 
-vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo];
+vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
 
 % Store stats to excel file
 %write_out(str, dlms, vals);
 
 % Get fitting (simulation)
-[theta_A, theta_B] = fitting470(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
+[theta_A, theta_B] = fitting470_NM(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
 
 
 theta = theta_A + theta_B;
