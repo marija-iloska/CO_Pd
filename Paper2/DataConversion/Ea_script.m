@@ -9,15 +9,21 @@ clc
 % 
 load Data/temps_info.mat
 load Data/cov_time_for_fitting.mat
-load Paper2_data\colors.mat
+cov_zubin = cov_mix;
+time_zubin = time_mix;
+load Paper2_data/colors.mat
 load Paper1_data/cov_old.mat
+load Data/cov_time_for_fitting2.mat
 %load ../Fitting/cov_time_stochastic.mat
 sz = 15;
 for t = 1 : 1
 
-    plot(time_mix{4}, cov_mix{4}, 'Color', col{3}, 'Linewidth', 2)
+    plot(time_mix{4}, cov_mix{4}, 'Color', col{t}, 'Linewidth', 2)
     hold on
     plot(time_old{2}, cov_old{2}, 'Color', col{4}, 'Linewidth',2)
+    hold on
+    plot(time_zubin{4}, cov_zubin{4}, 'Color', 'k', 'LineWidth',2)
+    hold on
     xline(3, 'Color', 'k', 'linewidth', 1)
     hold on
     xline(2, 'Color', 'k', 'linewidth', 1)
@@ -29,9 +35,20 @@ end
 set(gca, 'FontSize', 15)
 xlabel('Time [s]', 'FontSize', sz)
 ylabel('Coverage [ML]', 'FontSize', sz)
-legend('475K NEW', '475K OLD', 'FontSize', sz)
+legend(temps_strings, 'FontSize',sz)
+title('475K Coverage', 'FontSize', sz)
+legend('475K Marija', '475K OLD','475K Zubin', 'FontSize', sz)
 %legend( '\theta_{\tau}^X', 'FontSize', sz)
 grid on
+
+cut = [19, 21, 13, 11, 10, 10];
+
+for i = 1:N-1
+
+    cov_mix{i}(time_mix{i} > cut(i)) = [];
+    time_mix{i}(time_mix{i} > cut(i)) = [];
+end
+
 
 
 % cov_mix = cov_old;
@@ -54,7 +71,7 @@ idx = setdiff(1:N, []);
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.1 : 0.005 : 0.35;
+covs = 0.1 : 0.005 : 0.3;
 %covs = 0.23;
 Nsplit = length(covs);
 

@@ -5,7 +5,7 @@ clc
 % PLOT coverages
 load Data/coverage_vs_time.mat
 load Data/temps_info.mat
-load Paper2_data\colors.mat
+load Paper2_data/colors.mat
 % 
 % % cut = [21.5, 20, 11, 10.3, 10];
 % cut = [19.2, 19.2, 10.9, 10.8, 9.2, 10];
@@ -42,6 +42,7 @@ set(gca, 'FontSize', 15)
 xlabel('Time [s]', 'FontSize', sz)
 ylabel('Coverage [ML]', 'FontSize', sz)
 legend( temps_strings, 'FontSize', sz)
+title('Marija Coverage', 'FontSize',sz)
 %legend( '\theta_{\tau}^X', 'FontSize', sz)
 grid on
 
@@ -49,7 +50,7 @@ grid on
 % print(gcf, filename, '-depsc2', '-r300');
 
 % Save for fitting
-%save('Data/cov_time_for_fitting2.mat', 'cov_mix', 'time_mix')
+save('Data/cov_time_for_fitting2.mat', 'cov_mix', 'time_mix')
 % 
 % filename = 'all_cov.csv';
 % 

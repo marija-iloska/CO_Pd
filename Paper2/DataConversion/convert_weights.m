@@ -8,7 +8,7 @@ clc
 load Data/weights450isotherm.mat
 
 % Load molar absorptivities
-load Absorptivity/epsilons_mat_norm.mat
+load Absorptivity/epsilons_mat.mat
 
 % Load data Area and Frequency
 load Data/area_ref490.mat
@@ -132,4 +132,4 @@ time_mix = time;
 cov_mix = cov_a_all;
 
 
-save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
+%save('Data/coverage_vs_time.mat', 'cov_mix', 'time_mix', 'area', 'wv', 'time_wv', 'cov_f_all', 'cov_a_sat', 'cov_a_exp', 'cov_a_all')
