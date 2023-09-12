@@ -54,7 +54,7 @@ A_new{T(ref)} = area_mat{T(ref)};
 
 % PLOT AREA (unnormalized OR normalized)
 figure(1)
-for i = 1:N
+for i = 2:3
     %plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
     plot(time_mat_area{i}, area_mat{i}, 'linewidth', 1.5)
     hold on
@@ -67,6 +67,27 @@ xlabel('Time', 'FontSize',20)
 ylabel('Area', 'FontSize',20)
 grid on
 
+
+figure;
+load ../../460_area_test.mat
+load ../../470_area_test.mat
+
+figure;
+plot(area470)
+hold on
+plot(area_mat{3})
+legend('Marija 470', 'Zubin 470', 'FontSize', 15)
+
+
+figure;
+plot(area460)
+hold on
+plot(area_mat{2})
+legend('Marija 460', 'Zubin 460', 'FontSize', 15)
+
+
+
+plot(area470)
 
 
 % % Plot raw areas against their normalization

@@ -2,7 +2,7 @@ function [k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k450(cov, 
 
 
 % Region indices
-R1 = 1:tp_AB(1)+1;
+R1 = 1:tp_AB(1);
 R2 = tp_AB(1)+1 : tp_idx;
 R3 = tp_idx : tp_AB(2);
 R4 = tp_AB(2)+1 : N;
@@ -12,17 +12,14 @@ R4 = tp_AB(2)+1 : N;
 
 % Get kBo _________________________________________________ 
 % It takes tau = 0 as starting point
-tau1 = R4(2:end)-6;
-tau = R4(1:end-1)-6;
+tau1 = R4(2:end)-4;
+tau = R4(1:end-1)-4;
 
-% Y= - log(covB(tau1)./covB(tau(1)));
-% X = time(tau1) - time(tau(1));
-Y = (covB(tau1) - covB(tau))./dt(tau);
-X = - covB(tau);
-% dlm_kbo = fitlm(X, Y,'Intercept',true);
-% c = dlm_kbo.Coefficients.Estimate(1);
+Y= - log(covB(tau1)./covB(tau(1)));
+X = time(tau1) - time(tau(1));
+% Y = (covB(tau1) - covB(tau))./dt(tau);
+% X = - covB(tau);
 dlm_kbo = fitlm(X, Y,'Intercept',false);
-%c = dlm_kbo.Coefficients.Estimate(1);
 k_Bo = dlm_kbo.Coefficients.Estimate(1);
 k_Bo_SE = dlm_kbo.Coefficients.SE;
 

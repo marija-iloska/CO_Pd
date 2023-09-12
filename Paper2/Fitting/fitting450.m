@@ -89,8 +89,8 @@ end
 
 % Region IV ________________________________________________
 
-theta_B(t) = covB(tp_AB(2)+2);
-theta_A(t) = covA(tp_AB(2)+2);
+theta_B(t) = covB(tp_AB(2));
+theta_A(t) = covA(tp_AB(2));
  
 % theta_A(t+1) = theta_A(t);
 % theta_B(t+1) = theta_B(t);

@@ -35,20 +35,20 @@ lwd = 3;
 sz = 40;
 
 figure(1);
-%plot(time450, theta450, 'Color', rp, 'Linewidth', lwd)
-%hold on
+plot(time450, theta450, 'Color', rp, 'Linewidth', lwd)
+hold on
 scatter(time450, cov450, sz,'filled','MarkerFaceColor', rp, 'Linewidth', 1)
 hold on
 %plot(time460, theta460, 'Color',rp, 'Linewidth', lwd)
 %hold on
 %scatter(time460, cov460, sz,'filled','MarkerFaceColor', rs, 'Linewidth', 1)
 %hold on
-%plot(time475, theta475,'Color', bp, 'Linewidth', lwd)
-%hold on
+plot(time475, theta475,'Color', bp, 'Linewidth', lwd)
+hold on
 scatter(time475, cov475, sz,'filled','MarkerFaceColor', bp, 'Linewidth', 1)
 %hold on
-%plot(time500, theta500, 'Color', gp, 'Linewidth', lwd)
-%hold on
+plot(time500, theta500, 'Color', gp, 'Linewidth', lwd)
+hold on
 scatter(time500, cov500, sz,'filled', 'MarkerFaceColor', gs, 'Linewidth', 1)
 set(gca,'FontSize',15, 'Linewidth',1)
 xlabel('Time [s]', 'FontSize', 30)

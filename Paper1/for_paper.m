@@ -24,7 +24,7 @@ N = length(cov);
 tN = 1:N;
 
 % Get sat
-[S, M, covA, covB] = get_sat(cov, tN, tp_idx, tp_AB, cut_off);
+%[S, M, covA, covB] = get_sat(cov, tN, tp_idx, tp_AB, cut_off);
 
 
 
@@ -51,7 +51,7 @@ k2_450 = k2;
 
 plot(time_des, theta)
 hold on
-plot(time_des, cov_de)
+plot(time_des, cov_de, '.')
 
 %save('Des450.mat', 'theta450', 'cov450', 'time450', 'k2_450')
 %save('Des475.mat', 'theta475', 'cov475', 'time475', 'k2_475')

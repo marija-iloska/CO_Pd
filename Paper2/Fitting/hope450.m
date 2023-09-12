@@ -54,8 +54,8 @@ r34 = 0;
 
 
 % Get k constants
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k_NM(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M, cut_off1);
-%[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k450(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k_NM(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M, cut_off1);
+[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k450(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
 vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
@@ -64,7 +64,8 @@ vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 %write_out(str, dlms, vals);
 
 % Get fitting (simulation)
-[theta_A, theta_B] = fitting_NM(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P, cut_off1);
+%[theta_A, theta_B] = fitting_NM(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P, cut_off1);
+[theta_A, theta_B] = fitting450(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
 
 
 theta = theta_A + theta_B;
@@ -101,8 +102,8 @@ legend('Data','Pressure off', 'Phase change','Fitting',  'FontSize',15)
 grid on
 box on
 
-filename = join(['figs/', str, '_Bfit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% filename = join(['figs/', str, '_Bfit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 
 % Plot A
@@ -121,9 +122,9 @@ set(gca,'FontSize',15, 'Linewidth', 1)
 legend('Data','Pressure off', 'Fitting',  'FontSize',15)
 grid on
 box on
-
-filename = join(['figs/', str, '_Afit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
+% 
+% filename = join(['figs/', str, '_Afit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
 
 % Plot FINAL
 figure(3)
@@ -143,11 +144,11 @@ set(gca,'FontSize',15, 'Linewidth', 1)
 grid on
 box on
 legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
-
-filename = join(['figs/', str, '_Xfit.eps']);
-print(gcf, filename, '-depsc2', '-r300');
-
-save('Data/450ks_fix.mat', 'vals', 'dlms')
+% 
+% filename = join(['figs/', str, '_Xfit.eps']);
+% print(gcf, filename, '-depsc2', '-r300');
+% 
+% save('Data/450ks_fix.mat', 'vals', 'dlms')
 %save('475fit.mat', 'theta', 'theta_A', 'theta_B', 'dtime', 'dt', 'tN');
 
 % filename = join(['Data/', temps_strings{t}, 'ks_stoch.mat']);

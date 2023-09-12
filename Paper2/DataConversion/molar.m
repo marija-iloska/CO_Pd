@@ -9,6 +9,7 @@ load Data/weights450isotherm.mat
 % STEP 2
 % Load  data
 load Data/area_ref490.mat
+load Paper2_data\my_areas.mat
 load Data/wv.mat
 load Data/temps_info.mat
 
@@ -16,7 +17,7 @@ load Data/temps_info.mat
 range = 28;
 
 % Get a window
-lim = 6;
+lim = 5;
 
 % WV split
 wv_split = wv_splits(1);
@@ -31,6 +32,8 @@ for n = 1:N
     clear cov
 
     % Find indices for low and high regions
+    wv{n} = wv{n}(1:length(area{n}));
+    time{n} = time_mat_area{n}(1:length(area{n}));
     idx0 = find(wv{n} < wv_split);
     idx1 = find(wv{n} > wv_split);
 
@@ -50,22 +53,7 @@ for n = 1:N
 
 
     % WINDOWS
-%     move = 1;
-%     range1{1} = idx1(end - lim + 2 :end-move); % 450
-%     range1{2} = idx1(end - lim + 6 :end); % 460
-%     range1{3} = idx1(end - lim + 3: end);
-%     range1{4} = idx1(end - lim + 3: end-move);
-%     range1{5} = idx1(end - lim + 6: end);
-%     range1{6} = idx1(end - lim + 6 : end);
-
-    move = 0;
-    range1{1} = idx1(end - lim - 1  :end-3);
-    range1{2} = idx1(end - lim + 4 :end); 
-    range1{3} = idx1(end - lim + 6: end);
-    range1{4} = idx1(end - lim + 6: end-move);
-    range1{5} = idx1(end - lim + 4: end);
-    range1{6} = idx1(end - lim + 5 : end);
-
+    range1{n} = idx1(end - lim :end);
 
     % Get epsilon at split
     mean_cov_split(n) = mean( cov(range1{n}));
@@ -75,11 +63,9 @@ for n = 1:N
 
     % Find rest
     cov(idx0) = area{n}(idx0)./epsilon_exp(n);
-    %cov(cov > 0.45) = cov_sat(n);
 
     % Store vars
     cov_all{n} = cov;
-    range1{2} = idx1(end - lim :end); % 460
     range_all{n} = range1{n};
 
 end
@@ -95,17 +81,17 @@ sz = 10;
 % WINDOWS plot
 for n = 1:N
     figure;
-    plot(time_mat_area{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
+    plot(time{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
     hold on
-    plot(time_mat_area{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
+    plot(time{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
     hold on
-    xline(time_wv{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
+    xline(time{n}(range_all{n}(1)), 'Color', lb, 'linewidth',lwd)
     hold on
-    xline(time_wv{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
+    xline(time{n}(range_all{n}(end)), 'Color', lb,'linewidth',lwd)
     hold on
-    xline(time_wv{n}(tp_idx-range), 'Color', lg, 'linewidth',lwd)
+    xline(time{n}(tp_idx-range), 'Color', lg, 'linewidth',lwd)
     hold on
-    xline(time_wv{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
+    xline(time{n}(tp_idx), 'Color', lg, 'linewidth',lwd)
     hold on
     yline(0.24, 'linewidth', 1)
     set(gca, 'FontSize', 15)
@@ -116,10 +102,10 @@ for n = 1:N
 end
 
 % RAW AREA
-%save('epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-%save('mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('Absorptivity/mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 
 % NORMALIZED AREA
-save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
-save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+% save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+% save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
