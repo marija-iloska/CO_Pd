@@ -9,9 +9,11 @@ load Data/weights450isotherm.mat
 % STEP 2
 % Load  data
 load Data/area_ref490.mat
-load Paper2_data\my_areas.mat
+load Paper2_data/my_areas.mat
 load Data/wv.mat
 load Data/temps_info.mat
+
+area = area_mat;
 
 % Molar absorptivity at saturation
 range = 28;
@@ -102,8 +104,8 @@ for n = 1:N
 end
 
 % RAW AREA
-save('Absorptivity/epsilons_mat.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-save('Absorptivity/mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/epsilons_marija.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+%save('Absorptivity/mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 
 % NORMALIZED AREA

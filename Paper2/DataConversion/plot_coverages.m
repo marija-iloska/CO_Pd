@@ -3,7 +3,7 @@ close all
 clc
 
 % PLOT coverages
-load Data/coverage_vs_time.mat
+load Data/coverage_mat_vs_time.mat
 load Data/temps_info.mat
 load Paper2_data/colors.mat
 % 
@@ -49,8 +49,15 @@ grid on
 % filename = 'figs/all_cov.eps';
 % print(gcf, filename, '-depsc2', '-r300');
 
+% cov_zubin = cov_mix;
+% time_zubin = time_mix;
+cov_marija = cov_mix;
+time_marija = time_mix;
+
 % Save for fitting
-save('Data/cov_time_for_fitting2.mat', 'cov_mix', 'time_mix')
+%save('Data/cov_time_zubin.mat', 'cov_zubin', 'time_zubin')
+save('Data/cov_time_marija.mat', 'cov_marija', 'time_marija')
+
 % 
 % filename = 'all_cov.csv';
 % 

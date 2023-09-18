@@ -38,6 +38,19 @@ for n = 1:N
     % Get range of interest 1700 < wv < 2100 cm^-1
     range_idx = idx1:idx0;
     range_mean = idx1-300 : idx0 + 300;
+
+    x = 0.067: 0.067: 0.067*(T-1);
+    y = wv(idx1:idx0);
+    [X,Y] = meshgrid(x,y);
+    Z = dat(range_idx, 2:T);
+    surf(X,Y,Z)
+
+
+    view(2)
+    colormap('hot');
+    %colormap('turbo')
+    %colormap('cool')
+    colorbar
     
     % Plot and compute area for each time point
     for i = 2:T
@@ -65,7 +78,14 @@ for n = 1:N
     area_mat{n} = area_raw;
 
 
+    % Get RAW colormap for all
+
+
+
 end
+
+
+
 
 
 col = {[194, 4, 131]/256,  [206, 14, 227]/256,  [3, 3, 150]/256,  [6, 212, 201]/256, [9, 173, 91]/256, [98, 235, 7]/256};
@@ -79,6 +99,8 @@ for n = 1:N
 end
 yline(0, 'linewidth',2)
 legend(temp_strings, 'FontSize', 20)
+title('Absolute Area', 'FontSize',15)
+
 
 % Mathematical Area
 figure;
@@ -87,7 +109,9 @@ for n = 1:N
     plot(area_mat{n}, 'Color', col{n}, 'Linewidth',1.5)
     hold on
 end
+yline(0, 'linewidth',2)
 legend(temp_strings)
+title('Mathematical Area', 'FontSize',15)
 
 
 

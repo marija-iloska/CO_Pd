@@ -8,21 +8,28 @@ clc
 % %--------------------------------------------------
 % 
 load Data/temps_info.mat
-load Data/cov_time_for_fitting.mat
-cov_zubin = cov_mix;
-time_zubin = time_mix;
+load Data/cov_time_for_fitting_eps_fix.mat
 load Paper2_data/colors.mat
 load Paper1_data/cov_old.mat
-load Data/cov_time_for_fitting2.mat
+load Data/cov_time_marija.mat
+load Data/cov_time_zubin.mat
 %load ../Fitting/cov_time_stochastic.mat
+
 sz = 15;
+temp = 1;
+temp_old = [1,2];
+str_title = join([temps_strings{temp_old(temp)}, 'K']);
+
 for t = 1 : 1
 
-    plot(time_mix{4}, cov_mix{4}, 'Color', col{t}, 'Linewidth', 2)
+
+    plot(time_old{temp_old(temp)}, cov_old{temp_old(temp)}, 'Color', col{4}, 'Linewidth',2)
     hold on
-    plot(time_old{2}, cov_old{2}, 'Color', col{4}, 'Linewidth',2)
+    plot(time_zubin{temp}, cov_zubin{temp}, 'Color', 'k', 'LineWidth',2)
     hold on
-    plot(time_zubin{4}, cov_zubin{4}, 'Color', 'k', 'LineWidth',2)
+    plot(time_marija{temp}, cov_marija{temp}, 'Color', col{1}, 'Linewidth',2)
+    hold on
+    plot(time_mix{temp}, cov_mix{temp}, 'Color', col{5}, 'Linewidth',2)
     hold on
     xline(3, 'Color', 'k', 'linewidth', 1)
     hold on
@@ -35,11 +42,12 @@ end
 set(gca, 'FontSize', 15)
 xlabel('Time [s]', 'FontSize', sz)
 ylabel('Coverage [ML]', 'FontSize', sz)
-legend(temps_strings, 'FontSize',sz)
+% legend(temps_strings, 'FontSize',sz)
 title('475K Coverage', 'FontSize', sz)
-legend('475K Marija', '475K OLD','475K Zubin', 'FontSize', sz)
-%legend( '\theta_{\tau}^X', 'FontSize', sz)
+legend('OLD', 'Zubin', 'Marija', 'eps FIX', 'FontSize', sz)
 grid on
+
+
 
 cut = [19, 21, 13, 11, 10, 10];
 
@@ -50,17 +58,15 @@ for i = 1:N-1
 end
 
 
-
+% Ea for OLD data
 % cov_mix = cov_old;
 % time_mix = time_old;
+%T = [450, 475, 500];
 
-% cov_mix = theta;
-% time_mix = time_mat_area;
-sz = 60;
+
 
 % Temperatures
 T = [450, 460, 470, 475, 480, 490];
-%T = [450, 475, 500];
 N = length(T);
 
 
@@ -78,8 +84,6 @@ Nsplit = length(covs);
 
 for j = 1 : Nsplit
 
-    %k = 1;
-
     for n = 1:N
     
         % Get k_des for each temp
@@ -94,7 +98,7 @@ for j = 1 : Nsplit
 end
 
 id = find(covs < 0.24);
-
+sz = 60;
 % Plot fit
 figure;
 plot(1./T(idx), ln_k, 'LineWidth', 1)
