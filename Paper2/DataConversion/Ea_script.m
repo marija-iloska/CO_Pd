@@ -8,60 +8,66 @@ clc
 % %--------------------------------------------------
 % 
 load Data/temps_info.mat
-load Data/cov_time_for_fitting_eps_fix.mat
+%load Data/cov_time_for_fitting_eps_fix.mat
 load Paper2_data/colors.mat
-load Paper1_data/cov_old.mat
+% load Paper1_data/cov_old.mat
 load Data/cov_time_marija.mat
 load Data/cov_time_zubin.mat
-%load ../Fitting/cov_time_stochastic.mat
+% load ../Fitting/cov_time_stochastic.mat
 
 sz = 15;
 temp = 1;
 temp_old = [1,2];
 str_title = join([temps_strings{temp_old(temp)}, 'K']);
 
-for t = 1 : 1
-
-
-    plot(time_old{temp_old(temp)}, cov_old{temp_old(temp)}, 'Color', col{4}, 'Linewidth',2)
-    hold on
-    plot(time_zubin{temp}, cov_zubin{temp}, 'Color', 'k', 'LineWidth',2)
-    hold on
-    plot(time_marija{temp}, cov_marija{temp}, 'Color', col{1}, 'Linewidth',2)
-    hold on
-    plot(time_mix{temp}, cov_mix{temp}, 'Color', col{5}, 'Linewidth',2)
-    hold on
-    xline(3, 'Color', 'k', 'linewidth', 1)
-    hold on
-    xline(2, 'Color', 'k', 'linewidth', 1)
-    hold on
-    yline(0.33, 'Color', 'k', 'linewidth', 1)
-    hold on
-
-end
-set(gca, 'FontSize', 15)
-xlabel('Time [s]', 'FontSize', sz)
-ylabel('Coverage [ML]', 'FontSize', sz)
-% legend(temps_strings, 'FontSize',sz)
-title('475K Coverage', 'FontSize', sz)
-legend('OLD', 'Zubin', 'Marija', 'eps FIX', 'FontSize', sz)
-grid on
-
-
-
-cut = [19, 21, 13, 11, 10, 10];
-
-for i = 1:N-1
-
-    cov_mix{i}(time_mix{i} > cut(i)) = [];
-    time_mix{i}(time_mix{i} > cut(i)) = [];
-end
-
+% for t = 1 : 1
+% 
+% 
+%     plot(time_old{temp_old(temp)}, cov_old{temp_old(temp)}, 'Color', col{4}, 'Linewidth',2)
+%     hold on
+%     plot(time_zubin{temp}, cov_zubin{temp}, 'Color', 'k', 'LineWidth',2)
+%     hold on
+%     plot(time_marija{temp}, cov_marija{temp}, 'Color', col{1}, 'Linewidth',2)
+%     hold on
+%     plot(time_mix{temp}, cov_mix{temp}, 'Color', col{5}, 'Linewidth',2)
+%     hold on
+%     xline(3, 'Color', 'k', 'linewidth', 1)
+%     hold on
+%     xline(2, 'Color', 'k', 'linewidth', 1)
+%     hold on
+%     yline(0.33, 'Color', 'k', 'linewidth', 1)
+%     hold on
+% 
+% end
+% set(gca, 'FontSize', 15)
+% xlabel('Time [s]', 'FontSize', sz)
+% ylabel('Coverage [ML]', 'FontSize', sz)
+% % legend(temps_strings, 'FontSize',sz)
+% title('475K Coverage', 'FontSize', sz)
+% legend('OLD', 'Zubin', 'Marija', 'eps FIX', 'FontSize', sz)
+% grid on
 
 % Ea for OLD data
-% cov_mix = cov_old;
-% time_mix = time_old;
+% cov_mix = cov_marija;
+% time_mix = time_marija;
+
+cov_mix = cov_zubin;
+time_mix = time_zubin;
+
+% cov_mix{1} = cov_old{1};
+% time_mix{1} = time_old{1};
 %T = [450, 475, 500];
+
+
+% cut = [19, 21, 13, 11, 10, 10];
+% 
+% for i = 1:N-1
+% 
+%     cov_mix{i}(time_mix{i} > cut(i)) = [];
+%     time_mix{i}(time_mix{i} > cut(i)) = [];
+% end
+% 
+
 
 
 
@@ -77,7 +83,7 @@ idx = setdiff(1:N, []);
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.1 : 0.005 : 0.3;
+covs = 0.1 : 0.005 : 0.33;
 %covs = 0.23;
 Nsplit = length(covs);
 

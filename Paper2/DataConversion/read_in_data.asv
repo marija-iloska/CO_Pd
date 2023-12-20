@@ -23,7 +23,7 @@ temps_strings = { '450', '460', '470', '475', '480', '490'};
 N = length(temps_strings);
 
 
-%% FREQUENCY________________________________________________________
+% FREQUENCY________________________________________________________
 % Replace first rows Nans with 0s (all weights will be on area)
 min_temp = 0;
 
@@ -59,7 +59,7 @@ for i = 1:N
 end
 
 
-%% AREA _______________________________________________________
+% AREA _______________________________________________________
 % Get areas and remove NaNs
 for i = 1:N
     
@@ -74,7 +74,7 @@ for i = 1:N
 end
 
 
-%% Pad 0s to WV for easier processing later
+% Pad 0s to WV for easier processing later
 for i = 1:N
 
     % Length of WV and AR data for each Temp
@@ -94,5 +94,5 @@ for i = 1:N
 end
 
 
-%% Save all data
-save('Data/T6.mat','area_mat', 'time_area', 'time_wv', 'time_padded', 'time', 'temps_strings', 'N', 'wv', 'wv_padded')
+% Save all data
+% save('Data/T6.mat','area_mat', 'time_area', 'time_wv', 'time_dat', 'time', 'temps_strings', 'N', 'wv', 'wv_dat')

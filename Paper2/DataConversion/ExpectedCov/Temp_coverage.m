@@ -28,6 +28,10 @@ for p = 1:length(P)
 
 end
 
+% For only 450K plot
+% str = {'450 int', '448K dig', '453K dig', '493K dig'};
+% T_interest = [450];
+% clear h
 
 % Plot ISOTHERMS
 N = length(T_interest);
