@@ -59,6 +59,7 @@ for i = 1:N
 end
 
 
+
 %% AREA _______________________________________________________
 % Get areas and remove NaNs
 for i = 1:N
@@ -74,25 +75,5 @@ for i = 1:N
 end
 
 
-%% Pad 0s to WV for easier processing later
-for i = 1:N
-
-    % Length of WV and AR data for each Temp
-    Lwv = length(wv_padded{i});
-    Lam = length(area_mat{i});
-
-    % Difference in lengths (number of data points)
-    Lsz = Lam - Lwv;
-
-    % If there are more AREA points, pad 0s to WV points
-    if (Lsz > 0)
-        wv_padded{i} = [wv_padded{i}; zeros(Lsz,1)];
-    end
-    % Make appropriate time variable for it
-    time_padded{i} = time(1:length(wv_padded{i}));
-
-end
-
-
 %% Save all data
-save('Data/T6.mat','area_mat', 'time_area', 'time_wv', 'time_padded', 'time', 'temps_strings', 'N', 'wv', 'wv_padded')
+% save('Data/T6.mat','area_mat', 'time_area', 'time_wv', 'time_padded', 'time', 'temps_strings', 'N', 'wv', 'wv_padded')
