@@ -4,70 +4,24 @@ clc
 
 
 % %-------------------------------------------------
-% %       NON-SCALED POLYFIT FULL RANGE DATA
+% %        Ea in Region 4
 % %--------------------------------------------------
 % 
 load Data/temps_info.mat
-%load Data/cov_time_for_fitting_eps_fix.mat
 load Paper2_data/colors.mat
-% load Paper1_data/cov_old.mat
+
 load Data/cov_time_marija.mat
 load Data/cov_time_zubin.mat
-% load ../Fitting/cov_time_stochastic.mat
-
-sz = 15;
-temp = 1;
-temp_old = [1,2];
-str_title = join([temps_strings{temp_old(temp)}, 'K']);
-
-% for t = 1 : 1
-% 
-% 
-%     plot(time_old{temp_old(temp)}, cov_old{temp_old(temp)}, 'Color', col{4}, 'Linewidth',2)
-%     hold on
-%     plot(time_zubin{temp}, cov_zubin{temp}, 'Color', 'k', 'LineWidth',2)
-%     hold on
-%     plot(time_marija{temp}, cov_marija{temp}, 'Color', col{1}, 'Linewidth',2)
-%     hold on
-%     plot(time_mix{temp}, cov_mix{temp}, 'Color', col{5}, 'Linewidth',2)
-%     hold on
-%     xline(3, 'Color', 'k', 'linewidth', 1)
-%     hold on
-%     xline(2, 'Color', 'k', 'linewidth', 1)
-%     hold on
-%     yline(0.33, 'Color', 'k', 'linewidth', 1)
-%     hold on
-% 
-% end
-% set(gca, 'FontSize', 15)
-% xlabel('Time [s]', 'FontSize', sz)
-% ylabel('Coverage [ML]', 'FontSize', sz)
-% % legend(temps_strings, 'FontSize',sz)
-% title('475K Coverage', 'FontSize', sz)
-% legend('OLD', 'Zubin', 'Marija', 'eps FIX', 'FontSize', sz)
-% grid on
-
-% Ea for OLD data
-% cov_mix = cov_marija;
-% time_mix = time_marija;
-
-cov_mix = cov_zubin;
-time_mix = time_zubin;
-
-% cov_mix{1} = cov_old{1};
-% time_mix{1} = time_old{1};
-%T = [450, 475, 500];
+load Data/cov_time_for_fitting.mat
 
 
-% cut = [19, 21, 13, 11, 10, 10];
-% 
-% for i = 1:N-1
-% 
-%     cov_mix{i}(time_mix{i} > cut(i)) = [];
-%     time_mix{i}(time_mix{i} > cut(i)) = [];
-% end
-% 
+cut = [19, 21, 13, 11, 10, 10];
 
+for i = 1:N-1
+
+    cov_mix{i}(time_mix{i} > cut(i)) = [];
+    time_mix{i}(time_mix{i} > cut(i)) = [];
+end
 
 
 
@@ -77,7 +31,7 @@ N = length(T);
 
 
 % Which data point to exclude
-idx = setdiff(1:N, []);
+idx = setdiff(1:N, [1]);
 
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
@@ -90,14 +44,10 @@ Nsplit = length(covs);
 
 for j = 1 : Nsplit
 
-    for n = 1:N
-    
+    for n = 1:N    
         % Get k_des for each temp
-        [k(j,n), k_SE(j,n), Rsq_k(j,n)] = k_des(cov_mix{n}, time_mix{n}, covs(j), tp_idx);
-    
+        [k(j,n), k_SE(j,n), Rsq_k(j,n)] = k_des(cov_mix{n}, time_mix{n}, covs(j), tp_idx);   
     end
-    
-    
     % Get Ea
     [Ea(j), A(j), Ea_SE(j), A_SE(j), ln_k, Rsq_Ea(j)] = get_Ea(k(j, idx), T(idx), R);
 

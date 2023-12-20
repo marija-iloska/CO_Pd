@@ -13,9 +13,9 @@ load Data/T6.mat
 
 
 % Choose number of moving average points for FREQ
-kb = 2;
-kf = 1;
-K = 5;
+kb = 1;
+kf = 2;
+K = 4;
 % MOVING AVERAGE OF WV
 % Preserve 0s padding/replacements in wv, but remove in wv_dat for plotting
 for i = 1:N
@@ -133,13 +133,12 @@ for i = 1:N
     grid on
 end
 
-
 %%  AREAs Together normalized and smoothed
 figure;
 for i = 1:N
-
     plot(time_area{i}, A_smoothed{i}, 'linewidth', 2)
     hold on
+
 end
 set(gca, 'FontSize', 20)
 legend(temps_strings, 'FontSize', 20)
@@ -148,10 +147,15 @@ xlabel('Time [s]', 'FontSize',20)
 ylabel('Area Processed', 'FontSize',20)
 grid on
 
+%% Remove 0s
+area = A_smoothed;
+
+for i = 1:N
+    area{i}(area{i} < 0) = 1e-3;
+end
 
 %% STORE AND SAVE
-% Store area
-area = A_smoothed;
+
 
 % Get padded WV
 [wv_padded, time_padded] = pad_zeros(wv, area_mat, time, N);
@@ -159,7 +163,7 @@ area = A_smoothed;
 % Store P off index
 tp_idx = 45;
  
-save('Data/area_ref490.mat', 'area', 'time_mat_area', 'cov_sat')
-save('Data/wv.mat', 'wv', 'wv_padded', 'time_wv', 'time_dat', 'cov_sat')
+save('Data/area_ref490.mat', 'area', 'time_area', 'cov_sat')
+save('Data/wv.mat', 'wv', 'wv_padded', 'time_wv', 'time_padded', 'cov_sat')
 save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')
 

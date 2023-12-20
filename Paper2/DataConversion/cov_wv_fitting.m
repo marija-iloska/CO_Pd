@@ -14,7 +14,7 @@ cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 % % Points to fit 450
 id0 = 1:3;
 id1 = 3:6;
-id2 = 5:8;
+id2 = 6:8;
 wv_splits = [(wv(id1(1))), (wv(id1(end)))];
 
 id = {id0, id1, id2};
@@ -65,7 +65,7 @@ cov_test = 0 :0.005 : 0.5;
 % idx1  = find(cov_test >0.2);
 % idx = {idx0, idx1};
 
-%save('Data/weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc', 'wv_splits');
+save('Data/weights450isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc', 'wv_splits');
 %save('weights490isotherm.mat', 'Wf', 'Wa', 'Der', 'Pc');
 
 
