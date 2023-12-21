@@ -5,8 +5,18 @@ clc
 
 % Load data
 P = 0.001;
-load ../DataConversion/Data/cov_time_for_fitting.mat
+%load ../DataConversion/Data/cov_time_for_fitting.mat
+load ../DataConversion/Data/clean_coverage_vs_time.mat
 load ../DataConversion/Data/temps_info.mat
+
+time_mix = time_padded;
+
+cut = [14, 15, 13, 13, 10, 10];
+for i = 1:N
+
+    cov_mix{i}(time_mix{i} > cut(i)) = [];
+    time_mix{i}(time_mix{i} > cut(i)) = [];
+end
 
 
 % cut = [22, 20, 13, 12, 10.3, 10];

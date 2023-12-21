@@ -10,14 +10,17 @@ clc
 load Data/temps_info.mat
 load Paper2_data/colors.mat
 
-load Data/cov_time_marija.mat
-load Data/cov_time_zubin.mat
-load Data/cov_time_for_fitting.mat
+% load Data/cov_time_marija.mat
+% load Data/cov_time_zubin.mat
+%load Data/cov_time_for_fitting.mat
+load Data/clean_coverage_vs_time.mat
+time_mix = time_padded;
+%cov_mix = cov_a_all;
 
 
-cut = [19, 21, 13, 11, 10, 10];
-
-for i = 1:N-1
+% cut = [14, 14, 10, 8, 8, 9];
+cut = [14, 15, 13, 13, 10, 10];
+for i = 1:N
 
     cov_mix{i}(time_mix{i} > cut(i)) = [];
     time_mix{i}(time_mix{i} > cut(i)) = [];
@@ -31,13 +34,13 @@ N = length(T);
 
 
 % Which data point to exclude
-idx = setdiff(1:N, [1]);
+idx = setdiff(1:N, []);
 
 % Ideal Gas constant  (kcal / (K mol))
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.1 : 0.005 : 0.33;
+covs = 0.17 : 0.01 : 0.33;
 %covs = 0.23;
 Nsplit = length(covs);
 

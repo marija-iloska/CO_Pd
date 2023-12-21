@@ -13,19 +13,19 @@ cov = [0.087 0.197 0.24 0.328 0.357 0.408 0.425 0.455];
 
 % % Points to fit 450
 id0 = 1:3;
-id1 = 3:6;
-id2 = 6:8;
-wv_splits = [(wv(id1(1))), (wv(id1(end)))];
+id1 = 3:8;
+ %id2 = 6:8;
+wv_splits = [(wv(id1(1))), (wv(id1(end-1)))];
 
-id = {id0, id1, id2};
-N = length(id);
+% id = {id0, id1, id2};
+% N = length(id);
 
 % Points to fit 490
 % id0 = 1:4;
 % id1 = 5:7;
 % 
-% id = {id0, id1};
-% N = length(id);
+id = {id0, id1};
+N = length(id);
 
 
 

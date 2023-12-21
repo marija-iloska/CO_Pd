@@ -56,7 +56,7 @@ time_marija = time_mix;
 
 % Save for fitting
 %save('Data/cov_time_zubin.mat', 'cov_zubin', 'time_zubin')
-save('Data/cov_time_marija.mat', 'cov_marija', 'time_marija')
+% save('Data/cov_time_marija.mat', 'cov_marija', 'time_marija')
 
 % 
 % filename = 'all_cov.csv';

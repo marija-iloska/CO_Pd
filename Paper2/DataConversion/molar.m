@@ -8,8 +8,8 @@ load Data/weights450isotherm.mat
 
 % STEP 2
 % Load  data
-load Data/area_ref490.mat
-%load Paper2_data/my_areas.mat
+%load Data/area_ref490.mat
+load Paper2_data/my_areas.mat
 load Data/wv.mat
 load Data/temps_info.mat
 
@@ -19,7 +19,7 @@ load Data/temps_info.mat
 range = 28;
 
 % Get a window
-lim = 5;
+lim = 3;
 
 % WV split
 wv_split = wv_splits(1);
@@ -32,6 +32,9 @@ for n = 1:N
 
     % Reset vars
     clear cov
+    L = length(area{n});
+    wv_padded{n} = wv_padded{n}(1:L);
+    time_padded{n} = time_padded{n}(1:L);
 
     % Find indices for low and high regions
     idx0 = find(wv_padded{n} < wv_split);
@@ -53,12 +56,17 @@ for n = 1:N
 
 
     % WINDOWS
-    if (ismember(n, [1,4]))
-        range1{n} = idx1(end - lim -5 :end-3);
-    elseif n == 3
-        range1{n} = idx1(end - lim-8 :end-1);
+%     if (ismember(n, [1,4]))
+%         range1{n} = idx1(end - lim -5 :end-3);
+%     elseif n == 3
+%         range1{n} = idx1(end - lim-8 :end-1);
+%     else
+%         range1{n} = idx1(end - lim :end-1);
+%     end
+    if n==1
+        range1{n} = idx1(end - lim-5 :end-3);
     else
-        range1{n} = idx1(end - lim :end-1);
+        range1{n} = idx1(end - lim-3 :end);
     end
 
     % EPSILON SPLIT_______________________________________________
@@ -108,10 +116,10 @@ for n = 1:N
 end
 
 % RAW AREA
-%save('Absorptivity/epsilons_marija.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-%save('Absorptivity/mean_mat_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/my_epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 
 % % NORMALIZED AREA
-save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
-save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+%save('Absorptivity/mean_norm_area.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+%save('Absorptivity/epsilons_mat_norm.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
