@@ -10,7 +10,7 @@ load Absorptivity/mean_mat_area.mat
 
 % Our data
 load Data/T6.mat
-load Paper2_data/my_areas.mat
+% load Paper2_data/my_areas.mat
 
 
 % Choose number of moving average points for FREQ
@@ -164,6 +164,7 @@ end
 % Store P off index
 tp_idx = 45;
  
+area = A_normalized;
 save('Data/area_ref490.mat', 'area', 'time_area', 'cov_sat')
 save('Data/wv.mat', 'wv', 'wv_padded', 'time_wv', 'time_padded', 'cov_sat')
 save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')

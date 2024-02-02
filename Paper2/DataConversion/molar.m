@@ -19,7 +19,7 @@ load Data/temps_info.mat
 range = 28;
 
 % Get a window
-lim = 3;
+lim = 5;
 
 % WV split
 wv_split = wv_splits(1);
@@ -65,8 +65,10 @@ for n = 1:N
 %     end
     if n==1
         range1{n} = idx1(end - lim-5 :end-3);
-    else
-        range1{n} = idx1(end - lim-3 :end);
+    elseif n==3
+        range1{n} = idx1(end - 2: end);
+    else 
+        range1{n} = idx1(end - lim-3 :end-2);
     end
 
     % EPSILON SPLIT_______________________________________________
