@@ -9,17 +9,12 @@ clc
 % 
 load Data/temps_info.mat
 load Paper2_data/colors.mat
-
-% load Data/cov_time_marija.mat
-% load Data/cov_time_zubin.mat
-%load Data/cov_time_for_fitting.mat
-load Data/clean_coverage_vs_time.mat
+load Data/cov_vs_time_noise.mat
 time_mix = time_padded;
-%cov_mix = cov_a_all;
+% cov_mix = cov_a_all;
 
 
-% cut = [14, 14, 10, 8, 8, 9];
-cut = [14, 15, 13, 13, 10, 10];
+cut = 11*ones(1,N);
 for i = 1:N
 
     cov_mix{i}(time_mix{i} > cut(i)) = [];
@@ -73,14 +68,11 @@ figure;
 %h = errorbar(covs, Ea, Ea_SE, 'Linewidth', 1, 'Color' , 'k');
 plot(covs, Ea)
 hold on
-%plot(covs(id), mean(Ea(id))*ones(1, length(id)), 'Color', 'r', 'Linewidth', 3)
-%hold on
-%xline(0.24, 'Linewidth', 3, 'Color', blue)
 set(gca, 'FontSize', 15)
 xlabel('Initial Coverage', 'FontSize', 15)
 ylabel('Ea', 'FontSize', 15)
 legend('Ea', 'Mean Ea', 'Change starts', 'FontSize', 15)
-title('Paper 2 Data Marija', 'FontSize', 15)
+title('Paper 2 Noise', 'FontSize', 15)
 % ylim([floor(min(Ea)),round(max(Ea))])
 % 
 % filename = 'figs/Ea.eps';

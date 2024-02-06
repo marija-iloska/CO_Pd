@@ -23,8 +23,8 @@ k_Bo_SE = dlm_kbo.Coefficients.SE;
 
 % Get koB _________________________________________________ 
 % Takes tau 0 starting
-tau1 = R1(2:end);
-tau = R1(1:end-1);
+tau1 = R1(2:end)+1;
+tau = R1(1:end-1)+1;
 
 Y = covB(tau1) - (1 - k_Bo*dt(tau)).*covB(tau);
 X = dt(tau).*P.*(M - cov(tau));
@@ -35,8 +35,8 @@ k_oB_SE = dlm_kob.Coefficients.SE;
 
 
 % Get kAB from kBo_________________________________________________ 
-tau1 = R3(2:end)+3;
-tau = R3(1:end-1)+3;
+tau1 = R3(2:end);
+tau = R3(1:end-1);
 
 
 Y = covB(tau1) - covB(tau); 
@@ -59,8 +59,8 @@ k_AB_SE = dlm_kab.Coefficients.SE;
 
 
 % Get kAo from kAB________________________________________________ 
-tau1 = R3(2:end)+7;
-tau = R3(1:end-1)+7;
+tau1 = R3(2:end);
+tau = R3(1:end-1);
 Y = covA(tau1) - (1 - k_AB*dt(tau).*(M - cov(tau) )).*covA(tau);
 X = -dt(tau).*covA(tau);
 dlm_kao = fitlm(X,Y,'Intercept',false);
@@ -81,8 +81,8 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 
 % Get kBA_________________________________________________ 
 % Adding 1 to tp_AB(1) makes kBA MUCH higher. Check in results
-tau1 = R2(2:end)+1;
-tau = R2(1:end-1)+1;
+tau1 = R2(2:end);
+tau = R2(1:end-1);
 Y = covB(tau1) - covB(tau) - k_AB*dt(tau).*covA(tau).*(M - cov(tau));
 %Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
 X = - dt(tau)*P.*covB(tau);

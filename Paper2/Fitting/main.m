@@ -5,36 +5,13 @@ clc
 
 % Load data
 P = 0.001;
-%load ../DataConversion/Data/cov_time_for_fitting.mat
-load ../DataConversion/Data/clean_coverage_vs_time.mat
+load ../DataConversion/Data/cov_time_noise.mat
 load ../DataConversion/Data/temps_info.mat
 
-time_mix = time_padded;
 
-cut = [14, 15, 13, 13, 10, 10];
-for i = 1:N
-
-    cov_mix{i}(time_mix{i} > cut(i)) = [];
-    time_mix{i}(time_mix{i} > cut(i)) = [];
-end
-
-
-% cut = [22, 20, 13, 12, 10.3, 10];
-% for i = 1:N
-% 
-%     cov_mix{i}(time_mix{i} > cut(i)) = [];
-%     time_mix{i}(time_mix{i} > cut(i)) = [];
-% end
-
-%load cov_time_stochastic.mat
-% t = 5;
-% cov = theta{t};
-% time = time_mat_area{t};
-% str = temps_strings{t};
-
-t = 1;
-cov = cov_mix{t};
-time = time_mix{t};
+t = 6;
+cov = cov_all{t};
+time = time{t};
 str = temps_strings{t};
 
 
@@ -42,14 +19,14 @@ str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.33;
+cut_off1 = 0.26;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 25;
+dtime = 0.01 : 0.02 : 11;
 tN = 1:length(cov);
 
 
@@ -64,8 +41,7 @@ r34 = 0;
 
 
 % Get k constants
-%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k_NM(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M, cut_off1);
-[ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, k_oX, k_Xo, dlms] = get_k450(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
 vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 
@@ -74,8 +50,7 @@ vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
 %write_out(str, dlms, vals);
 
 % Get fitting (simulation)
-%[theta_A, theta_B] = fitting_NM(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P, cut_off1);
-[theta_A, theta_B] = fitting450(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
+[theta_A, theta_B] = fitting(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P);
 
 
 theta = theta_A + theta_B;
@@ -86,7 +61,6 @@ dtime(end)=[];
 lwd = 2.5;
 sz = 30;
 fsz = 35;
-%plotting(theta, theta_A, theta_B, cov, covA, covB, str, tp_idx, time, lwd, sz, fsz)
 
 purple = [132, 53, 148]/256;
 blue = [62, 158, 222]/256;
@@ -154,7 +128,7 @@ set(gca,'FontSize',15, 'Linewidth', 1)
 grid on
 box on
 legend('Data','Fitting', 'Pressure off', 'Phase change', 'FontSize',15)
-% 
+ 
 % filename = join(['figs/', str, '_Xfit.eps']);
 % print(gcf, filename, '-depsc2', '-r300');
 % 

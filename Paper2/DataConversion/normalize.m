@@ -14,8 +14,8 @@ load Data/T6.mat
 
 
 % Choose number of moving average points for FREQ
-kb = 1;
-kf = 1;
+kb = 0;
+kf = 0;
 K = 4;
 % MOVING AVERAGE OF WV
 % Preserve 0s padding/replacements in wv, but remove in wv_dat for plotting
@@ -77,9 +77,10 @@ end
 %% MOVING AVERAGE OF AREA
 % Preserve the first L points since they have higher uncertainty
 K = 3;
-MA = 5;
+% kb = 1;
+% kf = 2;
 kb = 1;
-kf = 2;
+kf = 0;
 for i = 1:N
     A_smoothed{i} = [ A_normalized{i}(1:K)' movmean(A_normalized{i}(K+1:end), [kb, kf])' ];
 end
@@ -149,11 +150,11 @@ ylabel('Area Processed', 'FontSize',20)
 grid on
 
 %% Remove 0s
-area = A_smoothed;
-
-for i = 1:N
-    area{i}(area{i} < 0) = 1e-3;
-end
+% area = A_smoothed;
+% 
+% for i = 1:N
+%     area{i}(area{i} < 0) = 1e-3;
+% end
 
 %% STORE AND SAVE
 
@@ -164,7 +165,7 @@ end
 % Store P off index
 tp_idx = 45;
  
-area = A_normalized;
+area = A_smoothed;
 save('Data/area_ref490.mat', 'area', 'time_area', 'cov_sat')
 save('Data/wv.mat', 'wv', 'wv_padded', 'time_wv', 'time_padded', 'cov_sat')
 save('Data/temps_info.mat', 'temps_strings', 'N', 'tp_idx')

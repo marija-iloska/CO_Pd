@@ -8,12 +8,12 @@ clc
 load Data/weights450isotherm.mat
 
 % Load molar absorptivities
-%load Absorptivity/epsilons_mat_norm.mat
-load Absorptivity/my_epsilons.mat
+load Absorptivity/epsilons490.mat
+%load Absorptivity/my_epsilons.mat
 
 % Load data Area and Frequency
-%load Data/area_ref490.mat
-load Paper2_data/my_areas.mat
+load Data/area_ref490.mat
+%load Paper2_data/my_areas.mat
 load Data/wv.mat
 
 % Load Temperature INFO
@@ -24,7 +24,9 @@ R = length(wv_splits);
 
 % Include weights for lowest regions
 %Wf = [0, 0, 1];
-Wf = [sort(1-Wf, 'ascend'), 1];
+% Wf = [sort(1-Wf, 'ascend'), 1];
+% Wa = 1 - Wf;
+Wf = [0, Wf];
 Wa = 1 - Wf;
 
 
@@ -39,7 +41,7 @@ for n = 1:N
     L = length(area{n});
     wv_padded{n} = wv_padded{n}(1:L);
     time_padded{n} = time_padded{n}(1:L);
-    area{n} = movmean(area{n}, 4);
+    %area{n} = movmean(area{n}, 4);
 
     % Region indices based on WV fitting for derivatives
     id = region_indices(wv_padded{n}, wv_splits, R);
@@ -62,11 +64,11 @@ for n = 1:N
     % COV ( eps_SAT  vs eps_EXP )
     cov_a_sat{n} = area{n}./epsilon_sat(n);
     cov_a_exp{n} = area{n}./epsilon_exp(n);
-    cov_exp = movmean(cov_a_exp{n}, 2);
+    %cov_exp = movmean(cov_a_exp{n}, 2);
 
     % Smooth
-    cov_f = movmean(cov_f, 2);
-    cov_a = movmean(cov_a, 2);
+%     cov_f = movmean(cov_f, 2);
+%     cov_a = movmean(cov_a, 2);
 
     % Get COV(A + F)
     for r = 1:R+1
@@ -80,7 +82,7 @@ for n = 1:N
     cov_f(id{1}) = [];   
 
     % STORE variables  
-    cov_mix{n} = movmean(cov,2);
+    cov_mix{n} = cov; % movmean(cov,2);
     cov_f_all{n} = cov_f;
     cov_a_all{n} = cov_a;
 
@@ -117,10 +119,10 @@ for n = 1:N
 %     print(gcf, filename, '-depsc2', '-r300');
 end
 
-
 %% COV mix plot
 figure;
  for n = 1:N
+
     % Plot weighted mix
     subplot(2,3, n)
     plot(time_padded{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 1.5)
@@ -142,4 +144,4 @@ figure;
  end
 
 %% SAVE
-save('Data/clean_coverage_vs_time.mat', 'cov_mix', 'cov_f_all', 'cov_a_all', 'time_padded','time_wv', 'wv_padded',  'wv', 'area' )
+% save('Data/cov_vs_time_noise.mat', 'cov_mix', 'cov_f_all', 'cov_a_all', 'time_padded','time_wv', 'wv_padded',  'wv', 'area' )

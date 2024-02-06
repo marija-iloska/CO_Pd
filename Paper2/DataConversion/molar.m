@@ -19,8 +19,8 @@ load Data/temps_info.mat
 range = 28;
 
 % Get a window
-lim = 5;
-
+lim = 6;
+move = 2;
 % WV split
 wv_split = wv_splits(1);
 Pcw = Pc(2,:);
@@ -63,17 +63,25 @@ for n = 1:N
 %     else
 %         range1{n} = idx1(end - lim :end-1);
 %     end
-    if n==1
-        range1{n} = idx1(end - lim-5 :end-3);
-    elseif n==3
-        range1{n} = idx1(end - 2: end);
-    else 
-        range1{n} = idx1(end - lim-3 :end-2);
-    end
+%     if n==1
+%         range1{n} = idx1(end - lim-5 :end-3);
+%     elseif n==3
+%         range1{n} = idx1(end - 2: end);
+%     else 
+%         range1{n} = idx1(end - lim-3 :end-2);
+%     end
+    range1{n} = idx1(end - lim : end);
+%     if (n==1)
+%         range1{n} = idx1(end - lim : end-move);
+%     end
+% 
+%     if n==6
+%         range1{n} = idx1(end-1);
+%     end
 
     % EPSILON SPLIT_______________________________________________
     mean_cov_split(n) = mean( cov(range1{n}));
-    mean_area_split(n) = mean( area{n}(range1{n}) );
+    mean_area_split(n) = mean( area{n}(range1{n}+1) );
     epsilon_exp(n) = mean_area_split(n) / mean_cov_split(n);
 
 
@@ -87,7 +95,7 @@ for n = 1:N
 end
 
 
-% Plot settings
+%% Plot settings
 lg = [18, 166, 119]/256;
 lb = [35, 124, 219]/256;
 lr = [209, 25, 99]/256;
@@ -95,8 +103,9 @@ lwd = 2;
 sz = 10;
 
 % WINDOWS plot
-for n = 1:N
-    figure;
+figure;
+for n = 1:N    
+    subplot(2,3, n)
     plot(time_padded{n}, cov_all{n}, '.', 'Color', 'k', 'MarkerSize', sz)
     hold on
     plot(time_padded{n}, area{n}, '.', 'Color', lr, 'MarkerSize', sz)
@@ -117,12 +126,13 @@ for n = 1:N
     grid on
 end
 
+%%
 % RAW AREA
-%save('Absorptivity/my_epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-%save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/my_epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 % Zubin area data
-save('Absorptivity/epsilons490.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+% save('Absorptivity/epsilons490.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
 %save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 
