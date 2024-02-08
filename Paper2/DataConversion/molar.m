@@ -19,7 +19,7 @@ load Data/temps_info.mat
 range = 28;
 
 % Get a window
-lim = 6;
+lim = 10;
 move = 2;
 % WV split
 wv_split = wv_splits(1);
@@ -70,10 +70,10 @@ for n = 1:N
 %     else 
 %         range1{n} = idx1(end - lim-3 :end-2);
 %     end
-    range1{n} = idx1(end - lim : end);
-%     if (n==1)
-%         range1{n} = idx1(end - lim : end-move);
-%     end
+    range1{n} = idx1(end - lim : end-move);
+    if (n==3)
+        range1{n} = idx1(end - lim - 6 : end);
+    end
 % 
 %     if n==6
 %         range1{n} = idx1(end-1);
@@ -128,12 +128,12 @@ end
 
 %%
 % RAW AREA
-save('Absorptivity/my_epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+% save('Absorptivity/my_epsilons.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+% save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 % Zubin area data
-% save('Absorptivity/epsilons490.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
-%save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
+save('Absorptivity/epsilons490.mat', 'epsilon_sat', 'epsilon_exp', 'wv_split', 'tp_idx')
+save('Absorptivity/my_mean.mat', 'mean_area_split', 'mean_area_sat', 'mean_cov_split')
 
 
 % % NORMALIZED AREA

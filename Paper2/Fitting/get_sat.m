@@ -5,7 +5,7 @@ M = 0.5;
 
 % Define three regions: no A, some A, no A
 R1 = 1:tp_AB(1)+1;
-R2 = tp_AB(2)-1 : tN(end);
+R2 = tp_AB(2)+1 : tN(end);
 R3 = setdiff(tN, [R1, R2]);
 
 % Get the fractions of A in each region

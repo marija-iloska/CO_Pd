@@ -79,7 +79,7 @@ end
 K = 3;
 % kb = 1;
 % kf = 2;
-kb = 1;
+kb = 0;
 kf = 0;
 for i = 1:N
     A_smoothed{i} = [ A_normalized{i}(1:K)' movmean(A_normalized{i}(K+1:end), [kb, kf])' ];
@@ -157,10 +157,6 @@ grid on
 % end
 
 %% STORE AND SAVE
-
-
-% Get padded WV
-[wv_padded, time_padded] = pad_zeros(wv, area_mat, time, N);
 
 % Store P off index
 tp_idx = 45;

@@ -10,8 +10,8 @@ load Paper2_data/colors.mat
 time_mix = time_padded;
 
 % cut = [17, 16, 11, 10, 9.5, 8];
-% cut = [10, 10, 10, 10, 10, 10];
-cut = 11*ones(1,N);
+cut = [19, 19, 11, 10, 9, 7];
+cut = 12*ones(1,N);
 for i = 1:N
 
     cov_mix{i}(time_mix{i} > cut(i)) = [];

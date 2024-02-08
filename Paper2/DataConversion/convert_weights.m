@@ -38,10 +38,6 @@ for n = 1:N
 
     % Reset variables
     clear cov cov_f cov_a id
-    L = length(area{n});
-    wv_padded{n} = wv_padded{n}(1:L);
-    time_padded{n} = time_padded{n}(1:L);
-    %area{n} = movmean(area{n}, 4);
 
     % Region indices based on WV fitting for derivatives
     id = region_indices(wv_padded{n}, wv_splits, R);
@@ -64,11 +60,7 @@ for n = 1:N
     % COV ( eps_SAT  vs eps_EXP )
     cov_a_sat{n} = area{n}./epsilon_sat(n);
     cov_a_exp{n} = area{n}./epsilon_exp(n);
-    %cov_exp = movmean(cov_a_exp{n}, 2);
 
-    % Smooth
-%     cov_f = movmean(cov_f, 2);
-%     cov_a = movmean(cov_a, 2);
 
     % Get COV(A + F)
     for r = 1:R+1
@@ -79,7 +71,7 @@ for n = 1:N
     cov(cov <= 0) = 10e-2;
 
     % Remove indices in cov( F ) that were padded with 0s
-    cov_f(id{1}) = [];   
+    %cov_f(id{1}) = [];   
 
     % STORE variables  
     cov_mix{n} = cov; % movmean(cov,2);
@@ -127,7 +119,7 @@ figure;
     subplot(2,3, n)
     plot(time_padded{n}, cov_a_all{n}, 'color', 'r', 'linewidth', 1.5)
     hold on
-    plot(time_wv{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
+    plot(time_padded{n}, cov_f_all{n}, 'color', [0 0.4470 0.7410], 'linewidth', 1.5)
     hold on
     plot(time_padded{n}, cov_mix{n}, 'color', 'k','linewidth', 2)
     hold on
@@ -144,4 +136,4 @@ figure;
  end
 
 %% SAVE
-% save('Data/cov_vs_time_noise.mat', 'cov_mix', 'cov_f_all', 'cov_a_all', 'time_padded','time_wv', 'wv_padded',  'wv', 'area' )
+save('Data/cov_vs_time_noise.mat', 'cov_mix', 'cov_f_all', 'cov_a_all', 'time_padded','time_wv', 'wv_padded',  'wv', 'area' )

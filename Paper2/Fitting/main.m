@@ -9,7 +9,7 @@ load ../DataConversion/Data/cov_time_noise.mat
 load ../DataConversion/Data/temps_info.mat
 
 
-t = 2;
+t = 3;
 cov = cov_all{t};
 time = time{t};
 str = temps_strings{t};
@@ -17,14 +17,14 @@ str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.25;
+cut_off1 = 0.26;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
 
 % Delta Time
 dt = [0, time(2:end)' - time(1:end-1)'];
-dtime = 0.01 : 0.02 : 11;
+dtime = 0.01 : 0.03 : 12;
 tN = 1:length(cov);
 
 

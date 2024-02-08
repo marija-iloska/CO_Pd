@@ -31,10 +31,10 @@ end
 
 
 % Region II ________________________________________________
-theta_A(t+1) = covA(tp_AB(1));
-theta_B(t+1) = covB(tp_AB(1));
-% theta_A(t+1) = theta_A(t);
-% theta_B(t+1) = theta_B(t);
+% theta_A(t+1) = covA(tp_AB(1));
+% theta_B(t+1) = covB(tp_AB(1));
+theta_A(t+1) = theta_A(t);
+theta_B(t+1) = theta_B(t);
 
 idx = find(dtime < time(tp_idx));
 R2 = idx(end);

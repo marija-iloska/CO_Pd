@@ -14,7 +14,8 @@ time_mix = time_padded;
 % cov_mix = cov_a_all;
 
 
-cut = 11*ones(1,N);
+cut = 13*ones(1,N);
+%cut = [19, 19, 11, 10, 9, 7];
 for i = 1:N
 
     cov_mix{i}(time_mix{i} > cut(i)) = [];
@@ -35,7 +36,7 @@ idx = setdiff(1:N, []);
 R = 0.001987204258;
 
 % Ea with different initial coverages
-covs = 0.17 : 0.01 : 0.33;
+covs = 0.225 : 0.005 : 0.3;
 %covs = 0.23;
 Nsplit = length(covs);
 
