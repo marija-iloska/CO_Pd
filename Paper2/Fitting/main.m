@@ -9,7 +9,7 @@ load ../DataConversion/Data/cov_time_noise.mat
 load ../DataConversion/Data/temps_info.mat
 
 
-t = 3;
+t = 1;
 cov = cov_all{t};
 time = time{t};
 str = temps_strings{t};
@@ -17,7 +17,7 @@ str = temps_strings{t};
 
 %% Process Data
 % Get system divisions
-cut_off1 = 0.26;
+cut_off1 = 0.25;
 tp_AB = find(cov > cut_off1);
 tp_AB = [tp_AB(1), tp_AB(end)];
 
@@ -34,10 +34,11 @@ tN = 1:length(cov);
 
 
 % Get k constants
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+[k_oB, k_Bo, k_AB, k_BA, dlms] = get_knew(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
+%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA, dlms] = get_k(cov, time, covA, covB, dt, tp_idx, tp_AB, tN(end), P, M);
 
-vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
-
+%vals = [ k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA];
+vals = [ k_oB, k_Bo,  k_AB, k_BA];
 
 % Store stats to excel file
 %write_out(str, dlms, vals);

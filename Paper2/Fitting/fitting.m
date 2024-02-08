@@ -1,7 +1,9 @@
 function [theta_A, theta_B] = fitting(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P)
 
 vals = num2cell(vals);
-[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA] = vals{:};
+%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA] = vals{:};
+[k_oB, k_Bo, k_AB, k_BA] = vals{:};
+
 
 dt = dtime(2:end)-dtime(1:end-1);
 N = length(dt);
@@ -35,24 +37,33 @@ end
 % theta_B(t+1) = covB(tp_AB(1));
 theta_A(t+1) = theta_A(t);
 theta_B(t+1) = theta_B(t);
+covXB = cov(tp_AB(1))- theta_B(t);
 
 idx = find(dtime < time(tp_idx));
 R2 = idx(end);
-for t = R1+2 : R2
+for t = R1+1 : R2
 
     covX = theta_A(t-1) + theta_B(t-1);
+    Pbar = covXB/covX;
+
 
     % B
-    gain_B =  k_AB*dt(t)*theta_A(t-1)*( M - covX );
-    loss_B = - k_BA*dt(t)*P*theta_B(t-1); 
+%     gain_B =  k_AB*dt(t)*theta_A(t-1)*( M - covX );
+%     loss_B = - k_BA*dt(t)*P*theta_B(t-1); 
+    gain_B =  k_AB*dt(t)*theta_A(t-1)*( M - covX ) + k_oB*dt(t)*P*( M - covX );
+    loss_B = - k_BA*dt(t)*Pbar*theta_B(t-1) - k_Bo*dt(t)*theta_B(t-1); 
 
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
     
     % A
-    gain_A = k_oA*P*dt(t)*(M - covX) + k_BA*dt(t)*P*theta_B(t-1);
-    loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB*dt(t)*theta_A(t-1)*( M - covX );
+%     gain_A = k_oA*P*dt(t)*(M - covX) + k_BA*dt(t)*P*theta_B(t-1);
+%     loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB*dt(t)*theta_A(t-1)*( M - covX );
+    gain_A =  k_BA*dt(t)*Pbar*theta_B(t-1);
+    loss_A = - k_AB*dt(t)*theta_A(t-1)*( M - covX );
 
     theta_A(t) = theta_A(t-1) + gain_A + loss_A;
+
+    covXB = theta_A(t);
 
 end
 
@@ -70,6 +81,7 @@ R3 = idx(end);
 for t = R2+1 : R3
     
     covX = theta_A(t-1) + theta_B(t-1);
+    Pbar = theta_A(t-1)/covX;
 
     % B
     gain_B = k_AB * dt(t) * theta_A(t - 1)*(M - covX);
@@ -78,8 +90,10 @@ for t = R2+1 : R3
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
     
     %A
-    gain_A = 0;
-    loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB * dt(t) * theta_A(t - 1)*(M - covX);
+    gain_A =  k_BA*dt(t)*Pbar*theta_B(t-1);
+    loss_A = - k_AB*dt(t)*theta_A(t-1)*( M - covX );
+%     gain_A = 0;
+%     loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB * dt(t) * theta_A(t - 1)*(M - covX);
     theta_A(t) = theta_A(t - 1) + gain_A + loss_A;
     
 end
