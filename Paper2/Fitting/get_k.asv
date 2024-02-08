@@ -81,6 +81,7 @@ k_Ao = dlm_kao.Coefficients.Estimate;
 tau1 = R2(2:end);
 tau = R2(1:end-1);
 Y = covB(tau1) - covB(tau) - k_AB*dt(tau).*covA(tau).*(M - cov(tau));
+%Y = Y + k_Bo*dt(tau).*covB(tau).*(cov(tau) - covA(tau))/cov(tau);
 X = - dt(tau)*P.*covB(tau);
 dlm_kba = fitlm(X,Y,'Intercept',false);
 k_BA = dlm_kba.Coefficients.Estimate;
