@@ -34,11 +34,11 @@ k_oB_SE = dlm_kob.Coefficients.SE;
 
 
 % Get kAB _________________________________________________ 
-tau1 = R3(2:end-5);
-tau = R3(1:end-6);
+tau1 = R3(2:end-3);
+tau = R3(1:end-4);
 
-Y = (covA(tau1) - covA(tau))./covA(tau);
-X = - dt(tau).*(M - cov(tau));
+Y = (covA(tau1) - covA(tau));
+X = - dt(tau).*covA(tau);
 
 dlm_kab = fitlm(X,Y,'Intercept',false);
 k_AB = dlm_kab.Coefficients.Estimate;
@@ -48,7 +48,7 @@ k_AB = dlm_kab.Coefficients.Estimate;
 tau1 = R2(3:end);
 tau = R2(2:end-1);
 
-Y = covA(tau1) - covA(tau) + k_AB*dt(tau).*covA(tau).*(M-cov(tau));
+Y = covA(tau1) - covA(tau) + k_AB*dt(tau).*covA(tau);
 X = dt(tau)*P.*covB(tau);
 
 dlm_kba = fitlm(X,Y,'Intercept',false);
