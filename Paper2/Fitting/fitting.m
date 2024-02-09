@@ -1,8 +1,8 @@
 function [theta_A, theta_B] = fitting(cov, covA, covB, dtime, time, vals, tp_AB, tp_idx, M, P)
 
 vals = num2cell(vals);
-%[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA] = vals{:};
-[k_oB, k_Bo, k_AB, k_BA] = vals{:};
+[k_oB, k_Bo, k_Ao, k_oA, k_AB, k_BA] = vals{:};
+%[k_oB, k_Bo, k_AB, k_BA] = vals{:};
 
 
 dt = dtime(2:end)-dtime(1:end-1);
@@ -33,8 +33,8 @@ end
 
 
 % Region II ________________________________________________
-theta_A(t) = covA(tp_AB(1));
-theta_B(t) = covB(tp_AB(1));
+theta_A(t) = covA(tp_AB(1)+2);
+theta_B(t) = covB(tp_AB(1)+2);
 % theta_A(t+1) = theta_A(t);
 % theta_B(t+1) = theta_B(t);
 
@@ -45,16 +45,14 @@ for t = R1+1 : R2
     covX = theta_A(t-1) + theta_B(t-1);
 
     % B
-    gain_B =  k_AB*dt(t)*theta_A(t-1) + k_oB*P*dt(t)*( M - covX );
-    loss_B = - k_BA*dt(t)*P*theta_B(t-1) - k_Bo*dt(t)*theta_B(t-1); 
+    gain_B =  k_AB*dt(t)*theta_A(t-1)*( M - covX );
+    loss_B = - k_BA*dt(t)*P*theta_B(t-1); 
 
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
     
     % A
-    gain_A = k_BA*P*dt(t)*theta_B(t-1);
-    loss_A = - k_AB*dt(t)*theta_A(t-1);
-%     gain_A = k_oA*P*dt(t)*(M - covX) + k_BA*dt(t)*P*theta_B(t-1);
-%     loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB*dt(t)*theta_A(t-1)*( M - covX );
+     gain_A = k_oA*P*dt(t)*(M - covX) + k_BA*dt(t)*P*theta_B(t-1);
+     loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB*dt(t)*theta_A(t-1)*( M - covX );
 
     theta_A(t) = theta_A(t-1) + gain_A + loss_A;
 
@@ -76,15 +74,15 @@ for t = R2+1 : R3
     covX = theta_A(t-1) + theta_B(t-1);
 
     % B
-    gain_B = k_AB * dt(t) * theta_A(t - 1);
+    gain_B = k_AB * dt(t) * theta_A(t - 1)*( M - covX );
     loss_B = 0; % - k_Bo*dt(t)*theta_B(t-1);
 
     theta_B(t) = theta_B(t-1) + gain_B + loss_B;
     
     %A
     gain_A = 0;
-    %loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB * dt(t) * theta_A(t - 1)*(M - covX);
-    loss_A = - k_AB * dt(t) * theta_A(t - 1);
+    loss_A = - k_Ao*dt(t)*theta_A(t-1) - k_AB * dt(t) * theta_A(t - 1)*(M - covX);
+    %loss_A = - k_AB * dt(t) * theta_A(t - 1);
     theta_A(t) = theta_A(t - 1) + gain_A + loss_A;
     
 end
@@ -92,8 +90,8 @@ end
 
 % Region IV ________________________________________________
 
-theta_B(t) = covB(tp_AB(2));
-theta_A(t) = covA(tp_AB(2));
+theta_B(t) = covB(tp_AB(2)+1);
+theta_A(t) = covA(tp_AB(2)+1);
  
 % theta_A(t+1) = theta_A(t);
 % theta_B(t+1) = theta_B(t);
