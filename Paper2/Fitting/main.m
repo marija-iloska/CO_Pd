@@ -9,7 +9,7 @@ load ../DataConversion/Data/cov_time_noise.mat
 load ../DataConversion/Data/temps_info.mat
 
 
-t = 1;
+t = 5;
 cov = cov_all{t};
 time = time{t};
 str = temps_strings{t};
