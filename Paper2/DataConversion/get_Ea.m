@@ -1,4 +1,4 @@
-function [Ea, A, Ea_SE, A_SE, ln_k, Rsq_Ea] = get_Ea(k, T, R)
+function [Ea, A, Ea_SE, A_SE, ln_k, Rsq_Ea, ln_k_SE] = get_Ea(k, T, R)
 
 % The units of Ea depend on the units of the R value entered
 
@@ -23,6 +23,10 @@ A_SE = dlm_Ea.Coefficients.SE(1);
 % Get fitted ln(k)s
 ln_k = Ea*x + ln_A;
 Rsq_Ea = dlm_Ea.Rsquared.Ordinary;
+
+ln_k_up = (Ea + Ea_SE)*x + (ln_A - A_SE);
+ln_k_down = (Ea - Ea_SE)*x + (ln_A + A_SE); 
+ln_k_SE = [ln_k_up; ln_k_down];
 
 
 end

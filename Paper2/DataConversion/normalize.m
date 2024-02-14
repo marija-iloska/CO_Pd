@@ -44,15 +44,15 @@ A_normalized{T(ref)} = area_mat{T(ref)};
 
 %% PLOT AREA (unnormalized OR normalized)
 figure(1)
-for i = 1:N
+for i = 2:N
     %plot(time_mat_area{i}, A_new{i}, 'linewidth', 1.5)
-    plot(time_area{i}, area_mat{i}, 'linewidth', 1.5)
+    plot(time_area{i}, A_normalized{i}, 'linewidth', 1.5)
     hold on
 end
 set(gca, 'FontSize', 20)
-legend(temps_strings, 'FontSize', 20)
-title('Raw AREA', 'FontSize', 20)
-xlabel('Time', 'FontSize',20)
+legend(temps_strings{2:end}, 'FontSize', 20)
+title('Normalized', 'FontSize', 20)
+xlabel('Time [s]', 'FontSize',20)
 %ylabel('Area Normalized', 'FontSize',20)
 ylabel('Area', 'FontSize',20)
 grid on
@@ -61,8 +61,8 @@ grid on
 
 %% RAW AREAs against their normalization
 figure;
-for i = 1:N
-    subplot(2,3,i)
+for i = 2:N-1
+    subplot(2,2,i-1)
     plot(time_area{i}, area_mat{i}, 'Linewidth',1.5)
     hold on
     plot(time_area{i}, A_normalized{i}, 'linewidth', 1.5)
