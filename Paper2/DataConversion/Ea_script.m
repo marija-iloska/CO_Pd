@@ -14,15 +14,20 @@ time_mix = time_padded;
 % cov_mix = cov_a_all;
 cov_mix = area;
 
+
+file_start = 'no450';
+file_end = '_nocut';
+file_ext = '.png';
+
 % cut = 15*ones(1,N);
 % %cut = [19, 19, 11, 10, 9, 7];
 % cut = [18, 18, 12, 13, 13, 9];
-cut = 11*ones(1,N);
-for i = 1:N
-
-    cov_mix{i}(time_mix{i} > cut(i)) = [];
-    time_mix{i}(time_mix{i} > cut(i)) = [];
-end
+% cut = 11*ones(1,N);
+% for i = 1:N
+% 
+%     cov_mix{i}(time_mix{i} > cut(i)) = [];
+%     time_mix{i}(time_mix{i} > cut(i)) = [];
+% end
 
 
 
@@ -58,7 +63,7 @@ x = [ (1./T(idx))'; fliplr(1./T(idx))'];
 y = ln_k_SE';
 y = y(:);
 id = find(covs < 0.24);
-sz = 80;
+sz = 60;
 % Plot fit
 figure;
 plot(1./T(idx), ln_k, 'LineWidth', 3, 'Color', 'k')
@@ -67,14 +72,15 @@ scatter(1./T(idx), log(k(idx)), sz, 'filled', 'MarkerFaceColor','r')
 hold on
 patch(x,y, 'red', 'FaceAlpha', 0.05, 'EdgeColor', 'none')
 set(gca, 'FontSize', 13)
-xlabel('1/T', 'FontSize', 20)
-ylabel('ln k','FontSize', 20)
+xlabel('1/T [K^{-1}]', 'FontSize', 20)
+ylabel('ln k [s^{-1}]','FontSize', 20)
 title('Arrhenius Plot', 'FontSize', 20)
-legend('Rate Constants', 'Fitting', 'Uncertainty Region', 'fontsize',15, 'location', 'southeast')
+legend('Rate Constants', 'Fitting', 'Uncertainty Region', 'fontsize',15, 'location', 'southwest')
 
-% 
-% filename = 'figs_Qin/no450_uEa_nocut.png';
-% save(filename)
+
+
+filename = join(['figs_Qin/', file_start, '_uEa', file_end, file_ext]);
+saveas(gcf, filename)
 
 % Plot fit
 figure;
@@ -86,16 +92,18 @@ set(gca, 'FontSize', 13)
 xlabel('1/T [K^{-1}]', 'FontSize', 20)
 ylabel('ln k [s^{-1}]','FontSize', 20)
 title('Arrhenius Plot', 'FontSize', 20)
-legend('Rate Constants', 'Fitting', 'fontsize',15)
+legend('Rate Constants', 'Fitting', 'fontsize',15, 'location', 'northeast'); %, 'southwest')
 
-% filename = 'figs_Qin/no450_nocut.png';
-% save(filename)
-% 
+
+filename = join(['figs_Qin/', file_start, file_end, file_ext]);
+saveas(gcf, filename)
+ 
 
 
 x = [ (1./T(idx))'; fliplr(1./T(idx))'];
 y = log([k(idx) - k_SE(idx); fliplr(k(idx) + k_SE(idx))])';
 y = y(:);
+err = log([k(idx) + k_SE(idx)]) - log(k(idx));
 sz = 80;
 % Plot fit
 figure;
@@ -103,16 +111,17 @@ plot(1./T(idx), ln_k, 'LineWidth', 3, 'Color', 'k')
 hold on
 scatter(1./T(idx), log(k(idx)), sz, 'filled', 'MarkerFaceColor','r')
 hold on
-patch(x,y, 'blue', 'FaceAlpha', 0.05, 'EdgeColor', 'none')
+errorbar(1./T(idx), log(k(idx)), err,"LineStyle","none", "Color","k")
 set(gca, 'FontSize', 13)
-xlabel('1/T', 'FontSize', 20)
-ylabel('ln k','FontSize', 20)
+xlabel('1/T [K^{-1}]', 'FontSize', 20)
+ylabel('ln k [s^{-1}]','FontSize', 20)
 title('Arrhenius Plot', 'FontSize', 20)
-legend('Rate Constants', 'Fitting', 'Uncertainty Region', 'fontsize',15)
+legend('Rate Constants', 'Fitting', 'Error Bars', 'fontsize',15, 'location', 'northeast'); % 'southwest')
 
 
-% filename = 'figs_Qin/no450_uk_nocut.png';
-% save(filename)
+filename = join(['figs_Qin/', file_start, '_uk', file_end, file_ext]);
+saveas(gcf, filename)
+%print(gcf, filename, '-depsc2', '-r300');
 
 
 % blue = [62, 158, 222]/256;
