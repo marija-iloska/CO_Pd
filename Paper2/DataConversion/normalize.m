@@ -10,7 +10,7 @@ load Absorptivity/mean_mat_area.mat
 
 % Our data
 load Data/T6.mat
-% load Paper2_data/my_areas.mat
+%load Paper2_data/my_areas.mat
 
 
 % Choose number of moving average points for FREQ

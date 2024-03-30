@@ -2,6 +2,8 @@ clc
 clear all
 close all
 
+%% LOAD AND CONCATENATE 
+
 % Load the digitized data Cov and P
 load tpc_digitized.mat
 
@@ -13,21 +15,21 @@ c448 = dat448(:,2);
 p453 = dat453(:,1);
 c453 = dat453(:,2);
 
+% Pressure and coverage at 493K
 p493 = dat493(:,1);
 c493 = dat493(:,2);
 
+% Concatenate digitized data
 cov_raw = {c448, c453, c493};
 p_raw = {p448, p453, p493};
 
 
+%% EXTRAPOLATION
 
-
-% I want to interpolate for this
-P = [1e-8, 1e-7, 5e-7, 7.5e-7, 1e-6, 2.5e-6, 5e-6, 7.5e-6, 1e-5, 1.5e-5]; %, 5e-5];
-%P = [1.3e-8, 5.2e-8, 1.16e-7, 4.86e-7, 9.76e-7, 5.38e-6, 1.1e-5, 5.1e-5];
-%P = [5.15256e-8, 1.20003e-7, 5.00938e-7, 1.10275e-6, 6.00147e-6, 1.10092e-5];
+% I want to extrapolate for the following points
+P = [1e-8, 1e-7, 5e-7, 7.5e-7, 1e-6, 2.5e-6, 5e-6, 7.5e-6, 1e-5, 1.2e-5]; %, 5e-5];
 	
-
+% Extrapolate
 for p = 1:length(P)
 
     % Here I extrapolate to get the coverages at P = 1e-5;
@@ -37,20 +39,61 @@ for p = 1:length(P)
 
 end
 
+% Concatenating extrapolated points
 cov3 = [cov448; cov453; cov493];
-
-% cov = [cov488, cov453, cov493];
 T  = [448, 453, 493];
 
 for i = 1:3
-
     cov_raw{i}(end) = [];
     p_raw{i}(end) = [];
-
 end
 
 
-%save('Ptc.mat', 'T','cov')
+%% PLOTTING 
 
-% save('P_extrap.mat', 'T', 'P', 'cov3', 'cov_raw', 'p_raw')
+% Colors for plotting
+c = 0.85;
+red = [c 0 0];
+pp = [0 0 c];
+gr = [0 c 0];
+col = {red, pp, gr};
+str = {'448K dig', '453K dig', '493K dig', '448K inferred', '453K inferred', '493K inferred'};
+
+
+% Concatenate original and interpolated points together for plotting
+for i = 1:3
+
+    cov_all{i} = sort([cov3(i,:), cov_raw{i}']);
+    p_all{i} = sort([P, p_raw{i}']);
+end
+
+% Plot ORIGINAL digitized data
+figure(1)
+for i = 1:3
+
+    plot(p_raw{i}, cov_raw{i}, 'k', 'LineWidth',1)
+    hold on
+    h(i) = plot(p_raw{i}, cov_raw{i}, '.', 'MarkerSize', 20, 'Color', 'k')
+
+end
+
+% Plot interpolated points and lines
+figure(1)
+for i = 1:3
+
+    h(3+i) = plot(P, cov3(i,:), '.', 'MarkerSize', 20, 'Color', col{i})
+    hold on
+    plot(p_all{i}, cov_all{i}, 'Linestyle', '--', 'Color', col{i})
+end
+%xline(1e-5, 'Color', 'k', 'LineStyle','--', 'LineWidth', 2)
+legend(h, str, 'FontSize', 15)
+set(gca, 'FontSize', 20)
+xlabel('Pressure [mbar]', 'FontSize', 20)
+ylabel('Coverage [ML]', 'FontSize', 20)
+grid on
+
+
+
+%save('Ptc.mat', 'T','cov')
+save('inferred.mat', 'T', 'P', 'cov_all','p_all', 'cov3','cov_raw', 'p_raw')
 

@@ -76,4 +76,4 @@ end
 
 
 %% Save all data
-save('Data/T6.mat','area_mat', 'time_area', 'time_wv', 'time_padded', 'time', 'temps_strings', 'N', 'wv', 'wv_padded')
+save('Data/T6.mat','area_mat', 'time_area', 'time_wv', 'time', 'temps_strings', 'N', 'wv', 'wv_padded')
