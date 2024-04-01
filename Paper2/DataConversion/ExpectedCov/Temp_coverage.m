@@ -61,6 +61,7 @@ for i = 1:3
     hold on
 
 end
+xlim([0, 1.2e-5])
 xline(1e-5, 'Color', 'k', 'LineStyle','--', 'LineWidth', 2)
 legend(h, str, 'FontSize', 15)
 set(gca, 'FontSize', 20)
